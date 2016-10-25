@@ -1,4 +1,4 @@
-  <div id="pageheader" class="titleclass">
+<div id="pageheader" class="titleclass">
     <div class="container">
       <?php get_template_part('templates/page', 'header'); ?>
     </div><!--container-->
