@@ -13,5 +13,19 @@
     .footer-ser li img{
       margin-bottom:20px;
     }
+    .img_ser_pay{
+      margin-left: 5px;
+    }
+    #containerfooter .menu {
+      margin: 0 0 0 0px !important;
+    }
+    #containerfooter .menu li a {
+      max-width: 80%;
+    }
+
+    .logo_menu ul {
+        padding-left: 0px;
+    }
+
   </style>
 </head>
