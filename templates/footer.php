@@ -119,7 +119,7 @@
 					</li>
 				</ul>
 			</div>
-			<p>Bản quyền thuộc về <a href="http://shopmebao.vn/" target="_blank">ShopMeBao.Vn/</a></p>
+			<p>Bản quyền thuộc về <a href="http://shopmebao.vn/" target="_blank">ShopMeBao.Vn</a></p>
 		</div>
 	</div>
 </footer>
