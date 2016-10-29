@@ -20,6 +20,7 @@
 			<li class="ser-tu-van"><img src="<?php echo get_template_directory_uri()?>/assets/img/free/ser-tu-van.png"></li>
 			<li class="ser-ho-tro"><img src="<?php echo get_template_directory_uri()?>/assets/img/free/ser-ho-tro.png"></li>
 		</ul>
+		<div class="clearfix"></div>
 	</div>
 	<div class="container" style="border-top: 1px solid #ccc!important;">
 		<div class="row">
@@ -40,6 +41,7 @@
                                     <a href="http://yeulanhmanh.com/huong-dan-thanh-toan/">Hướng dẫn thanh toán</a>
                                 </li>
                             </ul>
+							<div class="clearfix"></div>
                         </div>
 					</aside>
 				</div>
@@ -64,6 +66,7 @@
 							<li class="img_ser_pay"><img src="<?php echo get_template_directory_uri()?>/assets/img/payment/pay-master.png"></li>
 							<li class="img_ser_pay"><img src="<?php echo get_template_directory_uri()?>/assets/img/payment/pay-visa.png"></li>
 						</ul>
+						<div class="clearfix"></div>
 					</aside>
                 </div>
             </div>
@@ -95,9 +98,7 @@
 
 			<div class="col-md-3 col-sm-6 footercol4">
 				<div class="widget-1 widget-first footer-widget">
-					<a href="http://click.accesstrade.vn/adv.php?rk=0003uk000m2w" target="_blank">
-						<img src="http://imp.accesstrade.vn/img.php?rk=0003uk000m2w" border="0"/>
-					</a>
+					<div class="fb-page" data-href="https://www.facebook.com/Stud100chongxuattinhsomchinhhang/" data-tabs="timeline" data-width="270" data-height="240" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/Stud100chongxuattinhsomchinhhang/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/Stud100chongxuattinhsomchinhhang/">Stud 100 - thuốc xịt kéo dài thời gian quan hệ</a></blockquote></div>
 				</div>
 			</div>
 
@@ -106,16 +107,16 @@
 			<div class="footernav clearfix">
 				<ul id="menu-resources-1" class="footermenu">
 					<li class="menu-home menu-item-229">
-						<a href="http://themes.kadencethemes.com/virtue/">Home</a>
+						<a href="http://yeulanhmanh.com/">Trang chủ</a>
 					</li>
 					<li class="menu-cart menu-item-230">
-						<a href="http://themes.kadencethemes.com/virtue/cart/">Cart</a>
+						<a href="http://yeulanhmanh.com/cart/">Giỏ hàng</a>
 					</li>
 					<li class="menu-contact-us menu-item-231">
-						<a href="http://themes.kadencethemes.com/virtue/contact-us/">Contact Us</a>
+						<a href="http://yeulanhmanh.com/lien-va-gop-y-voi-yeu-lanh-manh/">Liên hệ với chúng tôi</a>
 					</li>
 					<li class="menu-my-account menu-item-232">
-						<a href="http://themes.kadencethemes.com/virtue/my-account/">My Account</a>
+						<a href="http://yeulanhmanh.com/my-account/">Tài khoản của bạn</a>
 					</li>
 				</ul>
 			</div>
@@ -123,5 +124,14 @@
 		</div>
 	</div>
 </footer>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.8&appId=477360942364792";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
 
 <?php wp_footer(); ?>
