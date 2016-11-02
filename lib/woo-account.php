@@ -42,6 +42,10 @@ add_action('woocommerce_before_edit_account_address_form', 'kad_add_woo_endpoint
           <div class="kad-account-avatar">
               <div class="kad-customer-image">
                 <?php echo get_avatar($current_user->ID, 120 ); ?>
+                <a class="kt-link-to-gravatar" href="https://gravatar.com/" target="_blank">
+                  <i class="icon-cloud-upload"></i>
+                  <span class="kt-profile-photo-text"><?php echo __('Update Profile Photo', 'virtue');?>
+                </a>
               </div>
               <div class="kad-customer-name">
                 <h5>

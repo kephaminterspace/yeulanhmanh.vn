@@ -50,12 +50,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                   $image[0] = $slide['url'];
                   $image[1] = 400;
                   $image[2] = $slideheight;
-                } ?>
+                }
+                $img_srcset_output = kt_get_srcset_output( $image[1], $image[2], $slide['url'], $slide['attachment_id']);
+                ?>
                 <div class="carousel_gallery_item" style="float:left; margin: 0 5px; width:<?php echo esc_attr($image[1]);?>px; height:<?php echo esc_attr($image[2]);?>px;">
                 <?php if(!empty($slide['link'])){
                    echo '<a href="'.esc_url($slide['link']).'" class="homepromolink" target="'.esc_attr($target).'">'; 
                    } ?>
-                <img src="<?php echo esc_url($image[0]);?>" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>"  alt="<?php echo esc_attr($slide['title']); ?>" />
+                <img src="<?php echo esc_url($image[0]);?>" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>"  <?php echo $img_srcset_output;?> alt="<?php echo esc_attr($slide['title']); ?>" />
                       <?php if ($captions == '1') { ?> 
                                 <div class="ic-caption">
                                 <?php 

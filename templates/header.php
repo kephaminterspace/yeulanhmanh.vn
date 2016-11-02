@@ -1,8 +1,18 @@
-<header id="kad-banner" class="banner headerclass kt-not-mobile-sticky" data-header-shrink="0" data-mobile-sticky="0">
+<?php 
+global $virtue_premium;
+if(isset($virtue_premium['primary_sticky']) && $virtue_premium['primary_sticky'] == 1 && isset($virtue_premium['logo_layout']) && ($virtue_premium['logo_layout'] == 'logocenter' || $virtue_premium['logo_layout'] == 'logowidget')  ) {
+  $menu_stick = 1;
+  $menu_stick_class = "kt-mainnavsticky";
+} else {
+  $menu_stick = 0;
+  $menu_stick_class = "";
+}
+?>
+<header id="kad-banner" class="banner headerclass kt-not-mobile-sticky <?php echo esc_attr($menu_stick_class);?>" data-header-shrink="0" data-mobile-sticky="0" data-menu-stick="<?php echo esc_attr($menu_stick);?>">
 <?php if (kadence_display_topbar()) : ?>
   <?php get_template_part('templates/header', 'topbar'); ?>
 <?php endif; ?>
-<?php global $virtue_premium; if(isset($virtue_premium['logo_layout'])) {
+<?php if(isset($virtue_premium['logo_layout'])) {
             if($virtue_premium['logo_layout'] == 'logocenter') {$logocclass = 'col-md-12'; $menulclass = 'col-md-12';} 
             else if($virtue_premium['logo_layout'] == 'logohalf') {$logocclass = 'col-md-6'; $menulclass = 'col-md-6';}
             else if($virtue_premium['logo_layout'] == 'logowidget') {$logocclass = 'col-md-4'; $menulclass = 'col-md-12';}

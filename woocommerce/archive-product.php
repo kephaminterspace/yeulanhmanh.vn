@@ -32,13 +32,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 					}
 			 } 
 
-			 do_action( 'woocommerce_above_main_content' ); ?>
-				
-		<div id="content" class="container">
-   		<div class="row">
-      <div class="main <?php echo kadence_main_class(); ?>" role="main">
+			 do_action( 'woocommerce_above_main_content' ); 
 
-		<?php
 			/**
 			 * woocommerce_before_main_content hook
 			 *
@@ -145,4 +140,3 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 		 */
 		do_action( 'woocommerce_after_main_content' );
 	?>
-	</div>

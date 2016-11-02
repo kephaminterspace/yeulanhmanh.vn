@@ -2,7 +2,7 @@
 
 if ( apply_filters( 'woocommerce_show_page_title', true ) ) : ?>
       <div id="pageheader" class="titleclass">
-        <div class="container">
+        <div class="container woo-titleclass-container">
           <div class="page-header">
             <div class="row">
               <div class="col-md-6 col-sm-6 woo-archive-pg-title">

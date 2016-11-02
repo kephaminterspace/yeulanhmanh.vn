@@ -1,4 +1,7 @@
+<?php 
+global $post, $virtue_premium;
 
+?>
 	<div id="pageheader" class="titleclass">
 		<div class="container">
 			<div class="page-header single-portfolio-item">
@@ -9,11 +12,11 @@
 		   			</div>
 		   			<div class="col-md-4 col-sm-4">
 		   				<div class="portfolionav clearfix">
-		   					<?php global $post, $virtue_premium; if(!empty($virtue_premium['portfolio_arrow_nav']) && ($virtue_premium['portfolio_arrow_nav'] == 'cat') ) {$arrownav = true;} else {$arrownav = false;}	
+		   					<?php if(!empty($virtue_premium['portfolio_arrow_nav']) && ($virtue_premium['portfolio_arrow_nav'] == 'cat') ) {$arrownav = true;} else {$arrownav = false;}	
 		   					$parent_link = get_post_meta( $post->ID, '_kad_portfolio_parent', true ); if(!empty($parent_link) && ($parent_link != 'default')) {$parent_id = $parent_link;} else {$parent_id = $virtue_premium['portfolio_link'];}
 		   					previous_post_link_plus( array('order_by' => 'menu_order', 'loop' => true, 'in_same_tax' => $arrownav, 'format' => '%link', 'link' => '<i class="icon-arrow-left"></i>') ); ?>
 					   			<?php if( !empty($parent_id)){ ?>
-					   				<a href="<?php echo get_page_link($parent_id); ?>">
+					   				<a href="<?php echo get_page_link($parent_id); ?>" title="<?php echo get_the_title($parent_id);?>" >
 									<?php } else {?> 
 									<a href="../">
 									<?php } ?>
@@ -26,7 +29,7 @@
 		</div><!--container-->
 	</div><!--titleclass-->
   <?php if ( ! post_password_required() ) { ?>
-	<?php global $post; 
+	<?php 
 			$layout = get_post_meta( $post->ID, '_kad_ppost_layout', true ); 
 			$ppost_type = get_post_meta( $post->ID, '_kad_ppost_type', true );
 			$imgheight = get_post_meta( $post->ID, '_kad_posthead_height', true );
@@ -76,23 +79,18 @@
 	 		<section class="postfeat carousel_outerrim loading">
 	            <div id="portfolio-carousel-gallery" class="fredcarousel fadein-carousel" style="overflow:hidden; height: <?php echo esc_attr($slideheight);?>px">
 	                <div class="gallery-carousel kad-light-wp-gallery initimagecarousel" data-carousel-container="#portfolio-carousel-gallery" data-carousel-transition="300" data-carousel-auto="<?php echo esc_attr($slideauto); ?>" data-carousel-speed="7000" data-carousel-id="portfolioimgcarousel">
-	                  <?php global $post;
+	                  <?php 
 	                      $image_gallery = get_post_meta( $post->ID, '_kad_image_gallery', true );
 	                          if(!empty($image_gallery)) {
 	                            $attachments = array_filter( explode( ',', $image_gallery ) );
 	                              if ($attachments) {
 	                                foreach ($attachments as $attachment) {
-	                                $attachment_url = wp_get_attachment_url($attachment , 'full');
-	                                $image = aq_resize($attachment_url, null, $slideheight, false, false);
-	                                  if(empty($image)) {
-	                                    $image = array();
-	                                    $image[0] = $attachment_url;
-	                                    $image[1] = $slidewidth;
-	                                    $image[2] = $slideheight;
-	                                  }
+                            		$image_src = wp_get_attachment_image_src($attachment, 'full' ); 
+	                                $image = aq_resize($image_src[0], null, $slideheight, false, false, $attachment);
+	                                if(empty($image[0])) {$image = array($image_src[0], $slidewidth, $slideheight);}
 	                                  echo '<div class="carousel_gallery_item" style="float:left; margin: 0 5px; width:'.esc_attr($image[1]).'px; height:'.esc_attr($image[2]).'px;">';
-	                                  echo '<a href="'.esc_url($attachment_url).'" data-rel="lightbox">';
-	                                  echo '<img src="'.esc_url($image[0]).'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" alt="'.esc_attr(get_post_field('post_excerpt', $attachment)).'"/>';
+	                                  echo '<a href="'.esc_url($image_src[0]).'" data-rel="lightbox">';
+	                                  echo '<img src="'.esc_url($image[0]).'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" '.kt_get_srcset_output($image[1], $image[2], $image_src[0], $attachment).' alt="'.esc_attr(get_post_field('post_excerpt', $attachment)).'"/>';
 	                                  echo '</a></div>';
 	                                }
 	                              }
@@ -123,36 +121,29 @@
                     				$attachments = array_filter( explode( ',', $image_gallery ) );
                     					if ($attachments) {
 											foreach ($attachments as $attachment) {
-												$attachment_url = wp_get_attachment_url($attachment , 'full');
+												$image_src = wp_get_attachment_image_src($attachment, 'full' ); 
 												$caption = get_post($attachment)->post_excerpt;
-												$image = aq_resize($attachment_url, $slidewidth, $slideheight, true);
-													if(empty($image)) {$image = $attachment_url;}
-												echo '<li><a href="'.esc_url($attachment_url).'" data-rel="lightbox" title="'.esc_attr($caption).'"><img src="'.esc_url($image).'" alt="'.esc_attr($caption).'" /></a></li>';
+												$image = aq_resize($image_src[0], $slidewidth, $slideheight, true, false, false, $attachment);
+												if(empty($image[0])) {$image = array($image_src[0], $image_src[1], $image_src[2]);}
+												echo '<li>';
+													echo '<a href="'.esc_url($image_src[0]).'" data-rel="lightbox" title="'.esc_attr($caption).'">';
+														echo '<img src="'.esc_url($image[0]).'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" '.kt_get_srcset_output($image[1], $image[2], $image_src[0], $attachment).' alt="'.esc_attr($caption).'" />';
+													echo '</a>';
+												echo '</li>';
 											}
 										}
-                    			} else {
-                    				$attach_args = array('order'=> 'ASC','post_type'=> 'attachment','post_parent'=> $post->ID,'post_mime_type' => 'image','post_status'=> null,'orderby'=> 'menu_order','numberposts'=> -1);
-									$attachments = get_posts($attach_args);
-										if ($attachments) {
-											foreach ($attachments as $attachment) {
-												$attachment_url = wp_get_attachment_url($attachment->ID , 'full');
-												$image = aq_resize($attachment_url, $slidewidth, $slideheight, true);
-													if(empty($image)) {$image = $attachment_url;}
-												echo '<li><a href="'.$attachment_url.'" data-rel="lightbox"><img src="'.esc_url($image).'"/></a></li>';
-											}
-                    					}	
-								} ?>                            
+                    			}  ?>                            
 						</ul>
               	</div> <!--Flex Slides-->
 				<?php 	
 				} else if ($ppost_type == 'rev' || $ppost_type == 'cyclone' || $ppost_type == 'ktslider') {
 
-					global $post; $shortcodeslider = get_post_meta( $post->ID, '_kad_shortcode_slider', true ); if(!empty($shortcodeslider)) echo do_shortcode( $shortcodeslider );
+					$shortcodeslider = get_post_meta( $post->ID, '_kad_shortcode_slider', true ); if(!empty($shortcodeslider)) echo do_shortcode( $shortcodeslider );
 
 				} else if ($ppost_type == 'video') { ?>
 					
 					<div class="videofit">
-                  		<?php global $post; 
+                  		<?php
                   		$video_url = get_post_meta( $post->ID, '_kad_post_video_url', true );
                     if(!empty($video_url)) {
                       echo wp_oembed_get($video_url);
@@ -171,118 +162,99 @@
 					 <div id="imageslider" class="loading carousel_outerrim">
 					    <div class="carousel_slider_outer fredcarousel fadein-carousel" style="overflow:hidden; max-width:<?php echo esc_attr($slidewidth);?>px; height: <?php echo esc_attr($slideheight);?>px; margin-left: auto; margin-right:auto;">
 					        <div class="carousel_slider kad-light-gallery initcarouselslider" data-carousel-container=".carousel_slider_outer" data-carousel-transition="600" data-carousel-height="<?php echo esc_attr($slideheight); ?>" data-carousel-auto="<?php echo esc_attr($slideauto);?>" data-carousel-speed="9000" data-carousel-id="carouselslider">
-					            <?php global $post;
+					            <?php
                           		$image_gallery = get_post_meta( $post->ID, '_kad_image_gallery', true );
                           		if(!empty($image_gallery)) {
                     				$attachments = array_filter( explode( ',', $image_gallery ) );
                     					if ($attachments) {
-										foreach ($attachments as $attachment) {
-											         $attachment_url = wp_get_attachment_url($attachment , 'full');
-											         $caption = get_post($attachment)->post_excerpt;
-					                    	$image = aq_resize($attachment_url, null, $slideheight, false, false);
-					                    	if(empty($image)) {
-                                    $image = array();
-                                    $image[0] = $attachment_url;
-                                    $image[1] = $slidewidth;
-                                    $image[2] = $slideheight;
-                                  } 
-					                        echo '<div class="carousel_gallery_item" style="float:left; display: table; position: relative; text-align: center; margin: 0; width:auto; height:'.esc_attr($image[2]).'px;">';
-					                        echo '<div class="carousel_gallery_item_inner" style="vertical-align: middle; display: table-cell;">';
-					                        echo '<a href="'.esc_url($attachment_url).'" data-rel="lightbox" title="'.esc_attr($caption).'">';
-					                        echo '<img src="'.esc_url($image[0]).'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'"  />';
-					                        echo '</a>'; ?>
-					                      </div>
-					                    </div>
-					                  <?php } ?>
-					                  <?php } ?>
-					                  <?php } ?>
-					            </div>
-					            <div class="clearfix"></div>
+											foreach ($attachments as $attachment) {
+												$image_src = wp_get_attachment_image_src($attachment, 'full' ); 
+												$caption = get_post($attachment)->post_excerpt;
+						                    	$image = aq_resize($image_src[0], null, $slideheight, false, false, false, $attachment);
+						                    	if(empty($image[0])) {$image = array($image_src[0], $image_src[1], $image_src[2]);}
+						                        echo '<div class="carousel_gallery_item" style="float:left; display: table; position: relative; text-align: center; margin: 0; width:auto; height:'.esc_attr($image[2]).'px;">';
+							                        echo '<div class="carousel_gallery_item_inner" style="vertical-align: middle; display: table-cell;">';
+								                        echo '<a href="'.esc_url($image_src[0]).'" data-rel="lightbox" title="'.esc_attr($caption).'">';
+								                        	echo '<img src="'.esc_url($image[0]).'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" '.kt_get_srcset_output($image[1], $image[2], $image_src[0], $attachment).'  />';
+								                        echo '</a>'; 
+							                      	echo '</div>';
+						                    	echo '</div>';
+						                  	} 
+					                  	} 
+					            } ?>
+					        </div>
+				            <div class="clearfix"></div>
 					              <a id="prevport-carouselslider" class="prev_carousel icon-arrow-left" href="#"></a>
 					              <a id="nextport-carouselslider" class="next_carousel icon-arrow-right" href="#"></a>
-					          </div> <!--fredcarousel-->
-					  </div><!--Container-->
+				          	</div> <!--fredcarousel-->
+					</div><!--Container-->
 				<?php 
 				} else if ($ppost_type == 'imagelist') { ?>
 				<div class="kad-light-gallery">
-					<?php global $post;
+					<?php
                           	$image_gallery = get_post_meta( $post->ID, '_kad_image_gallery', true );
                           		if(!empty($image_gallery)) {
                     				$attachments = array_filter( explode( ',', $image_gallery ) );
                     					if ($attachments) {
                     						$counter = 0;
 											foreach ($attachments as $attachment) {
-												$attachment_url = wp_get_attachment_url($attachment , 'full');
+												$image_src = wp_get_attachment_image_src($attachment, 'full' ); 
 												$caption = get_post($attachment)->post_excerpt;
-												$image = aq_resize($attachment_url, $slidewidth, $slideheight, true);
-													if(empty($image)) {$image = $attachment_url;}
-												echo '<div class="portfolio_list_item pli'.$counter.'"><a href="'.$attachment_url.'" rel="lightbox" class="lightboxhover" title="'.$caption.'"><img src="'.$image.'" alt="'.$caption.'" /></a></div>';
+												$image = aq_resize($image_src[0], $slidewidth, $slideheight, true, false, false, $attachment);
+												if(empty($image[0])) {$image = array($image_src[0], $image_src[1], $image_src[2]);}
+
+												echo '<div class="portfolio_list_item pli'.$counter.'">';
+													echo '<a href="'.$image_src[0].'" data-rel="lightbox" class="lightboxhover" title="'.$caption.'">';
+														echo '<img src="'.$image[0].'" alt="'.$caption.'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" '.kt_get_srcset_output($image[1], $image[2], $image_src[0], $attachment).' />';
+													echo '</a>';
+												echo '</div>';
 												$counter ++;
 											}
 										}
-                    			} else {
-                    				$attach_args = array('order'=> 'ASC','post_type'=> 'attachment','post_parent'=> $post->ID,'post_mime_type' => 'image','post_status'=> null,'orderby'=> 'menu_order','numberposts'=> -1);
-									$attachments = get_posts($attach_args);
-										if ($attachments) {
-											$counter = 0;
-											foreach ($attachments as $attachment) {
-												$attachment_url = wp_get_attachment_url($attachment->ID , 'full');
-												$image = aq_resize($attachment_url, $slidewidth, $slideheight, true);
-													if(empty($image)) {$image = $attachment_url;}
-												echo '<div class="portfolio_list_item pli'.$counter.'"><a href="'.$attachment_url.'" rel="lightbox" class="lightboxhover"><img src="'.$image.'"/></a></div>';
-												$counter ++;
-											}
-                    					}	
-								} ?>  
+                    			} ?>  
 							</div>  
 				<?php } else if ($ppost_type == 'imagelist2') { ?>
 				<div class="kad-light-gallery portfolio_image_list_style2">
-					<?php global $post;
+					<?php 
                           	$image_gallery = get_post_meta( $post->ID, '_kad_image_gallery', true );
                           		if(!empty($image_gallery)) {
                     				$attachments = array_filter( explode( ',', $image_gallery ) );
                     					if ($attachments) {
                     						$counter = 0;
 											foreach ($attachments as $attachment) {
-												$attachment_url = wp_get_attachment_url($attachment , 'full');
+												$image_src = wp_get_attachment_image_src($attachment, 'full' ); 
 												$caption = get_post($attachment)->post_excerpt;
-												$image = aq_resize($attachment_url, $slidewidth, true);
-													if(empty($image)) {$image = $attachment_url;}
-												echo '<div class="portfolio_list_item pli'.$counter.'"><a href="'.$attachment_url.'" rel="lightbox" class="lightboxhover" title="'.$caption.'"><img src="'.$image.'" alt="'.$caption.'" /></a></div>';
+												$image = aq_resize($image_src[0], $slidewidth, null, false, false, false, $attachment);
+												if(empty($image[0])) {$image = array($image_src[0], $image_src[1], $image_src[2]);}
+
+												echo '<div class="portfolio_list_item pli'.$counter.'">';
+													echo '<a href="'.$image_src[0].'" data-rel="lightbox" class="lightboxhover" title="'.$caption.'">';
+														echo '<img src="'.$image[0].'" alt="'.$caption.'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" '.kt_get_srcset_output($image[1], $image[2], $image_src[0], $attachment).' />';
+													echo '</a>';
+												echo '</div>';
 												$counter ++;
 											}
 										}
-                    			} else {
-                    				$attach_args = array('order'=> 'ASC','post_type'=> 'attachment','post_parent'=> $post->ID,'post_mime_type' => 'image','post_status'=> null,'orderby'=> 'menu_order','numberposts'=> -1);
-									$attachments = get_posts($attach_args);
-										if ($attachments) {
-											$counter = 0;
-											foreach ($attachments as $attachment) {
-												$attachment_url = wp_get_attachment_url($attachment->ID , 'full');
-												$image = aq_resize($attachment_url, $slidewidth, true);
-													if(empty($image)) {$image = $attachment_url;}
-												echo '<div class="portfolio_list_item pli'.$counter.'"><a href="'.$attachment_url.'" rel="lightbox" class="lightboxhover"><img src="'.$image.'" /></a></div>';
-												$counter ++;
-											}
-                    					}	
-								} ?>  
+                    			} ?>  
 							</div>  
 				<?php 
 				} else if ($ppost_type == 'imgcarousel') {
 				} else if ($ppost_type == 'none') {
 					$portfolio_margin = "kad_portfolio_nomargin";
-				} else {					
-						$post_id = get_post_thumbnail_id();
-						$img_url = wp_get_attachment_url( $post_id);
-						$image = aq_resize( $img_url, $slidewidth, $imageheight, true, false); //resize & crop the image
-                  		if(empty($image[0])) {$image = array($img_url,$slidewidth,$imageheight);} 
-							if($image) : ?>
-                                    <div class="imghoverclass portfolio-single-img">
-                                    	<a href="<?php echo esc_url($img_url); ?>" rel="lightbox" class="lightboxhover">
-                                    		<img src="<?php echo esc_url($image[0]); ?>" width="<?php echo esc_attr($image[1])?>" height="<?php echo esc_attr($image[2])?>" alt="<?php echo esc_attr(get_post($post_id)->post_excerpt); ?>"  />
-                                    	</a>
-                                    </div>
-                            <?php endif; 
+				} else {
+					if (has_post_thumbnail( $post->ID ) ) { 					
+						$image_id = get_post_thumbnail_id();
+						$image_src = wp_get_attachment_image_src($image_id, 'full' ); 
+						$image = aq_resize( $image_src[0], $slidewidth, $imageheight, true, false, false, $image_id);
+                  		if(empty($image[0])) {$image = array($image_src[0], $image_src[1], $image_src[2]);}
+						?>
+                            <div class="imghoverclass portfolio-single-img">
+                            	<a href="<?php echo esc_url($image_src[0]); ?>" data-rel="lightbox" class="lightboxhover">
+                            		<img src="<?php echo esc_url($image[0]); ?>" width="<?php echo esc_attr($image[1])?>" height="<?php echo esc_attr($image[2])?>" <?php echo kt_get_srcset_output($image[1], $image[2], $image_src[0], $image_id);?> alt="<?php echo esc_attr(get_post($image_id)->post_excerpt); ?>"  />
+                            	</a>
+                            </div>
+                            <?php 
+                    }
 				} 
 				do_action( 'kadence_single_portfolio_after_feature' ); ?>
         	</div><!--imgclass -->

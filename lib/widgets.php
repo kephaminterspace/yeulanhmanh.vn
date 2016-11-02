@@ -89,7 +89,7 @@ function kadence_widgets_init() {
       register_sidebar(array(
         'name' => __('Footer Column 1', 'virtue'),
         'id' => 'footer_1',
-        'before_widget' => '<div class="footer-widget"><aside id="%1$s" class="widget %2$s">',
+        'before_widget' => '<div class="footer-widget widget"><aside id="%1$s" class="%2$s">',
         'after_widget' => '</aside></div>',
         'before_title' => '<h3>',
         'after_title' => '</h3>',
@@ -99,7 +99,7 @@ function kadence_widgets_init() {
       register_sidebar(array(
         'name' => __('Footer Column 2', 'virtue'),
         'id' => 'footer_2',
-        'before_widget' => '<div class="footer-widget"><aside id="%1$s" class="widget %2$s">',
+        'before_widget' => '<div class="footer-widget widget"><aside id="%1$s" class="%2$s">',
         'after_widget' => '</aside></div>',
         'before_title' => '<h3>',
         'after_title' => '</h3>',
@@ -109,7 +109,7 @@ function kadence_widgets_init() {
       register_sidebar(array(
         'name' => __('Footer Column 3', 'virtue'),
         'id' => 'footer_3',
-        'before_widget' => '<div class="footer-widget"><aside id="%1$s" class="widget %2$s">',
+        'before_widget' => '<div class="footer-widget widget"><aside id="%1$s" class="%2$s">',
         'after_widget' => '</aside></div>',
         'before_title' => '<h3>',
         'after_title' => '</h3>',
@@ -119,7 +119,7 @@ function kadence_widgets_init() {
       register_sidebar(array(
         'name' => __('Footer Column 4', 'virtue'),
         'id' => 'footer_4',
-        'before_widget' => '<div class="footer-widget"><aside id="%1$s" class="widget %2$s">',
+        'before_widget' => '<div class="footer-widget widget"><aside id="%1$s" class="%2$s">',
         'after_widget' => '</aside></div>',
         'before_title' => '<h3>',
         'after_title' => '</h3>',
@@ -130,7 +130,7 @@ function kadence_widgets_init() {
       register_sidebar(array(
         'name' => __('Footer Column 1', 'virtue'),
         'id' => 'footer_third_1',
-        'before_widget' => '<div class="footer-widget"><aside id="%1$s" class="widget %2$s">',
+        'before_widget' => '<div class="footer-widget widget"><aside id="%1$s" class="%2$s">',
         'after_widget' => '</aside></div>',
         'before_title' => '<h3>',
         'after_title' => '</h3>',
@@ -140,7 +140,7 @@ function kadence_widgets_init() {
       register_sidebar(array(
         'name' => __('Footer Column 2', 'virtue'),
         'id' => 'footer_third_2',
-        'before_widget' => '<div class="footer-widget"><aside id="%1$s" class="widget %2$s">',
+        'before_widget' => '<div class="footer-widget widget"><aside id="%1$s" class="%2$s">',
         'after_widget' => '</aside></div>',
         'before_title' => '<h3>',
         'after_title' => '</h3>',
@@ -150,7 +150,7 @@ function kadence_widgets_init() {
       register_sidebar(array(
         'name' => __('Footer Column 3', 'virtue'),
         'id' => 'footer_third_3',
-        'before_widget' => '<div class="footer-widget"><aside id="%1$s" class="widget %2$s">',
+        'before_widget' => '<div class="footer-widget widget"><aside id="%1$s" class="%2$s">',
         'after_widget' => '</aside></div>',
         'before_title' => '<h3>',
         'after_title' => '</h3>',
@@ -161,7 +161,7 @@ function kadence_widgets_init() {
         register_sidebar(array(
           'name' => __('Footer Column 1', 'virtue'),
           'id' => 'footer_double_1',
-          'before_widget' => '<div class="footer-widget"><aside id="%1$s" class="widget %2$s">',
+          'before_widget' => '<div class="footer-widget widget"><aside id="%1$s" class="%2$s">',
           'after_widget' => '</aside></div>',
           'before_title' => '<h3>',
           'after_title' => '</h3>',
@@ -171,7 +171,7 @@ function kadence_widgets_init() {
         register_sidebar(array(
           'name' => __('Footer Column 2', 'virtue'),
           'id' => 'footer_double_2',
-          'before_widget' => '<div class="footer-widget"><aside id="%1$s" class="widget %2$s">',
+          'before_widget' => '<div class="footer-widget widget"><aside id="%1$s" class="%2$s">',
           'after_widget' => '</aside></div>',
           'before_title' => '<h3>',
           'after_title' => '</h3>',
@@ -374,7 +374,7 @@ class Kadence_Social_Widget extends WP_Widget {
 <?php if(!empty($instance['facebook'])):?><a href="<?php echo esc_url($instance['facebook']); ?>" class="facebook_link" title="Facebook" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="Facebook"><i class="icon-facebook"></i></a><?php endif;?>
 <?php if(!empty($instance['twitter'])):?><a href="<?php echo esc_url($instance['twitter']); ?>" class="twitter_link" title="Twitter" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="Twitter"><i class="icon-twitter"></i></a><?php endif;?>
 <?php if(!empty($instance['instagram'])):?><a href="<?php echo esc_url($instance['instagram']); ?>" class="instagram_link" title="Instagram" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="Instagram"><i class="icon-instagram"></i></a><?php endif;?>
-<?php if(!empty($instance['googleplus'])):?><a href="<?php echo esc_url($instance['googleplus']); ?>" class="googleplus_link" title="GooglePlus" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="GooglePlus" rel="publisher"><i class="icon-google-plus"></i></a><?php endif;?>
+<?php if(!empty($instance['googleplus'])):?><a href="<?php echo esc_url($instance['googleplus']); ?>" class="googleplus_link" title="GooglePlus" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="GooglePlus" rel="publisher"><i class="icon-google-plus4"></i></a><?php endif;?>
 <?php if(!empty($instance['flickr'])):?><a href="<?php echo esc_url($instance['flickr']); ?>" class="flickr_link" title="Flickr" data-toggle="tooltip" target="_blank" data-placement="top" data-original-title="Flickr"><i class="icon-flickr"></i></a><?php endif;?>
 <?php if(!empty($instance['vimeo'])):?><a href="<?php echo esc_url($instance['vimeo']); ?>" class="vimeo_link" title="Vimeo" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="Vimeo"><i class="icon-vimeo"></i></a><?php endif;?>
 <?php if(!empty($instance['youtube'])):?><a href="<?php echo esc_url($instance['youtube']); ?>" class="youtube_link" title="YouTube" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="YouTube"><i class="icon-youtube"></i></a><?php endif;?>
@@ -707,44 +707,43 @@ class Kadence_Testimonial_Slider_Widget extends WP_Widget {
     else if ($columns == '5'){ $itemsize = 'tcol-lg-25 tcol-md-25 tcol-sm-3 tcol-xs-4 tcol-ss-6'; $slidewidth = 240; $slideheight = 240; $md = 5; $sm = 4; $xs = 3; $ss = 2;} 
     else {$itemsize = 'tcol-lg-3 tcol-md-3 tcol-sm-4 tcol-xs-6 tcol-ss-12'; $slidewidth = 269; $slideheight = 269; $md = 4; $sm = 3; $xs = 2; $ss = 1;} 
 
-    $r = new WP_Query( apply_filters('widget_posts_args', array( 
+    $t_carousel = new WP_Query(apply_filters('kt_testimonial_carousel_widget_posts_args', array( 
     'post_type' => 'testimonial', 
     'testimonial-group' => $instance['thecat'], 
     'no_found_rows' => true, 
     'posts_per_page' => $number,
     'orderby' => $testorder, 
     'post_status' => 'publish', 
-    'ignore_sticky_posts' => true ) ) );
-    if ($r->have_posts()) :
+    'ignore_sticky_posts' => true )) );
+
+    if ($t_carousel->have_posts()) :
 ?>
     <?php echo $before_widget; ?>
     <?php if ( $title ) echo $before_title . $title . $after_title; ?>
         <div class="fredcarousel">
           <div id="carouselcontainer-<?php echo esc_attr($carousel_rn);?>" class="rowtight fadein-carousel">
           <div id="testimonial-carousel-<?php echo esc_attr($carousel_rn);?>" class="kad-testimonial-carousel initcaroufedsel" data-carousel-container="#carouselcontainer-<?php echo esc_attr($carousel_rn);?>" data-carousel-transition="700" data-carousel-scroll="<?php echo esc_attr($scroll);?>" data-carousel-auto="<?php echo esc_attr($autoplay);?>" data-carousel-speed="<?php echo esc_attr($speed);?>" data-carousel-id="testimonial-carousel-<?php echo esc_attr($carousel_rn); ?>" data-carousel-md="<?php echo esc_attr($md);?>" data-carousel-sm="<?php echo esc_attr($sm);?>" data-carousel-xs="<?php echo esc_attr($xs);?>" data-carousel-ss="<?php echo esc_attr($ss);?>">
-            <?php  while ($r->have_posts()) : $r->the_post(); ?>
+            <?php  while ($t_carousel->have_posts()) : $t_carousel->the_post(); ?>
             <div class="<?php echo esc_attr($itemsize);?> t_item">
               <div class="grid_item testimonial_item all postclass">
                 <div class="testimonialbox clearfix">
         <?php global $post; 
-                  if (has_post_thumbnail( $post->ID ) ) {
-                      $image_url = wp_get_attachment_image_src( 
-                      get_post_thumbnail_id( $post->ID ), 'full' ); 
-                      $thumbnailURL = $image_url[0]; 
-                      $image = aq_resize($thumbnailURL, 60, 60, true);
-                      if(empty($image)) { $image = $thumbnailURL; } ?>
+                if (has_post_thumbnail( $post->ID ) ) {
+                    $image_id = get_post_thumbnail_id( $post->ID );
+                    $image_src = wp_get_attachment_image_src( $image_id, 'full' );
+                    $image_size = apply_filters('testimonial_carousel_image_size', array('width' => '60', 'height' => '60') );
+                    $image = aq_resize($image_src[0], $image_size['width'], $image_size['height'], true, false, false, $image_id);
+                    if(empty($image[0])) { $image = array($image_src[0], $image_src[1], $image_src[2]); } ?>
                     <div class="alignleft testimonialimg">
-                        <img src="<?php echo esc_attr($image); ?>" alt="<?php the_title(); ?>" class="" style="display: block; max-width:60px;">
+                        <img src="<?php echo esc_url($image[0]); ?>" width="<?php echo esc_attr($image[1]); ?>" height="<?php echo esc_attr($image[2]); ?>" alt="<?php the_title(); ?>" <?php echo kt_get_srcset_output($image[1], $image[2], $image_src[0], $image_id);?> style="display: block;">
                     </div>
-                    <?php $image = null; $thumbnailURL = null;?>
-                  <?php } else { ?>
+                    <?php $image = null;
+                } else { ?>
                     <div class="alignleft testimonialimg">
                       <i class="icon-user2" style="font-size:60px"></i>
                     </div>
-                  <?php } ?>
-                                 
-                                 <?php
-                                 $show_link = true;
+                <?php } 
+                        $show_link = true;
                                  if($full_content == "full_content"){
                                     the_content();
                                   } elseif($full_content == "custom_excerpt"){
@@ -796,9 +795,10 @@ class Kadence_Testimonial_Slider_Widget extends WP_Widget {
     <?php echo $after_widget; ?>
 <?php
     // Reset the global $the_post as this query will have stomped on it
-    wp_reset_postdata();
 
     endif;
+
+    wp_reset_postdata();
 
   }
 
@@ -878,9 +878,13 @@ class Kadence_Testimonial_Slider_Widget extends WP_Widget {
       $pagelink_options[] = '<option value="' . get_page_link( $poption->ID ) .'"' . $selected . '>' . $poption->post_title . '</option>';
     }
 
-    if (isset($instance['thecat'])) { $thecat = esc_attr($instance['thecat']); } else {$thecat = '';}
-     $categories= get_terms('testimonial-group');
-     $cat_options = array();
+    if (isset($instance['thecat'])) { 
+      $thecat = esc_attr($instance['thecat']);
+    } else {
+      $thecat = '';
+    }
+    $categories= get_terms('testimonial-group');
+    $cat_options = array();
     $cat_options[] = '<option value="">All</option>';
  
     foreach ($categories as $cat) {

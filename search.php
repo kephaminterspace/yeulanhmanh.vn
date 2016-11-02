@@ -1,8 +1,9 @@
- <div id="pageheader" class="titleclass">
-    <div class="container">
-      <?php get_template_part('templates/page', 'header');  ?>
-    </div><!--container-->
-  </div><!--titleclass-->
+  <?php 
+    /**
+    * @hooked virtue_page_title - 20
+    */
+     do_action('kadence_page_title_container');
+    ?>
   <?php global $virtue_premium; if(kadence_display_sidebar()) {$display_sidebar = true; $fullclass = '';} else {$display_sidebar = false; $fullclass = 'fullwidth';} ?>
     <div id="content" class="container">
       <div class="row">

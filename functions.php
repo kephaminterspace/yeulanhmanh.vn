@@ -85,7 +85,8 @@ require_once locate_template('/kt_framework/kt-theme-updates.php');
  */
 function virtue_shortcode_init() {
 	if(is_admin()){ if(kad_is_edit_page()){require_once locate_template('/lib/kad_shortcodes.php');	}}
+
 }
 add_action('init', 'virtue_shortcode_init');
 
-	
+

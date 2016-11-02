@@ -20,6 +20,90 @@ These plugins have been purchased for the use in the Virtue Theme only. Refer to
 
 = Theme Name: Virtue Premium =
 
+= Version 3.8.9 | 24th October 2016 =
+* Fix: Split content link issue.
+* Fix: Mobile image swipe issue on image carousel.
+* Update: Few css tweaks.
+* Update: Rev slider.
+
+= Version 3.8.8 | 4th October 2016 =
+* Update: Few css tweaks (fix header spacing issue).
+* Update: Few Schema tweaks.
+* Add: my-account option for main and mobile menu.
+* Add: Option for default post sidebar id.  
+
+= Version 3.8.7 | 30th September 2016 =
+* Update: Mobile Parallax Issue.
+* Update: Typos.
+* Update: woocommerce messages css.
+* Fix: Conflict with BPS security in admin.
+* Fix: Conflict with Next Gen in woocommerce.
+* Update: Few Schema Updates
+
+= Version 3.8.6 | 26th August 2016 =
+* Update: Parallax
+* Add: Testimonial Carousel Image Size filter.
+
+= Version 3.8.5 | 18th August 2016 =
+* Add: Filter for portfolio image sizes.
+* Add: Match height option for blog posts.
+* Add: Mobile slider switch for slider above header.
+
+= Version 3.8.4 | 16th August 2016 =
+* Add: Valign middle to simple box shortcode gen.
+* Update: Small css changes
+* Update: Clear instance option.
+* Update: Staff order by options.
+* Update: Added support for Menu Nav Role Plugin.
+* Fix: Issue with home title offset.
+* Fix: Issue with remove link in menu cart.
+* Fix: Issue with mobile select showing.
+
+= Version 3.8.3 | 8th August 2016 =
+* Update: various css.
+* Update: Polylang incorrectly reading wpml.
+
+= Version 3.8.2 | 2nd August 2016 =
+* Fix: Masonry Issue
+
+= Version 3.8.1 | 2nd August 2016 =
+* Fix: Polylang 2.0 issue.
+
+= Version 3.8.0 | 30th July 2016 =
+* Add: Optional Pagetitle (add option to turn off).
+* Add: Option for dropdown menu item hover color.
+* Add: Gravatar link on my-account page.
+* Update: radio button offset issue.
+* Update: archive template (fix issue with fullwidth full posts)
+* Update: portfolio shortcode init.
+* Fix: Issue with gallery masonry default.
+* Fix: Issue with product flip if images are too small.
+* Fix: Internal links for plugin install.
+
+= Version 3.7.9 | 19th July 2016 =
+* Update: Woo file.
+
+= Version 3.7.8 | 19th July 2016 =
+* Update: Custom Carousel Image
+* Update: Recent posts carousel image.
+* Update: Similar post carousel image.
+* Update: Portfolio Image output.
+* Update: Woo templates.
+* Update: Page footer hook.
+* Add: Option for sticky primary navigation.
+
+= Version 3.7.7 | 13th July 2016 =
+* Update: Woo radio button overlay issue.
+* Update: Post Grid template files.
+
+= Version 3.7.6 | 12th July 2016 =
+* Update: Woo radio button js (added more combatiblity with other woo extensions).
+* Update: hooks, filters various code restructure. 
+* Update: Flex slider.
+* Update: Gallery options for no link.
+* Add: filter to make Siteorigin editor work better when using shortcodes.
+* Add: New Google Plus Icons
+
 = Version 3.7.5 | 7th July 2016 =
 * Add: woo_pagetitle_settings.
 * Add: Getting Started page.

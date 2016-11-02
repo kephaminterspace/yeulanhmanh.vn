@@ -49,7 +49,7 @@ function kadence_gallery($attr) {
     'type'       => '',
     'scroll'     => '',
     'columns'    => 3,
-    'gallery_id'  => (rand(10,100)),
+    'gallery_id'  => (rand(10,1000)),
     'autoplay'    => 'true',
     'size'       => 'full',
     'lightboxsize' => 'full',
@@ -121,30 +121,39 @@ ob_start(); ?>
         <div id="carousel-<?php echo esc_attr($gallery_id); ?>" class="clearfix caroufedselgallery initcaroufedsel kad-light-wp-gallery" data-carousel-container="#carouselcontainer-<?php echo esc_attr($gallery_id); ?>" data-carousel-transition="<?php echo esc_attr($transpeed); ?>" data-carousel-scroll="<?php echo esc_attr($scroll);?>" data-carousel-auto="<?php echo esc_attr($autoplay);?>" data-carousel-speed="<?php echo esc_attr($speed);?>" data-carousel-id="<?php echo esc_attr($gallery_id);?>" data-carousel-md="<?php echo esc_attr($md);?>" data-carousel-sm="<?php echo esc_attr($sm);?>" data-carousel-xs="<?php echo esc_attr($xs);?>" data-carousel-ss="<?php echo esc_attr($ss);?>">
             <?php $gid = 0;
                   foreach ($attachments as $id => $attachment) {
-
-                            $attachment_url = wp_get_attachment_url($id);
-                            $image = aq_resize($attachment_url, $imgsize, $imgheightsize, true);
-                            if(empty($image)) {$image = $attachment_url;}
+                        $attachment_src = wp_get_attachment_image_src($id, 'full');
+                        $attachment_url = $attachment_src[0];
+                        $image = aq_resize($attachment_url, $imgsize, $imgheightsize, true, false, false, $id);
+                        
+                        if(empty($image[0])) {$image = array($attachment_url,$attachment_src[1],$attachment_src[2]);} 
+                        $img_srcset_output = kt_get_srcset_output( $image[1], $image[2], $attachment_url, $id);
                         
                         if($attachmentsize != 'full') {
                             $attachment_url = wp_get_attachment_image_src( $id, $attachmentsize);
                             $attachment_url = $attachment_url[0];
                         }
-                      
-                        $link = isset($attr['link']) && 'post' == $attr['link'] ? wp_get_attachment_link($id, $size, true, false) : wp_get_attachment_link($id, $size, false, false);
-                         if($use_image_alt == 'true') {
+                        $lightbox_data = 'data-rel="lightbox"';
+                        if($link == 'attachment_page' || $attachment_page == 'true') {
+                          $attachment_url = get_permalink($id);
+                          $lightbox_data = '';
+                        } 
+                        if($use_image_alt == 'true') {
                           $alt = get_post_meta($id, '_wp_attachment_image_alt', true);
                         } else {
                           $alt = $attachment->post_excerpt;
                         }
 
                   echo '<div class="'.esc_attr($itemsize).' gallery_item"><div class="carousel_item grid_item">';
-                  echo '<a href="'.$attachment_url.'" data-rel="lightbox" class="lightboxhover">';
-                  echo '<img src="'.$image.'" width="'.esc_attr($imgsize).'" height="'.esc_attr($imgheightsize).'" data-grid-id="'.esc_attr($gid).'" alt="'.esc_attr($alt).'" class="kt-gallery-img"/>';
+                  if($link != 'none') { 
+                    echo '<a href="'.$attachment_url.'" '.$lightbox_data.' class="lightboxhover">';
+                  }
+                  echo '<img src="'.$image[0].'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" data-grid-id="'.esc_attr($gid).'" '.$img_srcset_output.' alt="'.esc_attr($alt).'" class="kt-gallery-img"/>';
                   if (trim($attachment->post_excerpt) && $caption == true) {
                     echo '<div class="caption kad_caption"><div class="kad_caption_inner">' . wptexturize($attachment->post_excerpt) . '</div></div>';
                   }
-                  echo '</a>';
+                  if($link != 'none') { 
+                    echo '</a>';
+                  }
                   echo '</div></div>';
                   $gid ++; 
                 }?>
@@ -159,6 +168,7 @@ ob_start(); ?>
     ob_end_clean();
 
   } elseif (isset($type) && $type == 'imagecarousel') { 
+    if(empty($height)) {$height = '400';}
     if(!empty($lightboxsize)) {$attachmentsize = $lightboxsize;} else {$attachmentsize = 'full';}
   ob_start(); ?>
       <section class="carousel_outerrim loading">
@@ -167,28 +177,36 @@ ob_start(); ?>
               <?php 
 
                             foreach ($attachments as $id => $attachment) {
-                                $attachment_url = wp_get_attachment_url($id);
-                                $image = aq_resize($attachment_url, null, $height, false, false);
-                                  if(empty($image)) {
-                                    $image = array();
-                                    $image[0] = $attachment_url;
-                                    $image[1] = 400;
-                                    $image[2] = $height;
-                                  }
-                                  if($attachmentsize != 'full') {
+                                $attachment_src = wp_get_attachment_image_src($id, 'full');
+                                $attachment_url = $attachment_src[0];
+                                $image = aq_resize($attachment_url, null, $height, false, false, false, $id);
+                                if(empty($image[0])) {$image = array($attachment_url,$attachment_src[1],$attachment_src[2]);} 
+                                $img_srcset_output = kt_get_srcset_output( $image[1], $image[2], $attachment_url, $id);
+                                  
+                                if($attachmentsize != 'full') {
                                       $attachment_url = wp_get_attachment_image_src( $id, $attachmentsize);
                                       $attachment_url = $attachment_url[0];
-                                  }
-                                   if($use_image_alt == 'true') {
+                                }
+                                $lightbox_data = 'data-rel="lightbox"';
+                                if($link == 'attachment_page' || $attachment_page == 'true') {
+                                    $attachment_url = get_permalink($id);
+                                    $lightbox_data = '';
+                                } 
+                                if($use_image_alt == 'true') {
                                     $alt = get_post_meta($id, '_wp_attachment_image_alt', true);
-                                  } else {
+                                } else {
                                     $alt = $attachment->post_excerpt;
-                                  }
+                                }
 
-                                  echo '<div class="carousel_gallery_item" style="float:left; margin: 0 5px; width:'.esc_attr($image[1]).'px; height:'.esc_attr($image[2]).'px;">';
-                                  echo '<a href="'.esc_url($attachment_url).'" data-rel="lightbox" class="imgcarousellink">';
-                                  echo '<img src="'.esc_url($image[0]).'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" alt="'.esc_attr($alt).'" />';
-                                  echo '</a></div>';
+                                echo '<div class="carousel_gallery_item" style="float:left; margin: 0 5px; width:'.esc_attr($image[1]).'px; height:'.esc_attr($image[2]).'px;">';
+                                if($link != 'none') { 
+                                    echo '<a href="'.esc_url($attachment_url).'" '.$lightbox_data.' class="imgcarousellink">';
+                                }
+                                echo '<img src="'.esc_url($image[0]).'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" '.$img_srcset_output.' alt="'.esc_attr($alt).'" />';
+                                if($link != 'none') { 
+                                    echo '</a>';
+                                }
+                                echo '</div>';
                               }
                         ?>         
              </div> <!--post gallery carousel-->
@@ -199,30 +217,39 @@ ob_start(); ?>
         </section>              
   <?php  $output = ob_get_contents();
     ob_end_clean();
-  } elseif (isset($type) && $type == 'slider') {
-
+    } elseif (isset($type) && $type == 'slider') {
+          if(empty($height)) {$height = '400';}
+          if(empty($width)) {$width = '1170';}
           ob_start(); ?>
                 <div id="flexslider<?php echo esc_attr($gallery_id);?>" class="flexslider loading kt-flexslider" style="max-width:<?php echo esc_attr($width);?>px;" data-flex-speed="<?php echo esc_attr($speed); ?>" data-flex-anim-speed="<?php echo esc_attr($transpeed); ?>" data-flex-animation="<?php echo esc_attr($trantype); ?>" data-flex-auto="<?php echo esc_attr($autoplay); ?>">
                     <ul class="slides kad-light-wp-gallery">
-                   <?php  foreach ($attachments as $id => $attachment) {
-                          $attachment_url = wp_get_attachment_url($id);
-                          $image = aq_resize($attachment_url, $width, $height, true);
-                          if(empty($image)) {$image = $attachment_url;}
-                          if(!empty($lightboxsize)) {$attachmentsize = $lightboxsize;} else {$attachmentsize = 'full';}
-                          if($attachmentsize != 'full') {
-                            $attachment_url = wp_get_attachment_image_src( $id, $attachmentsize);
-                            $attachment_url = $attachment_url[0];
-                          }
-
-                          $link = isset($attr['link']) && 'post' == $attr['link'] ? wp_get_attachment_link($id, $size, true, false) : wp_get_attachment_link($id, $size, false, false);
-                           if($use_image_alt == 'true') {
-                          $alt = get_post_meta($id, '_wp_attachment_image_alt', true);
-                        } else {
-                          $alt = $attachment->post_excerpt;
-                        }
-
-                            echo '<li><a href="'.esc_attr($attachment_url).'" rel="lightbox[pp_gal]" class="lightboxhover">';
-                              echo '<img src="'.esc_url($image).'" width="'.esc_attr($width).'" height="'.esc_attr($height).'" alt="'.esc_attr($alt).'" class=""/>';
+                    <?php foreach ($attachments as $id => $attachment) {
+                            $attachment_src = wp_get_attachment_image_src($id, 'full');
+                            $attachment_url = $attachment_src[0];
+                            $image = aq_resize($attachment_url, $width, $height, true, false, false, $id);
+                            if(empty($image[0])) {$image = array($attachment_url,$attachment_src[1],$attachment_src[2]);} 
+                            $img_srcset_output = kt_get_srcset_output( $image[1], $image[2], $attachment_url, $id);
+                            if(!empty($lightboxsize)) {
+                                $attachmentsize = $lightboxsize;
+                            } else {
+                                $attachmentsize = 'full';
+                            }
+                            if($attachmentsize != 'full') {
+                                $attachment_url = wp_get_attachment_image_src( $id, $attachmentsize);
+                                $attachment_url = $attachment_url[0];
+                            }
+                            $lightbox_data = 'data-rel="lightbox"';
+                            if($link == 'attachment_page' || $attachment_page == 'true') {
+                                $attachment_url = get_permalink($id);
+                                $lightbox_data = '';
+                            } 
+                            if($use_image_alt == 'true') {
+                                $alt = get_post_meta($id, '_wp_attachment_image_alt', true);
+                            } else {
+                                $alt = $attachment->post_excerpt;
+                            }
+                            echo '<li><a href="'.esc_attr($attachment_url).'" '.$lightbox_data.' class="lightboxhover">';
+                              echo '<img src="'.esc_url($image[0]).'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" alt="'.esc_attr($alt).'" '.$img_srcset_output.' class=""/>';
                                   if (trim($attachment->post_excerpt) && $caption == true) {
                                       echo '<div class="caption flex-caption"><div><div class="captiontext headerfont"><p>' . wptexturize($attachment->post_excerpt) . '</p></div></div></div>';
                                     }
@@ -317,25 +344,23 @@ if(!empty($lightboxsize)) {$attachmentsize = $lightboxsize;} else {$attachmentsi
   if(!empty($imgheight)) {$imgheightsize = $imgheight;} else {$imgheightsize = $imgsize;}
   if(!empty($imgwidth)) {$imgsize = $imgwidth;} else {$imgsize = $imgsize;}
   if(!empty($lightboxsize)) {$attachmentsize = $lightboxsize;} else {$attachmentsize = 'full';} 
-
+  if(empty($masonry) || $masonry == 'default') {
+    if(isset($virtue_premium['virtue_gallery_masonry']) && $virtue_premium['virtue_gallery_masonry'] ==  '1') {
+      $masonry = 'true';
+    } else {
+      $masonry = 'false';
+    }
+  } 
   $i = 0;
   foreach ($attachments as $id => $attachment) {
     $attachment_src = wp_get_attachment_image_src($id, 'full');
     $attachment_url = $attachment_src[0];
-    if(!empty($masonry) || $masonry == 'default') {
-      if($masonry == 'true'){
-        $image = aq_resize($attachment_url, $imgsize, null, false, false, false, $id);
-      } else {
-         $image = aq_resize($attachment_url, $imgsize, $imgheightsize, true, false, false, $id);
-      }
-
+    if($masonry == 'true'){
+      $image = aq_resize($attachment_url, $imgsize, null, false, false, false, $id);
     } else {
-          if(isset($virtue_premium['virtue_gallery_masonry']) && $virtue_premium['virtue_gallery_masonry'] ==  '1') {
-          $image = aq_resize($attachment_url, $imgsize, null, false, false, false, $id);
-        } else {
-          $image = aq_resize($attachment_url, $imgsize, $imgheightsize, true, false, false, $id);
-        }
+       $image = aq_resize($attachment_url, $imgsize, $imgheightsize, true, false, false, $id);
     }
+
     if(empty($image[0])) {$image = array($attachment_url,$attachment_src[1],$attachment_src[2]);} 
     // Get srcset
     $img_srcset_output = kt_get_srcset_output( $image[1], $image[2], $attachment_url, $id);
@@ -349,7 +374,7 @@ if(!empty($lightboxsize)) {$attachmentsize = $lightboxsize;} else {$attachmentsi
     if($link == 'attachment_page' || $attachment_page == 'true') {
       $attachment_url = get_permalink($id);
       $lightbox_data = '';
-    }
+    } 
     
     if($use_image_alt == 'true') {
       $alt = get_post_meta($id, '_wp_attachment_image_alt', true);
@@ -362,12 +387,17 @@ if(!empty($lightboxsize)) {$attachmentsize = $lightboxsize;} else {$attachmentsi
       $image_src_output = 'src="'.esc_url($image[0]).'"'; 
     }
     $paddingbtn = ($image[2]/$image[1]) * 100;
-    $output .= '<div class="'.$itemsize.' g_item"><div class="grid_item kt_item_fade_in kad_gallery_fade_in gallery_item"><a href="'.esc_url($attachment_url).'" '.$lightbox_data.' class="lightboxhover">';
+    $output .= '<div class="'.$itemsize.' g_item"><div class="grid_item kt_item_fade_in kad_gallery_fade_in gallery_item">';
+      if($link != 'none') { 
+        $output .='<a href="'.esc_url($attachment_url).'" '.$lightbox_data.' class="lightboxhover">';
+      }
     $output .= '<div class="kt-intrinsic" style="padding-bottom:'.$paddingbtn.'%;"><img src="'.esc_url($image[0]).'" width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" alt="'.esc_attr($alt).'" '.$img_srcset_output.' class="light-dropshaddow"/></div>';
       if (trim($attachment->post_excerpt) && $caption == 'true') {
         $output .= '<div class="caption kad_caption"><div class="kad_caption_inner">' . wptexturize($attachment->post_excerpt) . '</div></div>';
       }
-    $output .= '</a>';
+      if($link != 'none') { 
+        $output .= '</a>';
+      }
     $output .= '</div></div>';
   }
   $output .= '</div>';

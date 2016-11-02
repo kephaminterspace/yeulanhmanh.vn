@@ -12,6 +12,16 @@ left: auto;
 margin-left: -15px;
 margin-right: -15px;
 }
+.stickyheader #kad-banner, #kad-mobile-banner {
+    transform: translate3d(0, 0, 0);
+    position: relative;
+    z-index: 599;
+    top: 0;
+}
+.admin-bar.stickyheader #kad-banner {
+    transform: none;
+    position: static;
+}
 //Header Logo
 
 #logo {
@@ -178,6 +188,15 @@ color: #FFF;
     z-index: 1000;
     left: 0;
 }
+.kt-mainnavsticky #nav-main {
+width: 100%;
+margin: 0 auto;
+left: 0;
+z-index:1000;
+}
+.kt-mainnavsticky .sticky-wrapper.is-sticky #nav-main{
+background: #fff;
+}
 a.mobile-logo .mobile-logo-inner{
     vertical-align: middle;
     max-width: 100%;
@@ -223,7 +242,7 @@ img.kad-mobile-logo {
     z-index: 10000;
     position: relative;
 }
-a.menu-cart-btn.mh-menu-cart-btn, .mh-kt-menu-search-btn {
+a.menu-cart-btn.mh-menu-cart-btn, .mh-kt-menu-search-btn, .mh-menu-account-btn {
     position: absolute;
     right: 60px;
     width: 50px;

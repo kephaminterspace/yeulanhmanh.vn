@@ -56,16 +56,16 @@
    } else {
       $itemsize = 'tcol-md-3 tcol-sm-4 tcol-xs-6 tcol-ss-12';
    }
-?>
-<div id="pageheader" class="titleclass">
-    <div class="container">
-      <?php get_template_part('templates/page', 'header'); ?>
-    </div><!--container-->
-</div><!--titleclass-->
+
+    /**
+    * @hooked virtue_page_title - 20
+    */
+     do_action('kadence_page_title_container');
+    ?>
 <div id="content" class="container">
    <div class="row">
       <div class="main <?php echo esc_attr(kadence_main_class()); ?>  <?php echo esc_attr($postclass) .' '. esc_attr($fullclass); ?>" role="main">
-
+      <?php do_action('kadence_page_before_content'); ?>
       <?php if (!have_posts()) : ?>
          <div class="alert">
           <?php _e('Sorry, no results were found.', 'virtue'); ?>
@@ -73,21 +73,16 @@
          <?php get_search_form(); ?>
       <?php endif; ?>
 
-      <?php if($summary == 'full'){ ?>
+    <?php if($summary == 'full'){ ?>
          <div class="kt_archivecontent <?php echo esc_attr($scrollclass); ?>" <?php echo $infinit; ?>> 
               <?php 
-               if($display_sidebar){
                   while (have_posts()) : the_post();
                      get_template_part('templates/content', 'fullpost'); 
                   endwhile;
-               } else {
-                  while (have_posts()) : the_post(); 
-                     get_template_part('templates/content', 'fullpostfull');
-                  endwhile;
-               } ?>
+                 ?>
                </div> 
                <?php 
-            } else if($summary == 'grid') { ?>
+    } else if($summary == 'grid') { ?>
                <div id="kad-blog-grid" class="rowtight archivecontent <?php echo esc_attr($scrollclass); ?> init-isotope" <?php echo $infinit; ?> data-fade-in="<?php echo esc_attr($animate);?>" data-fade-in="<?php echo esc_attr($animate);?>" data-iso-selector=".b_item" data-iso-style="masonry">
                  <?php while (have_posts()) : the_post(); ?>
                      <?php if($blog_grid_column == '2') { ?>
@@ -102,9 +97,9 @@
                    <?php endwhile; ?>
                </div>
                 <?php
-            } else {
+    } else {
                ?>
-               <div class="kt_archivecontent <?php echo esc_attr($scrollclass); ?>" <?php echo $infinit; ?>> 
+    <div class="kt_archivecontent <?php echo esc_attr($scrollclass); ?>" <?php echo $infinit; ?>> 
                <?php
                      while (have_posts()) : the_post();
                           get_template_part('templates/content', get_post_format());

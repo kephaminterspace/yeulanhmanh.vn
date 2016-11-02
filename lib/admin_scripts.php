@@ -5,20 +5,27 @@
  */
 function kadence_admin_scripts($hook) {
 
-	wp_register_style('kad_adminstyles', get_template_directory_uri() . '/assets/css/kad_adminstyles.css', false, 358);
-	  wp_enqueue_style('kad_adminstyles');
+    wp_register_style('kad_adminstyles', get_template_directory_uri() . '/assets/css/kad_adminstyles.css', false, 358);
+    wp_enqueue_style('kad_adminstyles');
 
-	if( $hook != 'edit.php' && $hook != 'post.php' && $hook != 'post-new.php' && $hook != 'widgets.php' ) 
+	if( $hook != 'edit.php' && $hook != 'post.php' && $hook != 'post-new.php' && $hook != 'widgets.php') {
 		return;
-
-	  wp_register_script('kad_adminscripts', get_template_directory_uri() . '/assets/js/min/kad_adminscripts-min.js', false, 358, false);
-	  wp_enqueue_script('kad_adminscripts');
+  }
+	  
+  wp_register_script('kad_adminscripts', get_template_directory_uri() . '/assets/js/min/kad_adminscripts-min.js', false, 358, false);
+  wp_enqueue_script('kad_adminscripts');
 
 }
 
 add_action('admin_enqueue_scripts', 'kadence_admin_scripts');
 
-add_action('print_media_templates', 'kadence_media_gallery_extras');
+function kadence_gallery_default_type_set_link( $settings ) {
+    $settings['galleryDefaults']['link'] = 'file';
+    return $settings;
+}
+add_filter( 'media_view_settings', 'kadence_gallery_default_type_set_link');
+add_action( 'print_media_templates', 'kadence_media_gallery_extras');
+
 function kadence_media_gallery_extras(){
 ?>
 <script type="text/html" id="tmpl-custom-gallery-setting">
@@ -32,6 +39,7 @@ function kadence_media_gallery_extras(){
         <option value="carousel"><?php _e('Carousel', 'virtue');?></option>
         <option value="mosaic"><?php _e('Mosaic', 'virtue');?></option>
         <option value="grid"><?php _e('Custom Grid', 'virtue');?></option>
+        <option value="imagecarousel"><?php _e('Image Carousel', 'virtue');?></option>
       </select>
     </label>
     <label class="setting">
@@ -62,25 +70,24 @@ function kadence_media_gallery_extras(){
     <hr style="clear: both;">
 </script>
 
-<script>
+<script> 
+    jQuery( window ).load(function () {
+            if ( typeof wp === 'undefined' || ! wp.media || ! wp.media.gallery ) {
+                    return;
+            }
+            jQuery.extend(wp.media.gallery.defaults, {
+                type: 'default',
+                caption: 'default',
+                masonry: 'default',
+                width: '',
+                height: '',
+            }); 
 
-    jQuery(document).ready(function()
-    {
-        _.extend(wp.media.gallery.defaults, {
-        type: 'default',
-        caption: 'default',
-        masonry: 'default',
-        width: '',
-        height: '',
-        });
-
-        wp.media.view.Settings.Gallery = wp.media.view.Settings.Gallery.extend({
-        template: function(view){
-          return wp.media.template('gallery-settings')(view)
-               + wp.media.template('custom-gallery-setting')(view);
-        }
-        });
-
+            wp.media.view.Settings.Gallery = wp.media.view.Settings.Gallery.extend({
+            template: function(view){
+              return wp.media.template('gallery-settings')(view) + wp.media.template('custom-gallery-setting')(view);
+            }
+            });
     });
 
 </script>

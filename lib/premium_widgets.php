@@ -956,7 +956,7 @@ private static $instance = 0;
         if(!empty($instance["height"])) { $height = $instance["height"];} else {$height = '500';}
         if(!empty($instance["btn_text"])) { $btn_text = $instance["btn_text"];} else {$btn_text = '';}
         if(!empty($instance["btn_link"])) { $btn_link = $instance["btn_link"];} else {$btn_link = '#';}
-        if(!empty($instance["link_target"])) { $linktarget = 'target="'.$instance["link_target"].'"';} else {$linktarget = '';}
+        if(!empty($instance["link_target"])) { $linktarget = 'link_target="'.$instance["link_target"].'"'; $btn_link_target = 'target="'.$instance["link_target"].'"';} else {$linktarget = ''; $btn_link_target = '';}
         if(!empty($instance['filter'])){ $description = wpautop( $description );} else {$description = $description;}
         if(!empty($instance['img_cover'])){ $cover = 'image_cover="true" ';} else {$cover = '';}
             ?>
@@ -965,7 +965,7 @@ private static $instance = 0;
                 <?php $output = '[kt_imgsplit image="'.$image.'" height="'.$height.'" '.$img_align.' '.$cover.' '.$img_background_color.' '.$img_link.' '.$linktarget.' '.$content_background_color .']';
                 if(!empty($title)) { $output .= '<h2 class="kt_imgsplit_title">'.$title.'</h2>';}
                 if(!empty($description)) {$output .= '<div class="kt_imgsplit_content">'.$description.'</div>';}
-                if(!empty($btn_text)) {$output .= '<a href="'.$btn_link.'" class="kt_imgsplit_btn kad-btn kad-btn-primary">'.$btn_text.'</a>';}
+                if(!empty($btn_text)) {$output .= '<a href="'.$btn_link.'" '.$btn_link_target.' class="kt_imgsplit_btn kad-btn kad-btn-primary">'.$btn_text.'</a>';}
                 $output .= '[/kt_imgsplit]'; 
                 echo do_shortcode($output); ?>
 

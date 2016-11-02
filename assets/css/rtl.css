@@ -148,3 +148,10 @@ ul.portfolio-content {
 .initcaroufedsel .tcol-ss-12 {
     text-align:right;
 }
+.sf-menu ul {
+    right: 0;
+    left: auto;
+}
+.sf-menu ul li, #nav-main ul.sf-menu ul li a, #nav-second ul.sf-menu ul li a, .nav-main ul.sf-menu ul li a {
+    text-align: right;
+}

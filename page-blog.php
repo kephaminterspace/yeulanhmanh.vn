@@ -4,12 +4,11 @@ Template Name: Blog
 */
 
 global $post, $virtue_premium;
-?>
-<div id="pageheader" class="titleclass">
-	<div class="container">
-		<?php get_template_part('templates/page', 'header'); ?>
-	</div><!--container-->
-</div><!--titleclass-->
+    /**
+    * @hooked virtue_page_title - 20
+    */
+     do_action('kadence_page_title_container');
+    ?>
 	
 <div id="content" class="container">
 		<div class="row">
@@ -64,6 +63,8 @@ global $post, $virtue_premium;
 			}
 			?>
   			<div class="main <?php echo esc_attr(kadence_main_class());?> <?php echo esc_attr($postclass) .' '. esc_attr($fullclass).' '.esc_attr($scrollclass); ?>" <?php echo $infinit;?> id="ktmain" role="main">
+  			<?php 
+                do_action('kadence_page_before_content'); ?>
 	  			<div class="entry-content" itemprop="mainContentOfPage">
 					<?php get_template_part('templates/content', 'page'); ?>
 				</div>
@@ -96,5 +97,9 @@ global $post, $virtue_premium;
 					$wp_query = $temp;  // Reset 
 					wp_reset_query(); 
 
-					if(isset($virtue_premium['page_comments']) && $virtue_premium['page_comments'] == '1') { comments_template('/templates/comments.php');} ?>					
+                /**
+                * @hooked virtue_page_comments - 20
+                */
+                do_action('kadence_page_footer');
+                ?>					
 			</div><!-- /.main -->

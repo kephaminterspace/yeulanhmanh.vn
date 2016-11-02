@@ -1,9 +1,15 @@
 <?php 
   global $post, $kt_feat_width;
     if(kadence_display_sidebar()) {
-      $kt_feat_width = 848;
+       $kt_feat_width = apply_filters('kt_blog_full_image_width_sidebar', 848); 
     } else {
-      $kt_feat_width = 1170;
+      $kt_feat_width = apply_filters('kt_blog_full_image_width', 1170); 
+    }
+    $kt_headcontent = get_post_meta( $post->ID, '_kad_blog_head', true );
+    if($kt_headcontent != 'none'){
+      $kt_headcontent_class = 'kt_post_header_content-'.$kt_headcontent;
+    } else {
+      $kt_headcontent_class = 'kt_no_post_header_content';
     }
     /**
     * @hooked virtue_single_post_upper_headcontent - 10
@@ -11,7 +17,7 @@
     do_action( 'kadence_single_post_begin' ); 
     ?>
 <div id="content" class="container">
-    <div id="post-<?php the_ID(); ?>" class="row single-article" itemscope="" itemtype="http://schema.org/BlogPosting">
+    <div id="post-<?php the_ID(); ?>" class="row single-article" itemscope itemtype="http://schema.org/BlogPosting">
 
       <div class="main <?php echo kadence_main_class(); ?>" id="ktmain" role="main">
         <?php while (have_posts()) : the_post(); 
@@ -19,7 +25,7 @@
          do_action( 'kadence_single_post_before' ); 
 
          ?>
-          <article <?php post_class(); ?>>
+          <article <?php post_class($kt_headcontent_class); ?>>
           <?php
           /**
           * @hooked virtue_single_post_headcontent - 10

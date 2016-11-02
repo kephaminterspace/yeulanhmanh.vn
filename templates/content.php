@@ -7,11 +7,11 @@
 global $post, $virtue_premium, $kt_post_with_sidebar;
 
  if($kt_post_with_sidebar){
-    $kt_feat_width = 846;
+    $kt_feat_width = apply_filters('kt_blog_image_width_sidebar', 846); 
     $kt_portraittext = 'col-md-7';
     $kt_portraitimg_size = 'col-md-5';
  } else {
-    $kt_feat_width = 1140;
+    $kt_feat_width = apply_filters('kt_blog_image_width', 1140); 
     $kt_portraittext = 'col-md-8';
     $kt_portraitimg_size = 'col-md-4';
  }
@@ -41,7 +41,7 @@ global $post, $virtue_premium, $kt_post_with_sidebar;
   }
 
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class('kad_blog_item kad-animation'); ?> data-animation="fade-in" data-delay="0" itemscope="" itemtype="http://schema.org/BlogPosting">
+<article id="post-<?php the_ID(); ?>" <?php post_class('kad_blog_item kad-animation'); ?> data-animation="fade-in" data-delay="0" itemscope itemtype="http://schema.org/BlogPosting">
      <div class="row">
           <?php 
           if($postsummery == 'img_landscape') { 
@@ -55,6 +55,7 @@ global $post, $virtue_premium, $kt_post_with_sidebar;
                     $thumbnailURL = virtue_post_default_placeholder();
                     $image_url = array($thumbnailURL, $slidewidth, $slideheight);
                     $image = aq_resize($thumbnailURL, $slidewidth, $slideheight, true, false, false);
+                    $image_id = '';
                }
                if(empty($image[0])) { $image = array($thumbnailURL,$image_url[1],$image_url[2]);}
                // Lazy Load
@@ -65,9 +66,12 @@ global $post, $virtue_premium, $kt_post_with_sidebar;
                }
                     ?>
                     <div class="col-md-12 post-land-image-container">
-                         <div class="imghoverclass img-margin-center">
+                         <div class="imghoverclass img-margin-center" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                               <a href="<?php the_permalink()  ?>" title="<?php the_title(); ?>">
-                                   <img <?php echo $image_src_output; ?> alt="<?php the_title(); ?>" class="iconhover" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" <?php echo kt_get_srcset_output($image[1], $image[2], $thumbnailURL, $image_id);?>>
+                                    <img <?php echo $image_src_output; ?> alt="<?php the_title(); ?>" itemprop="contentUrl" class="iconhover" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" <?php echo kt_get_srcset_output($image[1], $image[2], $thumbnailURL, $image_id);?>>
+                                    <meta itemprop="url" content="<?php echo esc_url($image[0]); ?>">
+                                    <meta itemprop="width" content="<?php echo esc_attr($image[1])?>">
+                                    <meta itemprop="height" content="<?php echo esc_attr($image[2])?>">
                               </a> 
                          </div>
                     </div>
@@ -97,9 +101,12 @@ global $post, $virtue_premium, $kt_post_with_sidebar;
                }
                     ?>
                     <div class="<?php echo esc_attr($kt_portraitimg_size);?> post-image-container">
-                         <div class="imghoverclass img-margin-center">
+                         <div class="imghoverclass img-margin-center"  itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                               <a href="<?php the_permalink()  ?>" title="<?php the_title(); ?>">
-                                   <img <?php echo $image_src_output; ?> alt="<?php the_title(); ?>" class="iconhover" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" <?php echo kt_get_srcset_output($image[1], $image[2], $thumbnailURL, $image_id);?>>
+                                    <img <?php echo $image_src_output; ?> alt="<?php the_title(); ?>" itemprop="contentUrl" class="iconhover" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" <?php echo kt_get_srcset_output($image[1], $image[2], $thumbnailURL, $image_id);?>>
+                                    <meta itemprop="url" content="<?php echo esc_url($image[0]); ?>">
+                                    <meta itemprop="width" content="<?php echo esc_attr($image[1])?>">
+                                    <meta itemprop="height" content="<?php echo esc_attr($image[2])?>">
                               </a> 
                          </div>
                     </div>
@@ -128,8 +135,11 @@ global $post, $virtue_premium, $kt_post_with_sidebar;
                                         }
                                              ?>
                                         <li>
-                                             <a href="<?php the_permalink() ?>" alt="<?php the_title(); ?>">
-                                                  <img <?php echo $image_src_output; ?> alt="<?php the_title(); ?>" class="iconhover" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" <?php echo kt_get_srcset_output($image[1], $image[2], $attachment_url, $attachment);?>>
+                                             <a href="<?php the_permalink() ?>" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                                                  <img <?php echo $image_src_output; ?> alt="<?php the_title(); ?>" itemprop="contentUrl" class="iconhover" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" <?php echo kt_get_srcset_output($image[1], $image[2], $attachment_url, $attachment);?>>
+                                                  <meta itemprop="url" content="<?php echo esc_url($image[0]); ?>">
+                                                    <meta itemprop="width" content="<?php echo esc_attr($image[1])?>">
+                                                    <meta itemprop="height" content="<?php echo esc_attr($image[2])?>">
                                              </a>
                                         </li>
                                       <?php 
@@ -165,8 +175,11 @@ global $post, $virtue_premium, $kt_post_with_sidebar;
                                         }
                                         ?>
                                         <li>
-                                            <a href="<?php the_permalink() ?>" alt="<?php the_title(); ?>">
-                                                  <img <?php echo $image_src_output; ?> alt="<?php the_title(); ?>" class="iconhover" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" <?php echo kt_get_srcset_output($image[1], $image[2], $attachment_url, $attachment);?>>
+                                            <a href="<?php the_permalink() ?>" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                                                  <img <?php echo $image_src_output; ?> alt="<?php the_title(); ?>" itemprop="contentUrl" class="iconhover" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" <?php echo kt_get_srcset_output($image[1], $image[2], $attachment_url, $attachment);?>>
+                                                    <meta itemprop="url" content="<?php echo esc_url($image[0]); ?>">
+                                                    <meta itemprop="width" content="<?php echo esc_attr($image[1])?>">
+                                                    <meta itemprop="height" content="<?php echo esc_attr($image[2])?>">
                                             </a>
                                         </li>
                                         <?php 
@@ -187,6 +200,14 @@ global $post, $virtue_premium, $kt_post_with_sidebar;
                               echo do_shortcode($video); 
                          ?>
                     </div>
+                    <?php if (has_post_thumbnail( $post->ID ) ) { 
+                        $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' ); ?>
+                        <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                            <meta itemprop="url" content="<?php echo esc_url($image[0]); ?>">
+                            <meta itemprop="width" content="<?php echo esc_attr($image[1])?>">
+                            <meta itemprop="height" content="<?php echo esc_attr($image[2])?>">
+                        </div>
+                    <?php } ?>
                </div>
                <?php 
 

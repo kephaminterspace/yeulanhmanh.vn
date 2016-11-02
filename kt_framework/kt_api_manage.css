@@ -334,18 +334,18 @@ a.kt_plugin_button:hover {
     -moz-transform: translateY(-20px);
   }
 }
-@media (max-width: 1400px) {
+@media (max-width: 1420px) {
     .kad-panel-right, .kad-panel-left {
         padding: 0 10px;
     }
     .kad-panel-right {
-    width: 60%;
+    width: 50%;
     }
     .kad-panel-left {
-    width: 40%;
+    width: 50%;
     }
 }
-@media (max-width: 1250px) {
+@media (max-width: 1350px) {
     .kad-panel-right, .kad-panel-left {
         padding: 0 10px;
         float:none;

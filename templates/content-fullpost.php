@@ -2,11 +2,19 @@
  global $post, $virtue_premium, $kt_post_with_sidebar, $kt_feat_width;
 
     if($kt_post_with_sidebar){
-        $kt_feat_width = 848;
+        $kt_feat_width = apply_filters('kt_blog_full_image_width_sidebar', 848); 
     } else {
-        $kt_feat_width = 1140;
+        $kt_feat_width = apply_filters('kt_blog_full_image_width', 1170); 
+    }
+    $kt_headcontent_class = array();
+    $kt_headcontent = get_post_meta( $post->ID, '_kad_blog_head', true );
+    if($kt_headcontent != 'none'){
+      $kt_headcontent_class[] = 'kt_post_header_content-'.$kt_headcontent;
+    } else {
+      $kt_headcontent_class[] = 'kt_no_post_header_content';
     }
 
+    $kt_headcontent_class[] = 'kad_blog_item';
      /**
     * @hooked virtue_single_post_upper_headcontent - 10
     */
@@ -14,7 +22,7 @@
 
     do_action( 'kadence_single_post_before' ); 
     ?> 
-    <article <?php post_class("kad_blog_item"); ?> itemscope="" itemtype="http://schema.org/BlogPosting">
+    <article <?php post_class($kt_headcontent_class); ?> itemscope="" itemtype="http://schema.org/BlogPosting">
          <?php 
           /**
           * @hooked virtue_single_post_headcontent - 10

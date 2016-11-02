@@ -13,16 +13,17 @@ global $virtue_premium;
       $pausetime = $virtue_premium['slider_pausetime']; if ($pausetime == '') $pausetime = '7000';
       ?>
     <div class="sliderclass">
-      <div id="imageslider" class="container">
-        <div id="flex" class="flexslider loading" style="max-width:<?php echo esc_attr($slidewidth);?>px; margin-left: auto; margin-right:auto;">
-            <ul class="slides">
-              <?php foreach ($slides as $slide) : 
-                    if(!empty($slide['target']) && $slide['target'] == 1) {$target = '_blank';} else {$target = '_self';} 
-                    $image = aq_resize($slide['url'], $slidewidth, $slideheight, true);
-                    if(empty($image)) {$image = $slide['url'];} ?>
+        <div id="imageslider" class="container">
+            <div id="flex" class="flexslider kt-flexslider-thumb loading" style="max-width:<?php echo esc_attr($slidewidth);?>px; margin-left: auto; margin-right:auto;" data-flex-speed="<?php echo esc_attr($pausetime);?>" data-flex-initdelay="0" data-flex-anim-speed="<?php echo esc_attr($transtime);?>" data-flex-animation="<?php echo esc_attr($transtype); ?>" data-flex-auto="<?php echo esc_attr($autoplay);?>">
+                <ul class="slides">
+                <?php foreach ($slides as $slide) : 
+                        if(!empty($slide['target']) && $slide['target'] == 1) {$target = '_blank';} else {$target = '_self';} 
+                        $image = aq_resize($slide['url'], $slidewidth, $slideheight, true, false, false, $slide['attachment_id']);
+                        if(empty($image[0])) {$image = array($slide['url'],$slidewidth,$slideheight);} 
+                        $img_srcset_output = kt_get_srcset_output( $image[1], $image[2], $slide['url'], $slide['attachment_id']);?>
                       <li> 
                         <?php if($slide['link'] != '') echo '<a href="'.esc_url($slide['link']).'" target="'.esc_attr($target).'">'; ?>
-                          <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($slide['description']);?>" title="<?php echo esc_attr($slide['title']); ?>" />
+                          <img src="<?php echo esc_url($image[0]); ?>" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" <?php echo $img_srcset_output;?> alt="<?php echo esc_attr($slide['description']);?>" title="<?php echo esc_attr($slide['title']); ?>" />
                               <?php if ($captions == '1') { ?> 
                                 <div class="flex-caption">
                                 <?php if ($slide['title'] != '') echo '<div class="captiontitle headerfont">'.$slide['title'].'</div>'; ?>
@@ -48,31 +49,4 @@ global $virtue_premium;
                     </ul>
                  </div><!--Flex thumb-->
 </div><!--Container-->
-<script type="text/javascript">
-             jQuery(window).load(function() {
-              jQuery('#thumbnails').flexslider({
-              animation: "slide",
-              controlNav: false,
-              animationLoop: false,
-              slideshow: false,       
-              itemWidth: 180,
-              itemMargin: 5,
-              asNavFor: '#flex'
-              });
-         
-              jQuery('#flex').flexslider({
-              animation: "<?php echo $transtype ?>",
-              controlNav: false,
-              animationLoop: false,
-              animationSpeed: <?php echo $transtime ?>,
-              slideshow: <?php echo $autoplay ?>,
-              slideshowSpeed: <?php echo $pausetime ?>,
-              sync: "#thumbnails",
-              before: function(slider) {
-                      slider.removeClass('loading');
-                    }  
-              });
-              
-            });
-         </script>
 </div><!--feat-->

@@ -1,12 +1,14 @@
-	<div id="pageheader" class="titleclass">
-		<div class="container">
-			<?php get_template_part('templates/page', 'header'); ?>
-		</div><!--container-->
-	</div><!--titleclass-->
+  <?php 
+    /**
+    * @hooked virtue_page_title - 20
+    */
+     do_action('kadence_page_title_container');
+    ?>
 	
     <div id="content" class="container">
    		<div class="row">
       <div class="main <?php echo kadence_main_class(); ?>" role="main">
+      	<?php  do_action('kadence_page_before_content'); ?>
       	<?php echo category_description(); ?> 
       	<?php if (!have_posts()) : ?>
 		<div class="alert">
@@ -49,8 +51,8 @@
                  	'lightbox' => $portfolio_lightbox,
                  	'showexcerpt' => $portfolio_excerpt,
                  	'showtypes' => $portfolio_item_types,
-                 	'slidewidth' => $slidewidth,
-                 	'slideheight' => $slideheight,
+                 	'slidewidth' => apply_filters('kt_portfolio_grid_image_width', $slidewidth),
+                 	'slideheight' => apply_filters('kt_portfolio_grid_image_height', $slideheight),
                  	);
                  if($portfolio_order == 'menu_order' || $portfolio_order == 'title') {$p_order = 'ASC';} else {$p_order = 'DESC';}
 		            ?> 

@@ -91,7 +91,6 @@ if(!class_exists('Aq_Resize')) {
                 elseif(!strncmp($url,$relative_prefix,strlen($relative_prefix))){ //if url begins with // make $upload_url begin with // as well
                     $upload_url = str_replace(array( 0 => "$http_prefix", 1 => "$https_prefix"),$relative_prefix,$upload_url);
                 }
-                
 
                 // Check if $img_url is local.
                 if ( false === strpos( $url, $upload_url ) )
@@ -280,6 +279,13 @@ if(!function_exists('aq_resize')) {
                                 }
                             } else if(empty($width) ) {
                                 $args = array( 'h' => $height );
+                                if(!empty($id)) {
+                                    $image_attributes = wp_get_attachment_image_src ( $id, 'full' );
+                                    $sizes = image_resize_dimensions($image_attributes[1], $image_attributes[2], null, $height, false );
+                                    $width = $sizes[4];
+                                } else {
+                                    $width = null;
+                                }
                             } else {
                                 $args = array( 'resize' => $width . ',' . $height );
                             }

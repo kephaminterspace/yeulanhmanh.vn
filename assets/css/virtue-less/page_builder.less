@@ -29,7 +29,7 @@ visibility: hidden;
 visibility: hidden;
 }
 
-.panel-row-style-wide-parallax, .kt-panel-row-parallax-stellar, .kt-panel-row-parallax {
+.panel-row-style-wide-parallax, .kt-panel-row-parallax-stellar, .kt-panel-row-parallax-stellar-full, .kt-panel-row-parallax {
 background-attachment: fixed;
 background-size: cover !important;
 -moz-background-size: cover !important;
@@ -77,5 +77,9 @@ z-index: 20;
   .panel-grid:only-child .panel-row-style-wide-feature, .panel-grid:only-child .siteorigin-panels-stretch,
   .panel-grid:only-child .panel-row-style-wide-grey, .panel-grid:only-child .panel-row-style-wide-parallax{
 margin-bottom: -30px !important;
+}
+
+.kt-no-cell-margin .panel-grid-cell, .kt-no-cell-margin .panel-grid-cell .so-panel {
+    margin-bottom: 0 !important;
 }
 

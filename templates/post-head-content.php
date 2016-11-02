@@ -43,7 +43,13 @@ if ($kt_headcontent == 'flex') { ?>
                                    } else {
                                       $image_src_output = 'src="'.esc_url($image[0]).'"'; 
                                    }
-                                  echo '<li><a href="'.esc_url($attachment_url).'" data-rel="lightbox"><img '.$image_src_output.' width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" alt="'.esc_attr($caption).'" itemprop="image" '.kt_get_srcset_output($image[1], $image[2], $attachment_url, $attachment).'/></a></li>';
+                                  echo '<li>';
+                                  echo '<a href="'.esc_url($attachment_url).'" data-rel="lightbox" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">';
+                                  echo '<img '.$image_src_output.' width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" alt="'.esc_attr($caption).'" itemprop="contentUrl" '.kt_get_srcset_output($image[1], $image[2], $attachment_url, $attachment).'/>';
+                                        echo '<meta itemprop="url" content="'.esc_url($image[0]).'">';
+                                        echo '<meta itemprop="width" content="'.esc_attr($image[1]).'">';
+                                        echo '<meta itemprop="height" content="'.esc_attr($image[2]).'">';
+                                  echo '</a></li>';
                               }
                             }
                           } ?>                            
@@ -72,8 +78,11 @@ if ($kt_headcontent == 'flex') { ?>
                                      }
                                     echo '<div class="carousel_gallery_item" style="float:left; display: table; position: relative; text-align: center; margin: 0; width:auto; height:'.esc_attr($image[2]).'px;">';
                                     echo '<div class="carousel_gallery_item_inner" style="vertical-align: middle; display: table-cell;">';
-                                    echo '<a href="'.esc_url($attachment_url).'" data-rel="lightbox">';
-                                    echo '<img '.$image_src_output.' width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" alt="'.esc_attr($caption).'" itemprop="image" '.kt_get_srcset_output($image[1], $image[2], $attachment_url, $attachment).'/>';
+                                    echo '<a href="'.esc_url($attachment_url).'" data-rel="lightbox" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">';
+                                    echo '<img '.$image_src_output.' width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" alt="'.esc_attr($caption).'" itemprop="contentUrl" '.kt_get_srcset_output($image[1], $image[2], $attachment_url, $attachment).'/>';
+                                      echo '<meta itemprop="url" content="'.esc_url($image[0]).'">';
+                                      echo '<meta itemprop="width" content="'.esc_attr($image[1]).'">';
+                                      echo '<meta itemprop="height" content="'.esc_attr($image[2]).'">';
                                     echo '</a>'; ?>
                                     </div>
                                   </div>
@@ -90,8 +99,25 @@ if ($kt_headcontent == 'flex') { ?>
                 <div class="videofit" style="max-width:<?php echo esc_attr($slidewidth);?>px; margin:0 auto;">
                     <?php $video = get_post_meta( $post->ID, '_kad_post_video', true ); echo do_shortcode($video); ?>
                 </div>
+                <?php if (has_post_thumbnail( $post->ID ) ) { 
+                        $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' ); ?>
+                    <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                        <meta itemprop="url" content="<?php echo esc_url($image[0]); ?>">
+                        <meta itemprop="width" content="<?php echo esc_attr($image[1])?>">
+                        <meta itemprop="height" content="<?php echo esc_attr($image[2])?>">
+                    </div>
+                    <?php } ?>
             </section>
-        <?php } else if ($kt_headcontent == 'image') {
+        <?php } else if($kt_headcontent == 'carousel' || $kt_headcontent == 'shortcode') {
+                if (has_post_thumbnail( $post->ID ) ) { 
+                    $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' ); ?>
+                    <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                        <meta itemprop="url" content="<?php echo esc_url($image[0]); ?>">
+                        <meta itemprop="width" content="<?php echo esc_attr($image[1])?>">
+                        <meta itemprop="height" content="<?php echo esc_attr($image[2])?>">
+                    </div>
+                <?php } 
+        } else if ($kt_headcontent == 'image') {
                 if (has_post_thumbnail( $post->ID ) ) {          
                   $image_id = get_post_thumbnail_id();
                   $image_url = wp_get_attachment_image_src( $image_id, 'full' ); 

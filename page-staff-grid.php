@@ -2,16 +2,17 @@
 /*
 Template Name: Staff Grid
 */
-?>
-	<div id="pageheader" class="titleclass">
-		<div class="container">
-			<?php get_template_part('templates/page', 'header'); ?>
-		</div><!--container-->
-	</div><!--titleclass-->
+    /**
+    * @hooked virtue_page_title - 20
+    */
+     do_action('kadence_page_title_container');
+    ?>
 	
     <div id="content" class="container">
    		<div class="row">
       <div class="main <?php echo esc_attr(kadence_main_class()); ?>" id="ktmain" role="main">
+      		<?php 
+            do_action('kadence_page_before_content'); ?>
 			<div class="entry-content" itemprop="mainContentOfPage">
 					<?php get_template_part('templates/content', 'page'); ?>
 			</div>
@@ -29,10 +30,22 @@ Template Name: Staff Grid
       		$staff_cropheight 		= get_post_meta( $post->ID, '_kad_staff_img_crop', true );
       		$staff_crop 			= get_post_meta( $post->ID, '_kad_staff_crop', true );
       		$staff_filter 			= get_post_meta( $post->ID, '_kad_staff_filter', true ); 
+      		$staff_orderby 			= get_post_meta( $post->ID, '_kad_staff_orderby', true ); 
+      		$staff_order 			= get_post_meta( $post->ID, '_kad_staff_order', true ); 
       		if(!empty($staff_limit_content)) {
       			$staff_limit_content = $staff_limit_content;
       		} else {
       			$staff_limit_content = 'false';
+      		}
+      		if(!empty($staff_order)) {
+      			$staff_order = $staff_order;
+      		} else {
+      			$staff_order = 'ASC';
+      		}
+      		if(!empty($staff_orderby)) {
+      			$staff_orderby = $staff_orderby;
+      		} else {
+      			$staff_orderby = 'menu_order';
       		}
 			if(!empty($staff_single_link)) {
 				$staff_single_link = $staff_single_link;
@@ -118,8 +131,8 @@ Template Name: Staff Grid
 				  	$wp_query->query(array(
 						'paged' 		=> $paged,
 						'post_type' 	=> 'staff',
-						'orderby' 		=> 'menu_order',
-						'order' 		=> 'ASC',
+						'orderby' 		=> $staff_orderby,
+						'order' 		=> $staff_order,
 						'staff-group'	=> $staff_cat_slug,
 						'posts_per_page'=> $staff_items));					
 					if ( $wp_query ) : 	 
@@ -179,5 +192,10 @@ Template Name: Staff Grid
                       $wp_query = $temp;  // Reset
                     ?>
                     <?php wp_reset_query(); ?>
-                    <?php global $virtue_premium; if(isset($virtue_premium['page_comments']) && $virtue_premium['page_comments'] == '1') { comments_template('/templates/comments.php');} ?>
+                    <?php 
+	                /**
+	                * @hooked virtue_page_comments - 20
+	                */
+	                do_action('kadence_page_footer');
+	                ?>
 </div><!-- /.main -->

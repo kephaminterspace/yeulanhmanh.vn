@@ -125,7 +125,7 @@ table.shop_table.customer_details, .woocommerce .shop_table.order_details{
 
         &:before {
           font-family:"virtue_icons";
-          content: "\e0b5";
+          content: "\e077";
           line-height: 1.618;
           margin-left: .53em;
           width: 1.387em;
@@ -250,10 +250,6 @@ p.order-again {
 }
 
 .woocommerce-MyAccount-content {
-  h2 {
-    font-size: 2em;
-    font-weight: 600;
-  }
 
   #payment {
     .payment_methods {
@@ -266,4 +262,39 @@ p.order-again {
       }
     }
   }
+}
+.kad-customer-image {
+    position: relative;
+}
+
+a.kt-link-to-gravatar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,.8);
+    transition: opacity .3s ease-out;
+    -webkit-transition: opacity .3s ease-out;
+    -moz-transition: opacity .3s ease-out;
+    -o-transition: opacity .3s ease-out;
+    color: #555;
+}
+a.kt-link-to-gravatar i.icon-cloud-upload {
+    display: block;
+    font-size:40px;
+    margin-top: 22px;
+}
+
+a.kt-link-to-gravatar span.kt-profile-photo-text {
+    font-size: 12px;
+    max-width: 120px;
+    display:block;
+    text-transform: uppercase;
+    margin: 0 auto;
+}
+a.kt-link-to-gravatar:hover {
+  opacity: 1;
+  color: #555;
 }

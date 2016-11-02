@@ -230,5 +230,23 @@ body[class^="icon-"], body[class*=" icon-"] {
 }
 img#wpstats {
 display: block;
-margin-top: -10px;
+margin-top: 10px;
+}
+.entry-content table, .modal-body table{
+    width: 100%;
+    margin-bottom:10px;
+}
+.entry-content table td, table td, .entry-content table th, table th{
+    padding: 10px;
+}
+.entry-content table tr:nth-child(even), .modal-body table tr:nth-child(even) {
+  background: #f9f9f9;
+   background: rgba(0,0,0,0.03);
+}
+.entry-content table thead, .modal-body table thead {
+  background: #f2f2f2;
+   background: rgba(0,0,0,0.06);
+}
+.modal {
+    z-index: 10050;
 }

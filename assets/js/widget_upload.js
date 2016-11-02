@@ -150,6 +150,12 @@ $.imgupload2 = function(){
                 event.preventDefault();
 
                 // Activate the media editor
+                wp.media.view.Settings.Gallery = wp.media.view.Settings.Gallery.extend({
+                    template: function(view){
+                      return;
+                    }
+                });
+
                 var $$ = $(this);
 
                 var val = current_gallery.find('.gallery_values').val();
@@ -162,7 +168,6 @@ $.imgupload2 = function(){
 
                 var frame = wp.media.gallery.edit(final);
 
-                    
                 // When the gallery-edit state is updated, copy the attachment ids across
                 frame.state('gallery-edit').on( 'update', function( selection ) {
 

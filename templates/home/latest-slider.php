@@ -19,30 +19,32 @@ if ( ! defined( 'ABSPATH' ) ) {
             $wp_query = new WP_Query();
             $wp_query->query(array('posts_per_page' => 4));
 
-              if ( $wp_query ) : while ( $wp_query->have_posts() ) : $wp_query->the_post(); 
-                  if (has_post_thumbnail( $post->ID ) ) {
-                              $image_url = wp_get_attachment_image_src( 
-                              get_post_thumbnail_id( $post->ID ), 'full' ); 
-                              $thumbnailURL = $image_url[0]; 
-                              $image = aq_resize($thumbnailURL, $slidewidth, $slideheight, true);
-                              if(empty($image)) { $image = $thumbnailURL; } 
-                    ?>
-                      <li> 
-                        <a href="<?php the_permalink(); ?>">
-                            <img src="<?php echo esc_attr($image); ?>" width="<?php echo esc_attr($slidewidth);?>" height="<?php echo esc_attr($slideheight);?>" alt="<?php the_title(); ?>" />
-                            <div class="flex-caption">
-                              <div class="captiontitle headerfont">
-                                <?php the_title(); ?>
-                              </div>
-                            </div> 
-                        </a>
-                      </li>
-                  <?php } endwhile; else: ?>
-            <li class="error-not-found"><?php _e('Sorry, no blog entries found.', 'virtue'); ?></li>
-          <?php endif; ?>
-        <?php $wp_query = null; $wp_query = $temp;  // Reset ?>
-        <?php wp_reset_query(); ?>
-        </ul>
-      </div> <!--Flex Slides-->
-  </div><!--Container-->
+                if ( $wp_query ) : while ( $wp_query->have_posts() ) : $wp_query->the_post(); 
+                    if (has_post_thumbnail( $post->ID ) ) {
+                        $image_id = get_post_thumbnail_id( $post->ID );
+                        $image_src = wp_get_attachment_image_src( $image_id, 'full' ); 
+                        $image = aq_resize($image_src[0], $slidewidth, $slideheight, true, false, false, $image_id);
+                        if(empty($image[0])) {$image = array($image_src[0],$image_src[1],$image_src[2]);} 
+                        $img_srcset_output = kt_get_srcset_output( $image[1], $image[2], $image_src[0], $image_id );
+                        ?>
+                        <li> 
+                            <a href="<?php the_permalink(); ?>">
+                                <img src="<?php echo esc_attr($image[0]); ?>" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" alt="<?php the_title(); ?>" />
+                                <div class="flex-caption">
+                                    <div class="captiontitle headerfont">
+                                        <?php the_title(); ?>
+                                    </div>
+                                </div> 
+                            </a>
+                        </li>
+                    <?php } 
+                endwhile; else: ?>
+                        <li class="error-not-found"><?php _e('Sorry, no blog entries found.', 'virtue'); ?></li>
+                <?php endif; 
+                $wp_query = null; 
+                $wp_query = $temp; 
+                wp_reset_query(); ?>
+            </ul>
+        </div> <!--Flex Slides-->
+    </div><!--Container-->
 </div><!--sliderclass-->

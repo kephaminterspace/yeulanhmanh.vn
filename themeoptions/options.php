@@ -307,6 +307,18 @@ Redux::setSection( $opt_name, array(
                 ),
             'default' => 'logoleft',
             ),
+         array(
+            'id'=>'primary_sticky',
+            'type' => 'switch',
+            'title' => __('Make the primary menu Sticky?', 'virtue'),
+            'subtitle'=> __('This make the primary menu stick to the top of the page when you scroll down on desktop.', 'virtue'),
+            "default" => 0,
+            'required' => array(
+                array('header_style','=','standard'),
+                array('sticky_header','=','0'),
+                array('logo_layout','=','logocenter')
+                ),
+            ),
         array(
             'id'=>'x1_virtue_logo_upload',
             'type' => 'media', 
@@ -483,7 +495,7 @@ Redux::setSection( $opt_name, array(
     'icon' => 'icon-mobile2',
     'icon_class' => 'icon-large',
     'title' => __('Mobile Header', 'virtue'),
-    'desc' => "<div class='redux-info-field'><h3>".__('Simple Mobile Header Settings', 'virtue')."</h3><p>".__('Note This still used the mobile navigation menu in apperance > menus', 'virtue')."</p></div>",
+    'desc' => "<div class='redux-info-field'><h3>".__('Simple Mobile Header Settings', 'virtue')."</h3><p>".__('Note this still uses the "mobile navigation" menu location which you set on the appearance > menus page', 'virtue')."</p></div>",
     'fields' => array(
         array(
             'id'=>'mobile_header',
@@ -530,11 +542,20 @@ Redux::setSection( $opt_name, array(
             'required' => array('mobile_header','=','1'),
             ), 
         array(
+            'id'=>'mobile_header_account',
+            'type' => 'switch', 
+            'customizer' => false,
+            'title' => __('Show My Account Icon', 'virtue'),
+            'subtitle'=> __('Woocommerce only - Show a my account icon that links to the my account page.', 'virtue'),
+            "default"       => 0,
+            'required' => array('mobile_header','=','1'),
+            ),
+        array(
             'id'=>'mobile_header_cart',
             'type' => 'switch', 
             'customizer' => false,
             'title' => __('Show Cart Icon', 'virtue'),
-            'subtitle'=> __('Show a cart link that links to the shopping cart.', 'virtue'),
+            'subtitle'=> __('Woocommerce only - Show a cart icon that links to the shopping cart.', 'virtue'),
             "default"       => 0,
             'required' => array('mobile_header','=','1'),
             ),
@@ -542,7 +563,7 @@ Redux::setSection( $opt_name, array(
             'id'=>'mobile_header_search',
             'type' => 'switch', 
             'customizer' => false,
-            'title' => __('Show Cart Search', 'virtue'),
+            'title' => __('Show Search', 'virtue'),
             'subtitle'=> __('Show a search icon that brings up a search input', 'virtue'),
             "default"       => 0,
             'required' => array('mobile_header','=','1'),
@@ -2393,6 +2414,13 @@ Redux::setSection( $opt_name, array(
             "default"=> 0,
             ),
       array(
+            'id'=>'blog_grid_display_height',
+            'type' => 'switch', 
+            'title' => __('Display Blog Grid posts at equal height', 'virtue'),
+            'subtitle' => __('Turn on if you want the blog grid items to be equal height and display in equal rows regardless of post content.', 'virtue'),
+            "default" => 0,
+            ),
+      array(
             'id'=>'info_blog_defaults',
             'type' => 'info',
             'desc' => __('Blog Post Defaults', 'virtue'),
@@ -2405,6 +2433,14 @@ Redux::setSection( $opt_name, array(
             'width' => 'width:60%',
             'default' => 'yes',
             ),
+       array(
+            'id'=>'blogpost_sidebar_id_default',
+            'type' => 'select',
+            'title' => __('Choose a default sidebar for your Blog Posts', 'virtue'), 
+            'data' => 'sidebars',
+            'default' => 'sidebar-primary',
+            'width' => 'width:60%',
+            ), 
         array(
             'id'=>'post_summery_default',
             'type' => 'select',
@@ -3143,6 +3179,14 @@ Redux::setSection( $opt_name, array(
             "default" => 0,
             ),
         array(
+            'id'=>'menu_account',
+            'customizer' => true,
+            'type' => 'switch', 
+            'title' => __('Enable My Account icon in Primary Menu?', 'virtue'),
+            'subtitle'=> __('Woocommerce only - Choose to enable a my account icon link in the primary menu', 'virtue'),
+            "default" => 0,
+            ),
+        array(
             'id'=>'menu_cart',
             'customizer' => true,
             'type' => 'switch', 
@@ -3292,7 +3336,7 @@ Redux::setSection( $opt_name, array(
     array(
             'id'=>'dropdown_menu_font_size',
             'type' => 'typography', 
-            'title' => __('Dropdown Menu Font size', 'pinnacle'),
+            'title' => __('Dropdown Menu Font size', 'virtue'),
             //'compiler'=>true, // Use if you want to hook in your own CSS compiler
             'font-family'=>false, 
             'google'=>false, // Disable google fonts. Won't work if you haven't defined your google api key
@@ -3310,11 +3354,21 @@ Redux::setSection( $opt_name, array(
             'customizer' => true,
             'preview'=>false, // Disable the previewer
             'output' => array('#nav-main ul.sf-menu ul li a, #nav-second ul.sf-menu ul li a, .nav-main ul.sf-menu ul li a'),
-            'subtitle'=> __("Choose Size for the Dropdown menus", 'pinnacle'),
+            'subtitle'=> __("Choose Size for the Dropdown menus", 'virtue'),
             'default'=> array(
                 'font-size'=>'12px',
                 'line-height'=>'inherit',
                  ),
+            ),
+    array(
+            'id'=>'dropdown_font_hover_color',
+            'type' => 'color',
+            'title' => __('Dropdown Font Hover Color', 'virtue'), 
+            'default' => '',
+            'customizer' => true,
+            'transparent'=>false,
+            'output' => array('#nav-main ul.sf-menu ul li a:hover, #nav-second ul.sf-menu ul li a:hover, .nav-main ul.sf-menu ul li a:hover'),
+            'validate' => 'color',
             ),
     array(
             'id'=>'info_menu_mobile_font',
@@ -3641,6 +3695,13 @@ Redux::setSection( $opt_name, array(
             "default" => 0,
             ),
         array(
+            'id'=>'page_title_show',
+            'type' => 'switch', 
+            'title' => __('Show page title by default', 'virtue'),
+            'subtitle' => __('Turn off to hide page titles by default', 'virtue'),
+            "default" => 1,
+            ),
+        array(
             'id'=>'testimonial_single_nav',
             'type' => 'switch', 
             'title' => __('Arrow navigation for single testimonial post?', 'virtue'),
@@ -3792,7 +3853,7 @@ Redux::setSection( $opt_name, array(
             'id'=>'gallery_captions',
             'type' => 'switch', 
             'title' => __('Show captions on Virtue Galleries', 'virtue'),
-            'subtitle' => __('This sets the defualt caption setting to true.', 'virtue'),
+            'subtitle' => __('This sets the default caption setting to true.', 'virtue'),
             "default" => 0,
             ),
         array(
@@ -3829,7 +3890,7 @@ Redux::setSection( $opt_name, array(
             'id'=>'google_map_api',
             'type' => 'text',
             'title' => __('Google Map API', 'virtue'),
-            'subtitle' => __('Optional, but encouraged if you have a lot of page views so no interruption in service.', 'virtue'),
+            'subtitle' => __('For best performance add your own API for google maps.', 'virtue'),
             'description' =>'<a target="_blank" href="https://developers.google.com/maps/documentation/javascript/get-api-key">Get an API code Here</a>',
             'default' => ''
             ),  
@@ -3853,7 +3914,7 @@ Redux::setSection( $opt_name, array(
             'id'=>'seo_switch',
             'type' => 'switch', 
             'title' => __('Turn on Virtue SEO?', 'virtue'),
-            'subtitle' => __('Choose if you would like to use Virtue Theme SEO options, for full seo support use a plugin', 'virtue'),
+            'subtitle' => __('Choose whether or not you would like to use Virtue Theme SEO options. We only recommend this for very basic sites as it does not provide advanced SEO support. For full SEO options we suggest using a plugin.', 'virtue'),
             "default" => 0,
             ), 
         array(

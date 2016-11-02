@@ -58,6 +58,25 @@ function kad_register_taxonomy_meta_boxes()
 					),
 		),
 	);
+	$meta_sections[] = array(
+		'title'      => __('Archive Title Setting', 'virtue'),             // section title
+		'taxonomies' => array('product_cat', 'product_tag','category', 'post_tag', 'portfolio-type', 'portfolio-tag'), 							// list of taxonomies. Default is array('category', 'post_tag'). Optional
+		'id'         => 'kad_cat_title', 						// ID of each section, will be the option name
+
+		'fields' => array(                             // List of meta fields
+			// TEXT
+			array(
+						'name'    => __("Show archive title?", 'virtue' ),
+						'id'      => 'archive_show_title',
+						'type'    => 'select',
+						'options' => array(
+							'default' => __("Default", 'virtue' ),
+							'show' => __("Show", 'virtue' ),
+							'hide' => __("Hide", 'virtue' ),
+						),
+					),
+		),
+	);
 
 	foreach ( $meta_sections as $meta_section )
 	{

@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	global $virtue_premium; 
 	
 
-	if(!empty($virtue_premium['product_sale_title'])) {$product_sale_title = $virtue_premium['product_sale_title'];} else {$product_sale_title = 'Products on Sale';}
+	if(!empty($virtue_premium['product_sale_title'])) {$product_sale_title = $virtue_premium['product_sale_title'];} else {$product_sale_title = __('Products on Sale', 'virtue');}
 	if(!empty($virtue_premium['home_product_sale_column'])) {$product_tcolumn = $virtue_premium['home_product_sale_column'];} else {$product_tcolumn = '4';}
 	$pc = array();
 	if ($product_tcolumn == '2') {

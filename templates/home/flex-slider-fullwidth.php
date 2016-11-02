@@ -1,5 +1,9 @@
-<div class="sliderclass kad-desktop-slider clearfix kt-full-slider-container">
-  <?php  global $virtue_premium; 
+<?php 
+if ( ! defined( 'ABSPATH' ) ) {
+  exit; // Exit if accessed directly
+}
+global $virtue_premium;
+
         if(isset($virtue_premium['slider_size'])) {
           $slideheight = $virtue_premium['slider_size'];
         } else {
@@ -35,6 +39,7 @@
         } else {
           $pausetime = '7000';
         } ?>
+<div class="sliderclass kad-desktop-slider clearfix kt-full-slider-container">        
   <div id="full_imageslider" class="kt-full-slider">
     <div class="flexslider kt-flexslider loading" data-flex-speed="<?php echo esc_attr($pausetime);?>" data-flex-anim-speed="<?php echo esc_attr($transtime);?>" data-flex-animation="<?php echo esc_attr($transtype); ?>" data-flex-auto="<?php echo esc_attr($autoplay);?>">
         <ul class="slides">

@@ -4,30 +4,38 @@
  */
 
 function kadence_scripts() {
-  wp_enqueue_style('kadence_app', get_template_directory_uri() . '/assets/css/virtue.css', false, '375');
-  global $virtue_premium; if(isset($virtue_premium['skin_stylesheet']) && !empty($virtue_premium['skin_stylesheet'])) {$skin = $virtue_premium['skin_stylesheet'];} else { $skin = 'default.css';}
-   $skin_stylesheet_path = apply_filters('kt_skin_style_path_output', get_template_directory_uri() . '/assets/css/skins/'); 
-  wp_enqueue_style('virtue_skin', $skin_stylesheet_path.$skin.'', false, null);
+    global $virtue_premium; 
 
- if(is_rtl()) {
-  wp_enqueue_style('kadence_rtl', get_template_directory_uri() . '/assets/css/rtl.css', false, '375');
- }
-if (is_child_theme()) {
-   wp_enqueue_style('kadence_child', get_stylesheet_uri(), false, null);
-  } 
+    wp_enqueue_style('kadence_app', get_template_directory_uri() . '/assets/css/virtue.css', false, VIRTUE_VERSION);
+        if(isset($virtue_premium['skin_stylesheet']) && !empty($virtue_premium['skin_stylesheet'])) {
+            $skin = $virtue_premium['skin_stylesheet'];
+        } else { 
+            $skin = 'default.css';
+        }
+    $skin_stylesheet_path = apply_filters('kt_skin_style_path_output', get_template_directory_uri() . '/assets/css/skins/'); 
+    wp_enqueue_style('virtue_skin', $skin_stylesheet_path.$skin.'', false, null);
+
+    if(is_rtl()) {
+        wp_enqueue_style('kadence_rtl', get_template_directory_uri() . '/assets/css/rtl.css', false, VIRTUE_VERSION);
+    }
+    if (is_child_theme()) {
+      $child_theme = wp_get_theme();
+      $child_version = $child_theme->get( 'Version' );
+        wp_enqueue_style('kadence_child', get_stylesheet_uri(), false, $child_version);
+    } 
   
   if (is_single() && comments_open() && get_option('thread_comments')) {
     wp_enqueue_script('comment-reply');
   }
 
-  wp_register_script('kadence_plugins', get_template_directory_uri() . '/assets/js/plugins.js', false, 375, true);
-  wp_register_script('select2', get_template_directory_uri() . '/assets/js/min/select2-min.js', false, 375, true);
-  wp_register_script('kadence_main', get_template_directory_uri() . '/assets/js/main.js', false, 375, true);
+  wp_register_script('kadence_plugins', get_template_directory_uri() . '/assets/js/plugins.js', false, VIRTUE_VERSION, true);
+  wp_register_script('select2', get_template_directory_uri() . '/assets/js/min/select2-min.js', false, VIRTUE_VERSION, true);
+  wp_register_script('kadence_main', get_template_directory_uri() . '/assets/js/main.js', false, VIRTUE_VERSION, true);
   wp_enqueue_script('jquery');
   wp_enqueue_script('kadence_plugins');
   wp_enqueue_script('select2');
   if(isset($virtue_premium["smooth_scrolling"]) && $virtue_premium["smooth_scrolling"] == '1') { 
-     wp_register_script('virtue_smoothscroll', get_template_directory_uri() . '/assets/js/min/nicescroll-min.js', false, 375, false);
+     wp_register_script('virtue_smoothscroll', get_template_directory_uri() . '/assets/js/min/nicescroll-min.js', false, VIRTUE_VERSION, false);
      wp_enqueue_script('virtue_smoothscroll');
   } else if(isset($virtue_premium["smooth_scrolling"]) && $virtue_premium["smooth_scrolling"] == '2') { 
     wp_register_script('virtue_smoothscroll', get_template_directory_uri() . '/assets/js/min/smoothscroll-min.js', false, null, true);
@@ -42,22 +50,17 @@ if (is_child_theme()) {
 
   if(class_exists('woocommerce')) {
     if(isset($virtue_premium['product_radio']) && $virtue_premium['product_radio'] == 1) {
-      wp_deregister_script('wc-add-to-cart-variation');
-      wp_register_script( 'wc-add-to-cart-variation', get_template_directory_uri() . '/assets/js/min/add-to-cart-variation-radio-min.js' , array( 'jquery' ), false, '360', true );
-          wp_localize_script( 'wc-add-to-cart-variation', 'wc_add_to_cart_variation_params', apply_filters( 'wc_add_to_cart_variation_params', array(
-        'i18n_no_matching_variations_text' => esc_attr__( 'Sorry, no products matched your selection. Please choose a different combination.', 'virtue' ),
-        'i18n_unavailable_text'            => esc_attr__( 'Sorry, this product is unavailable. Please choose a different combination.', 'virtue' ),
-      ) ) );
-          wp_enqueue_script( 'wc-add-to-cart-variation');
+        wp_register_script( 'kt-add-to-cart-variation-radio', get_template_directory_uri() . '/assets/js/min/kt-add-to-cart-variation-radio-min.js' , array( 'jquery' ), false, VIRTUE_VERSION, true );
+        wp_enqueue_script( 'kt-add-to-cart-variation-radio');
     } else {
-     wp_register_script( 'kt-wc-add-to-cart-variation', get_template_directory_uri() . '/assets/js/min/kt-add-to-cart-variation-min.js' , array( 'jquery' ), false, '360', true );
-     wp_enqueue_script( 'kt-wc-add-to-cart-variation');
+       wp_register_script( 'kt-wc-add-to-cart-variation', get_template_directory_uri() . '/assets/js/min/kt-add-to-cart-variation-min.js' , array( 'jquery' ), false, VIRTUE_VERSION, true );
+       wp_enqueue_script( 'kt-wc-add-to-cart-variation');
     }
     if(isset($virtue_premium['product_quantity_input']) && $virtue_premium['product_quantity_input'] == 1) {
       function kt_get_wc_version() {return defined( 'WC_VERSION' ) && WC_VERSION ? WC_VERSION : null;}
       function kt_is_wc_version_gte_2_3() {return kt_get_wc_version() && version_compare(kt_get_wc_version(), '2.3', '>=' );}
       if (kt_is_wc_version_gte_2_3() ) {
-        wp_register_script( 'wcqi-js', get_template_directory_uri() . '/assets/js/min/wc-quantity-increment-min.js' , array( 'jquery' ), false, '375', true );
+        wp_register_script( 'wcqi-js', get_template_directory_uri() . '/assets/js/min/wc-quantity-increment-min.js' , array( 'jquery' ), false, VIRTUE_VERSION, true );
         wp_enqueue_script( 'wcqi-js' );
       }
     }

@@ -107,8 +107,8 @@ function kad_portfolio_shortcode_function( $atts, $content) {
                  	'lightbox' => $lightbox,
                  	'showexcerpt' => $excerpt,
                  	'showtypes' => $showtypes,
-                 	'slidewidth' => $slidewidth,
-                 	'slideheight' => $slideheight,
+                 	'slidewidth' => apply_filters('kt_portfolio_grid_image_width', $slidewidth),
+                 	'slideheight' => apply_filters('kt_portfolio_grid_image_height', $slideheight),
                  	);
 ob_start(); ?>
 	<?php if ($filter == "true") { ?>
@@ -148,7 +148,7 @@ ob_start(); ?>
                  <div id="portfoliowrapper" class="init-mosaic-isotope reinit-isotope rowtight" data-fade-in="<?php echo esc_attr($animate);?>" data-iso-selector=".p-item" data-iso-style="packery" data-iso-filter="true">
             <?php } else { ?>
 				<div class="home-portfolio kad-portfolio-wrapper">
-						<div id="portfoliowrapper-<?php echo esc_attr($id);?>" class="rowtight reinit-isotope-intrinsic init-isotope" data-fade-in="<?php echo esc_attr($animate);?>" data-iso-selector=".p-item" data-iso-style="<?php echo esc_attr($isostyle);?>" data-iso-filter="true"> 
+						<div id="portfoliowrapper-<?php echo esc_attr($id);?>" class="rowtight init-isotope-intrinsic reinit-isotope" data-fade-in="<?php echo esc_attr($animate);?>" data-iso-selector=".p-item" data-iso-style="<?php echo esc_attr($isostyle);?>" data-iso-filter="true"> 
             <?php }
 
             	$wp_query = null; 

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	if(!empty($virtue_premium['product_best_title'])) {
 		$product_best_title = $virtue_premium['product_best_title'];
 	} else {
-		$product_best_title = 'Best Selling Products';
+		$product_best_title = __('Best Selling Products', 'virtue');
 	}
 	if(!empty($virtue_premium['home_product_best_column'])) {
 		$product_tcolumn = $virtue_premium['home_product_best_column'];
