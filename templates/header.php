@@ -11,7 +11,8 @@
           else {$logocclass = 'col-md-4'; $menulclass = 'col-md-8';} ?>
   <div class="container">
     <div class="row">
-          <div class="<?php echo esc_attr($logocclass); ?> clearfix kad-header-left">
+        <!--          <div class="--><?php //echo esc_attr($logocclass); ?><!-- clearfix kad-header-left">-->
+          <div class="col-md-3 clearfix kad-header-left">
             <div id="logo" class="logocase">
               <a class="brand logofont" href="<?php echo home_url(); ?>">
                        <?php if (!empty($virtue_premium['x1_virtue_logo_upload']['url'])) { ?> 
@@ -24,13 +25,14 @@
             </div> <!-- Close #logo -->
           </div><!-- close col-md-4 -->
           <?php if(isset($virtue_premium['logo_layout']) && $virtue_premium['logo_layout'] == 'logowidget') { ?>
-              <div class="col-md-8 kad-header-widget"> <?php 
+              <div class="col-md-8 kad-header-widget"> <?php
                 if(is_active_sidebar('headerwidget')) { dynamic_sidebar('headerwidget'); } ?>
               </div>
             </div>
           <div class="row"> 
           <?php } ?>
-          <div class="<?php echo esc_attr($menulclass); ?> kad-header-right">
+<!--          <div class="--><?php //echo esc_attr($menulclass); ?><!-- kad-header-right">-->
+          <div class="col-md-9 kad-header-right">
             <?php do_action('kt_before_right_header_content'); 
               if (has_nav_menu('primary_navigation')) : 
                   do_action( 'virtue_above_primarymenu' ); ?>
