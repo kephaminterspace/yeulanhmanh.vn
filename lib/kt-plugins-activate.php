@@ -32,9 +32,9 @@ function kadence_register_required_plugins() {
 			$addons[] = array(
 				'name'     				=> 'Revolution Slider',
 				'slug'     				=> 'revslider',
-				'source'   				=> 'https://s3.amazonaws.com/ktupdates/api/6256162314789/revslider.zip',
+				'source'   				=> 'https://s3.amazonaws.com/ktupdates/api/46873876492752786/revslider.zip',
 				'required' 				=> false,
-				'version' 				=> '5.2.6',
+				'version' 				=> '5.3.0',
 				'force_activation' 		=> false, 
 				'force_deactivation' 	=> false, 
 				'external_url' 			=> '', 
@@ -56,9 +56,9 @@ function kadence_register_required_plugins() {
 			$addons[] = array(
 			'name'     				=> 'Kadence Slider', // The plugin name
 			'slug'     				=> 'kadence-slider', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://s3.amazonaws.com/ktupdates/api/6256162314789/kadence-slider.zip', // The plugin source
+			'source'   				=> 'https://s3.amazonaws.com/ktupdates/api/46873876492752786/kadence-slider.zip', // The plugin source
 			'required' 				=> false, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '2.0.0', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> '2.1.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
@@ -134,7 +134,7 @@ function kadence_register_required_plugins() {
 		'domain'       		=> 'virtue',         	// Text domain - likely want to be the same as your theme.
 		'default_path' 		=> '',                         	// Default absolute path to pre-packaged plugins
 		'parent_slug'  		=> 'themes.php',            // Parent menu slug.
-		'menu'         		=> 'install-required-plugins', 	// Menu slug
+		'menu'         		=> 'install-recommended-plugins', 	// Menu slug
 		'has_notices'      	=> false,                       	// Show admin notices or not
 		'is_automatic'    	=> false,					   	// Automatically activate plugins after installation or not
 		'message' 			=> '',							// Message to output right before the plugins table

@@ -9,7 +9,12 @@ function kt_remove_sections() {
         }
     $options_slug = get_option(OPTIONS_SLUG);
     $activation = get_option('kt_api_manager');
-    if( !class_exists('RevSlider')  )  {
+    if(!empty($activation['kt_api_key'])) {
+      $license = substr($activation['kt_api_key'], 0, 3);
+    } else {
+      $license = '';
+    }
+    if( !class_exists('RevSlider') && is_admin() )  {
        // Home Slider
        $homeslider = Redux::getField(OPTIONS_SLUG, 'choose_slider');
        if(is_array($homeslider)){
@@ -30,8 +35,47 @@ function kt_remove_sections() {
        Redux::setField(OPTIONS_SLUG, $shopslider);
        Redux::removefield(OPTIONS_SLUG, 'mobile_rev_slider');
        Redux::removefield(OPTIONS_SLUG, 'shop_rev_slider');
+        add_filter( 'cmb_meta_boxes', 'kadence_remove_rev_metaboxes', 50);
+        function kadence_remove_rev_metaboxes($metaboxes) {
+            foreach ($metaboxes as $key => $value) {
+                if($value['id'] == 'pagefeature_metabox'){
+                    $key_feature = $key;
+                }
+                if($value['id'] == 'portfolio_post_metabox'){
+                    $key_portfolio = $key;
+                }
+            }
+            // feature page template
+            $metaboxes[$key_feature]['fields']['0']['options'] = array(
+                    array( 'name' => __('Flex Slider', 'virtue'), 'value' => 'flex', ),
+                    array( 'name' => __('Carousel Slider', 'virtue'), 'value' => 'carouselslider', ),
+                    array( 'name' => __('Image Carousel Slider', 'virtue'), 'value' => 'carousel', ),
+                    array( 'name' => __('Kadence Slider', 'virtue'), 'value' => 'ktslider', ),
+                    array( 'name' => __('Shortcode Slider', 'virtue'), 'value' => 'cyclone', ),
+                    array( 'name' => __('Video', 'virtue'), 'value' => 'video', ),
+                    array( 'name' => __('Image', 'virtue'), 'value' => 'image', ),
+                );
+            unset($metaboxes[$key_feature]['fields']['1']);
+
+            // Portfolio Post
+            $metaboxes[$key_portfolio]['fields']['1']['options'] = array(
+                    array( 'name' => __('Image', 'virtue'), 'value' => 'image', ),
+                    array( 'name' => __('Image Slider (Flex Slider)', 'virtue'), 'value' => 'flex', ),
+                    array( 'name' => __('Carousel Slider', 'virtue'), 'value' => 'carousel', ),
+                    array( 'name' => __('Image Carousel', 'virtue'), 'value' => 'imgcarousel', ),
+                    array( 'name' => __('Kadence Slider', 'virtue'), 'value' => 'ktslider', ),
+                    array( 'name' => __('Shortcode Slider', 'virtue'), 'value' => 'cyclone', ),
+                    array( 'name' => __('Image Grid', 'virtue'), 'value' => 'imagegrid', ),
+                    array( 'name' => __('Image List', 'virtue'), 'value' => 'imagelist', ),
+                    array( 'name' => __('Image List Style 2', 'virtue'), 'value' => 'imagelist2', ),
+                    array( 'name' => __('Video', 'virtue'), 'value' => 'video', ),
+                    array( 'name' => __('None', 'virtue'), 'value' => 'none', ),
+                );
+            return $metaboxes;
+            
+        }
     }
-    if(isset($activation['kt_api_switch']) && $activation['kt_api_switch'] == 'member' )  {
+    if($license == 'vps' || $license == 'ktm' )  {
         Redux::removefield(OPTIONS_SLUG, 'kt_revslider_notice');
     }
     if(isset($options_slug['kadence_woo_extension']) && $options_slug['kadence_woo_extension'] == '0') {

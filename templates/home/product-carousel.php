@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		if(!empty($product_title)) {
 				$ptitle = $product_title;
 		} else {
-			$ptitle = 'Featured Products';
+			$ptitle = __('Featured Products', 'virtue');
 		}
 		if(!empty($virtue_premium['home_product_feat_column'])) {
 			$product_tcolumn = $virtue_premium['home_product_feat_column'];
@@ -71,18 +71,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<div id="hp_carouselcontainer" class="rowtight fadein-carousel">
 				<div id="home-product-carousel" class="products caroufedselclass clearfix initcaroufedsel" data-carousel-container="#hp_carouselcontainer" data-carousel-transition="700" data-carousel-scroll="<?php echo esc_attr($hp_featscroll);?>" data-carousel-auto="true" data-carousel-speed="<?php echo esc_attr($hp_featspeed);?>" data-carousel-id="hfproduct" data-carousel-md="<?php echo esc_attr($pc['md']);?>" data-carousel-sm="<?php echo esc_attr($pc['sm']);?>" data-carousel-xs="<?php echo esc_attr($pc['xs']);?>" data-carousel-ss="<?php echo esc_attr($pc['ss']);?>">
 				<?php 
-		          $temp = $wp_query; 
-				  $wp_query = null; 
-				  $wp_query = new WP_Query();
-				  $wp_query->query(array(
-					'post_type' => 'product',
-					'meta_key' => '_featured',
-					'meta_value' => 'yes',
-					'post_status' => 'publish',
-					'orderby' => 'menu_order',
-					'order' => 'ASC',
-					'posts_per_page' => $hp_procount));
+		          	$temp = $wp_query; 
+				  	$wp_query = null; 
+				  	$wp_query = new WP_Query();
+				  	$wp_query->query(array(
+						'post_type' => 'product',
+						'meta_key' => '_featured',
+						'meta_value' => 'yes',
+						'post_status' => 'publish',
+						'orderby' => 'menu_order',
+						'order' => 'ASC',
+						'posts_per_page' => $hp_procount
+						)
+				  	);
 					$woocommerce_loop['columns'] = $product_tcolumn;
+					
 					if ( $wp_query ) :
 						while ( $wp_query->have_posts() ) : $wp_query->the_post(); 
 							wc_get_template_part( 'content', 'product' ); 

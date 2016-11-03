@@ -5,7 +5,7 @@
 }
 }
 @media only screen and (device-width : 1024px) and (min-resolution: 192dpi) { 
-	.panel-row-style-wide-parallax, .kt-panel-row-parallax, .kt-panel-row-parallax-stellar {
+	.panel-row-style-wide-parallax, .kt-panel-row-parallax, .kt-panel-row-parallax-stellar, .kt-panel-row-parallax-stellar-full {
 			background-attachment: scroll!important;
 			background-position: center!important;
 		}
@@ -14,7 +14,7 @@
 .kad_product_wrapper .tcol-md-3 {width: 24.99%}
 }
 @media only screen and (device-width: 768px) {
-  .panel-row-style-wide-parallax, .kt-panel-row-parallax, .kt-panel-row-parallax-stellar {
+  .panel-row-style-wide-parallax, .kt-panel-row-parallax, .kt-panel-row-parallax-stellar, .kt-panel-row-parallax-stellar-full {
 			background-attachment: scroll!important;
 			background-position: center!important;
 		}
@@ -31,6 +31,9 @@
 	#mobile-nav-trigger {
 	display: block;
 	height: auto;
+	}
+	#nav-main-sticky-wrapper {
+    	display: none;
 	}
     header #nav-main, header .nav-main  {
 		margin: 0;
@@ -63,7 +66,7 @@
 	}
 }
 @media only screen and (device-width: 800px) {
-  .panel-row-style-wide-parallax, .kt-panel-row-parallax, .kt-panel-row-parallax-stellar {
+  .panel-row-style-wide-parallax, .kt-panel-row-parallax, .kt-panel-row-parallax-stellar, .kt-panel-row-parallax-stellar-full {
 			background-attachment: scroll!important;
 			background-position: center!important;
 		}
@@ -76,6 +79,9 @@
 	#kad-mobile-nav {
 	display: block;
 	height: auto;
+	}
+	#nav-main-sticky-wrapper {
+    	display: none;
 	}
 	#mobile-nav-trigger {
 	display: block;
@@ -122,6 +128,9 @@
     #nav-second ul.sf-menu {
     	display: none;
     }
+    #nav-main-sticky-wrapper {
+    	display: none;
+	}
 	#kad-mobile-nav {
 	display: block;
 	height: auto;
@@ -137,7 +146,7 @@
     header #nav-main, header .nav-main  {
 		margin: 0;
     }
-    .panel-row-style-wide-parallax, .kt-panel-row-parallax, .kt-panel-row-parallax-stellar {
+    .panel-row-style-wide-parallax, .kt-panel-row-parallax, .kt-panel-row-parallax-stellar, .kt-panel-row-parallax-stellar-full {
 		background-attachment: scroll!important;
 		background-position: center!important;
 		}
@@ -445,6 +454,12 @@
 			display: block;
 			text-align: center;
 		}
+		 .woocommerce-message .button {
+        margin: 0 0 10px 10px;
+    }
+    .woocommerce-error:before, .woocommerce-info:before, .woocommerce-message:before {
+        top: 10px;
+    }
 		.captiontitle {font-size: 20px;}
 		.captiontext p {font-size: 14px;}
 	}
@@ -453,6 +468,19 @@
         content: 'small-phone';
         display: none;
         }
+        .pullquote-center, .pullquote-left, .pullquote-right {
+		    padding: 10px 20px;
+		    margin: 20px 0;
+		}
+
+		.pullquote-center:before, .pullquote-left:before, .pullquote-right:before {
+		    font-size: 24px;
+		}
+
+		.pullquote-right, .pullquote-left {
+		    float: none;
+		    max-width: 100%;
+		}
         .woocommerce ul#shipping_method {
 			min-width: 0px;
 		}
@@ -490,7 +518,6 @@
 		div.product form.cart .variations td.product_value {
 			position: static;
 			display: block;
-			max-width: 220px;
 			width: auto;
 			margin-bottom: 10px;
 			}
@@ -500,7 +527,8 @@
 		float: none;
 		}
 		div.product form.cart .variations select {
-			width: 220px;
+			width: 100% !important;
+			min-width: 220px;
 		}
 		table.shop_table td {
 		    padding: 6px 0;

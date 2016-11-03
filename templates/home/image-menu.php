@@ -44,12 +44,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 					$target = '_self';
 				}
 					if($height_setting == 'imgsize') { 
-						$the_image = aq_resize($slide['url'], $img_width, null, false, false);
-						if(empty($the_image[0])) {$the_image[0] = $slide['url']; $the_image[1] = null; $the_image[2] = null;} ?>
+						$image = aq_resize($slide['url'], $img_width, null, false, false, false, $slide['attachment_id']);
+						if(empty($image[0])) {$image = array($slide['url'], null, null);} 
+						$img_srcset_output = kt_get_srcset_output( $image[1], $image[2], $slide['url'], $slide['attachment_id']);?>
 							<div class="<?php echo esc_attr($itemsize);?> kad-animation image-menu-image-size <?php echo 'homeitemcount'.esc_attr($counter);?>" data-animation="fade-in" data-delay="<?php echo esc_attr($counter*150);?>">
 						        	<?php if(!empty($slide['link'])) {echo '<a href="'.esc_attr($slide['link']).'" class="homepromolink" target="'.esc_attr($target).'">';} ?>
 						        		<div class="image_menu_hover_class"></div>
-			                    		<img src="<?php echo esc_url($the_image[0]); ?>" width="<?php echo esc_attr($the_image[1]); ?>" height="<?php echo esc_attr($the_image[2]); ?>" alt="<?php echo esc_attr($slide['title']);?>" />
+			                    		<img src="<?php echo esc_url($image[0]); ?>" width="<?php echo esc_attr($image[1]); ?>" height="<?php echo esc_attr($image[2]); ?>" alt="<?php echo esc_attr($slide['title']);?>" />
 								        <div class="image_menu_content">
 			                            	<div class="image_menu_message">	
 								        		<?php if (!empty($slide['title'])) {echo '<h4>'.$slide['title'].'</h4>';} ?>
@@ -59,11 +60,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 						        	<?php if(!empty($slide['link'])) {echo '</a>'; }?>
 						        </div>
 					<?php } else { 
-						$the_image = aq_resize($slide['url'], $img_width, $img_height, true); 
-						if(empty($the_image)) {$the_image = $slide['url'];}?>
+						$image = aq_resize($slide['url'], $img_width, $img_height, true); 
+						if(empty($image)) {$image = $slide['url'];}?>
 							<div class="<?php echo esc_attr($itemsize);?> kad-animation <?php echo 'homeitemcount'.esc_attr($counter);?>" data-animation="fade-in" data-delay="<?php echo esc_attr($counter*150);?>">
 						        	<?php if(!empty($slide['link'])){echo '<a href="'.esc_url($slide['link']).'" class="homepromolink" target="'.esc_attr($target).'">';} ?>
-								        <div class="infobanner" style="background: url(<?php echo esc_url($the_image); ?>) center center no-repeat; height:<?php echo esc_attr($img_height); ?>px;">
+								        <div class="infobanner" style="background: url(<?php echo esc_url($image); ?>) center center no-repeat; height:<?php echo esc_attr($img_height); ?>px;">
 								        	<div class="home-message" style="height:<?php echo esc_attr($img_height) ?>px;">
 								        		<?php if (!empty($slide['title'])){ echo '<h4>'.$slide['title'].'</h4>';} ?>
 								            	<?php if (!empty($slide['description'])) {echo '<h5>'.$slide['description'].'</h5>';}?>

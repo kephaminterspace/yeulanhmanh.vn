@@ -125,15 +125,20 @@ text-align: left;
 }
 #payment ul.payment_methods li input.input-radio {
 margin: 0 8px 0 0;
-line-height: 20px;
 height: 20px;
-padding: 0 8px;
+padding: 0;
+vertical-align: sub;
 }
 #payment #place_order {
 float: right;
 margin: 0;
 font-size: 16px;
 text-transform: uppercase;
+}
+form.checkout.woocommerce-checkout:after {
+    clear: both;
+    display: block;
+    content: '';
 }
 .woocommerce-checkout .form-row .chzn-container { margin-bottom: 17px;}
 .widget_shopping_cart_content .total {

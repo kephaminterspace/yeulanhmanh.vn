@@ -2,7 +2,6 @@
 /**
  * Displays an inactive message if the API License Key has not yet been activated
  */
-
  if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -275,10 +274,10 @@ if ( ! class_exists( 'kt_api_manager' ) ) {
                 </div>
                 <div class="kt_title_area">
                     <h1>
-                        <?php echo __('Getting Started with Virtue Premium', 'virtue'); ?>
+                        <?php echo apply_filters('kt_getting_started_page_title', __('Getting Started with Virtue Premium', 'virtue') ); ?>
                     </h1>
                     <h4>
-                        <?php echo __('Theme activation, recomended plugins and helpful links.', 'virtue'); ?>
+                        <?php echo __('Theme activation, recommended plugins and helpful links.', 'virtue'); ?>
                     </h4>
                 </div>
 
@@ -314,15 +313,19 @@ if ( ! class_exists( 'kt_api_manager' ) ) {
                 <div class="kad-panel-left kt-admin-clearfix">
                     <div class="kad-panel-contain">
                         <h2 class="nav-tab-wrapper">
+                            <?php do_action('kt_getting_started_nav_before'); ?>
                             <a class="nav-tab nav-tab-active" data-tab-id="kt-helplinks" href="#"><?php echo __('Helpful Links', 'virtue');?></a>
-                            <a class="nav-tab" data-tab-id="kt-plugins" href="#"><?php echo __('Recomended Plugins', 'virtue');?></a>
+                            <a class="nav-tab" data-tab-id="kt-plugins" href="#"><?php echo __('Recommended Plugins', 'virtue');?></a>
                             <a class="nav-tab" data-tab-id="kt-demo-content" href="#"><?php echo __('Demo Content', 'virtue');?></a>
+                            <?php do_action('kt_getting_started_nav_after'); ?>
                         </h2>
+                        <?php do_action('kt_getting_started_before'); ?>
                         <div id="kt-helplinks" class="nav-tab-content panel_open kt-admin-clearfix">
                             <div class="kad-helpful-links kt-main">
+                                <?php do_action('kt_getting_started_before_helpful'); ?>
                                 <h4><?php echo __('Getting Started', 'virtue');?></h4>
                                 <a href="http://docs.kadencethemes.com/virtue-premium/upgrade-from-free-to-premium/" target="_blank"><?php echo __('Transfer Free to Premium Virtue', 'virtue');?></a>
-                                <a href="http://docs.kadencethemes.com/virtue-premium/" target="_blank"><?php echo __('Virtue Documention', 'virtue');?></a>
+                                <a href="http://docs.kadencethemes.com/virtue-premium/" target="_blank"><?php echo __('Virtue Documentation', 'virtue');?></a>
                                 <a href="https://www.kadencethemes.com/kadence-themes-demo-content/" target="_blank"><?php echo __('Virtue Demo Content', 'virtue');?></a>
                                 <a href="https://www.kadencethemes.com/category/tutorials/virtue-theme/" target="_blank"><?php echo __('Virtue Tutorials', 'virtue');?></a>
                                 <h4 class="kt-next-section"><?php echo __('Support', 'virtue');?></h4>
@@ -376,7 +379,7 @@ if ( ! class_exists( 'kt_api_manager' ) ) {
                                 <?php if ( get_option( $this->kt_activated_key ) == 'Activated' ) { ?>
                                 <h4><?php echo __('Install Demo Content Importer', 'virtue');?></h4>
                                 <p><?php echo __('This importer plugin allows you to fill your site with demo content from one of the theme demos.', 'virtue');?></p>
-                                 <p><?php echo __('For a turorial on how to use the Importer go here:', 'virtue'). ' <a href="https://www.kadencethemes.com/kadence-themes-demo-content/">https://www.kadencethemes.com/kadence-themes-demo-content/</a>'; ?></p>
+                                 <p><?php echo __('For a tutorial on how to use the Importer go here:', 'virtue'). ' <a href="https://www.kadencethemes.com/kadence-themes-demo-content/">https://www.kadencethemes.com/kadence-themes-demo-content/</a>'; ?></p>
                                 <div class="kt_demo_section kt-admin-clearfix">
                                     <div class="kt_plugin_box">
                                        <img src="<?php echo  get_template_directory_uri() . '/assets/img/kip_logo.jpg';?>">
@@ -397,6 +400,7 @@ if ( ! class_exists( 'kt_api_manager' ) ) {
                                 }?>
                             </div>
                         </div>
+                        <?php do_action('kt_getting_started_after'); ?>
                     </div>
                 </div>
             </div>
@@ -410,7 +414,7 @@ if ( ! class_exists( 'kt_api_manager' ) ) {
                         'plugin_check'  => 'kadence-slider/kadence-slider.php',
                         'name'          => 'Kadence Slider Pro',
                         'slug'          => 'kadence-slider',
-                        'desc'          => 'Kadence Slider Pro is a powerful and liteweight responsive image slider with layer control and css animations.',
+                        'desc'          => 'Kadence Slider Pro is a powerful and lite-weight responsive image slider with layer control and css animations.',
                         'author'        => 'Kadence Themes',
                         'image'         => get_template_directory_uri() . '/assets/img/ksp_logo.jpg',
                     ),
@@ -431,7 +435,7 @@ if ( ! class_exists( 'kt_api_manager' ) ) {
                         'image'         => get_template_directory_uri() . '/assets/img/ve_logo.jpg',
                     ),
                     'cyclone-slider-pro' => array(
-                        'plugin_check'  => 'cyclone-slider-pro/cyclone-slider-pro.php',
+                        'plugin_check'  => 'cyclone-slider-pro/cyclone-slider.php',
                         'name'          => 'Cyclone Slider Pro',
                         'slug'          => 'cyclone-slider-pro',
                         'desc'          => 'Cyclone Slider Pro is a slideshow plugin, which can be an image, video or custom html and has transitioning between slides.',
@@ -604,8 +608,10 @@ if ( ! class_exists( 'kt_api_manager' ) ) {
             if ( $_REQUEST['option_page'] != $this->kt_deactivate_checkbox ) {
 
                 if ( $activation_status == 'Deactivated' || $activation_status == '' || $api_key == '' || $api_email == '' || $checkbox_status == 'on' || $current_api_key != $api_key ) {
-                    if ( $current_api_key != $api_key ) {
-                        $this->replace_license_key( $current_api_key );
+                    if(isset($current_api_key) && !empty($current_api_key)) {
+                        if ( $current_api_key != $api_key ) {
+                            $this->replace_license_key( $current_api_key );
+                        }
                     }
 
                     $args = array(
@@ -728,6 +734,15 @@ if ( ! class_exists( 'kt_api_manager' ) ) {
             // print_r($activate_results); exit;
 
             $options = ( $input == 'on' ? 'on' : 'off' );
+            if($options == 'on' && $activation_status != 'Activated') {
+                update_option( $this->kt_instance_key, wp_generate_password( 12, false ) );
+                $update = array(
+                        $this->kt_api_key => '',
+                        $this->kt_activation_email => ''
+                        );
+                $merge_options = array_merge( $this->kt_options, $update );
+                update_option( $this->kt_data_key, $merge_options );
+            }
 
             if ( $options == 'on' && $activation_status == 'Activated' && $this->kt_options[$this->kt_api_key] != '' && $this->kt_options[$this->kt_activation_email] != '' ) {
 
@@ -955,4 +970,4 @@ if ( ! class_exists( 'kt_api_manager' ) ) {
 
 }
 
-kt_api_manager::instance( 'virtue_premium_api_key', 'kt_api_manager_virtue_premium_instance', 'kt_api_manager_virtue_premium_activated', 'Virtue Premium Activation', 'virtue_premium' );
+$GLOBALS['kt_api_manager'] = kt_api_manager::instance( 'virtue_premium_api_key', 'kt_api_manager_virtue_premium_instance', 'kt_api_manager_virtue_premium_activated', 'Virtue Premium Activation', 'virtue_premium' );

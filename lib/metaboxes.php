@@ -17,6 +17,11 @@ add_filter( 'cmb_meta_boxes', 'virtue_metaboxes' );
  * @return array
  */
 //add_filter('cmb_icomoon', 'cmb_icomoon');
+add_filter( 'cmb_render_hide_type', 'kt_meta_hide_type', 10, 2 );
+function kt_meta_hide_type( $field, $meta ) {
+	echo '';
+}
+
 add_filter( 'cmb_render_imag_select_taxonomy', 'imag_render_imag_select_taxonomy', 10, 2 );
 function imag_render_imag_select_taxonomy( $field, $meta ) {
 
@@ -128,6 +133,17 @@ function virtue_metaboxes( array $meta_boxes ) {
 						'id'   => $prefix . 'subtitle',
 						'type' => 'textarea_code',
 					),
+					array(
+						'name'    => __("Show Page Title", 'virtue' ),
+						'desc'    => '',
+						'id'      => $prefix . 'show_page_title',
+						'type'    => 'select',
+						'options' => array(
+							array( 'name' => __('Site Default', 'virtue' ), 'value' => 'default', ),
+							array( 'name' => __("Show", 'virtue' ), 'value' => 'show', ),
+							array( 'name' => __("Hide", 'virtue' ), 'value' => 'hide', ),
+						),
+					),
 				)
 			);
 $meta_boxes[] = array(
@@ -221,7 +237,7 @@ $meta_boxes[] = array(
 				'name'    => __('Choose Sidebar', 'virtue'),
 				'desc'    => '',
 				'id'      => $prefix . 'sidebar_choice',
-				'type'    => 'imag_select_sidebars',
+				'type'    => 'imag_select_sidebars_product',
 			),
 			array(
 				'name' => __('Author Info', 'virtue'),
@@ -288,7 +304,7 @@ $meta_boxes[] = array(
 					array( 'name' => __('Image Carousel', 'virtue'), 'value' => 'imgcarousel', ),
 					array( 'name' => __('Rev Slider', 'virtue'), 'value' => 'rev', ),
 					array( 'name' => __('Kadence Slider', 'virtue'), 'value' => 'ktslider', ),
-					array( 'name' => __('Cyclone Slider', 'virtue'), 'value' => 'cyclone', ),
+					array( 'name' => __('Shortcode Slider', 'virtue'), 'value' => 'cyclone', ),
 					array( 'name' => __('Image Grid', 'virtue'), 'value' => 'imagegrid', ),
 					array( 'name' => __('Image List', 'virtue'), 'value' => 'imagelist', ),
 					array( 'name' => __('Image List Style 2', 'virtue'), 'value' => 'imagelist2', ),
@@ -310,7 +326,7 @@ $meta_boxes[] = array(
 				),
 			),
 			array(
-				'name' => __("If Revolution, Cyclone or Kadence Slider", 'virtue' ),
+				'name' => __("If Kadence or Shortcode Slider", 'virtue' ),
 				'desc' => __("Paste Slider Shortcode here", 'virtue' ),
 				'id'   => $prefix . 'shortcode_slider',
 				'type' => 'textarea_code',
@@ -768,6 +784,28 @@ $meta_boxes[] = array(
 				),
 			),
 			array(
+				'name'    => __('Order Items By', 'virtue'),
+				'desc'    => '',
+				'id'      => $prefix . 'staff_orderby',
+				'type'    => 'select',
+				'options' => array(
+					array( 'name' => __('Menu Order', 'virtue'), 'value' => 'menu_order', ),
+					array( 'name' => __('Title', 'virtue'), 'value' => 'title', ),
+					array( 'name' => __('Date', 'virtue'), 'value' => 'date', ),
+					array( 'name' => __('Random', 'virtue'), 'value' => 'rand', ),
+				),
+			),
+			array(
+				'name'    => __('Order', 'virtue'),
+				'desc'    => '',
+				'id'      => $prefix . 'staff_order',
+				'type'    => 'select',
+				'options' => array(
+					array( 'name' => __('ASC', 'virtue'), 'value' => 'ASC', ),
+					array( 'name' => __('DESC', 'virtue'), 'value' => 'DESC', ),
+				),
+			),
+			array(
                 'name' => __('Limit to Group', 'virtue'),
                 'desc' => '',
                 'id' => $prefix .'staff_type',
@@ -957,7 +995,7 @@ $meta_boxes[] = array(
 					array( 'name' => __('Image Carousel Slider', 'virtue'), 'value' => 'carousel', ),
 					array( 'name' => __('Revolution Slider', 'virtue'), 'value' => 'rev', ),
 					array( 'name' => __('Kadence Slider', 'virtue'), 'value' => 'ktslider', ),
-					array( 'name' => __('Cyclone Slider', 'virtue'), 'value' => 'cyclone', ),
+					array( 'name' => __('Shortcode Slider', 'virtue'), 'value' => 'cyclone', ),
 					array( 'name' => __('Video', 'virtue'), 'value' => 'video', ),
 					array( 'name' => __('Image', 'virtue'), 'value' => 'image', ),
 				),
@@ -969,7 +1007,7 @@ $meta_boxes[] = array(
 				'type' => 'text_small',
 			),
 			array(
-				'name' => __('If Cyclone or Kadence Slider', 'virtue'),
+				'name' => __('If Kadence or Shortcode Slider', 'virtue'),
 				'desc' => __('Paste the slider shortcode here (example: [cycloneslider id="slider1"])', 'virtue'),
 				'id'   => $prefix . 'post_cyclone',
 				'type' => 'textarea_code',

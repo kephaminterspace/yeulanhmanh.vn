@@ -49,7 +49,14 @@ function kad_testimonial_shortcode_function( $atts, $content) {
 	ob_start(); ?>
 	<div class="home-testimonial">
 		<div id="testimonialwrapper-<?php echo esc_attr($id);?>" class="rowtight reinit-isotope init-isotope" data-fade-in="<?php echo esc_attr($animate);?>" data-iso-selector=".t_item" data-iso-style="<?php echo esc_attr($isostyle);?>" data-iso-filter="false"> 
-            <?php $wp_query = null; 
+            <?php 
+            	if( isset( $wp_query ) ) {
+            		$temp = $wp_query;
+            	} else {
+            		$temp = null;
+            	}
+
+            	  $wp_query = null; 
 				  $wp_query = new WP_Query();
 				  $wp_query->query(array(
 				  	'orderby' 			=> $orderby,
@@ -110,7 +117,10 @@ function kad_testimonial_shortcode_function( $atts, $content) {
 					<li class="error-not-found"><?php _e('Sorry, no testimonial entries found.', 'virtue');?></li>
 				<?php endif; ?>
                 </div> <!-- testimonialwrapper -->
-                    <?php $wp_query = null; wp_reset_query(); ?>
+                    <?php 
+                    
+                    $wp_query = $temp;  // Reset
+                    wp_reset_query(); ?>
 		</div><!-- /.home-testimonial -->
             		
 

@@ -78,9 +78,21 @@ function kadence_sidebar_id() {
         } else {
           $sidebar = 'sidebar-primary';
         }
-    } elseif( class_exists('woocommerce') and (is_account_page())) {
-            $sidebar = '';
-            get_template_part('templates/account', 'sidebar');
+    } elseif (is_singular('post') ) {
+      global $post;
+        $sidebar_name = get_post_meta( $post->ID, '_kad_sidebar_choice', true ); 
+        if (empty($sidebar_name) || $sidebar_name == 'default') {
+          global $virtue_premium;
+          if(!empty($virtue_premium['blogpost_sidebar_id_default'])) {
+            $sidebar = $virtue_premium['blogpost_sidebar_id_default'];
+          } else {
+            $sidebar = 'sidebar-primary';
+          }
+        } else if(!empty($sidebar_name)) {
+          $sidebar = $sidebar_name;
+        } else {
+          $sidebar = 'sidebar-primary';
+        }
     } elseif( is_page_template('page-blog.php') || is_page_template('page-blog-grid.php') || is_page_template('page-sidebar.php') || is_page_template('page-feature-sidebar.php') || is_single() || is_singular('staff') ) {
       global $post;
         $sidebar_name = get_post_meta( $post->ID, '_kad_sidebar_choice', true ); 

@@ -15,7 +15,7 @@ global $post, $virtue_premium;
         }
     }
     if ($kt_headcontent == 'carousel') { ?>
-        <section class="postfeat carousel_outerrim loading">
+        <div class="postfeat kt-upper-head-content carousel_outerrim loading">
             <div id="post-carousel-gallery-<?php echo $post->ID;?>" class="fredcarousel fadein-carousel" style="overflow:hidden; height: <?php echo esc_attr($slideheight);?>px">
                 <div class="gallery-carousel kad-light-wp-gallery initimagecarousel" data-carousel-container="#post-carousel-gallery-<?php echo $post->ID;?>" data-carousel-transition="300" data-carousel-auto="true" data-carousel-speed="7000" data-carousel-id="postimgcarousel-<?php echo $post->ID;?>">
                   <?php $image_gallery = get_post_meta( $post->ID, '_kad_image_gallery', true );
@@ -38,8 +38,11 @@ global $post, $virtue_premium;
                                           $image_src_output = 'src="'.esc_url($image[0]).'"'; 
                                        }
                                   echo '<div class="carousel_gallery_item" style="float:left; margin: 0 5px; width:'.esc_attr($image[1]).'px; height:'.esc_attr($image[2]).'px;">';
-                                  echo '<a href="'.esc_url($attachment_url).'" data-rel="lightbox">';
-                                  echo '<img '.$image_src_output.' width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" itemprop="image" alt="'.esc_attr(get_post_field('post_excerpt', $attachment)).'" '.kt_get_srcset_output($image[1], $image[2], $attachment_url, $attachment).' />';
+                                  echo '<a href="'.esc_url($attachment_url).'" data-rel="lightbox" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">';
+                                  echo '<img '.$image_src_output.' width="'.esc_attr($image[1]).'" height="'.esc_attr($image[2]).'" itemprop="contentUrl" alt="'.esc_attr(get_post_field('post_excerpt', $attachment)).'" '.kt_get_srcset_output($image[1], $image[2], $attachment_url, $attachment).' />';
+                                              echo '<meta itemprop="url" content="'.esc_url($image[0]).'">';
+                                                echo '<meta itemprop="width" content="'.esc_attr($image[1]).'">';
+                                                echo '<meta itemprop="height" content="'.esc_attr($image[2]).'">';
                                   echo '</a></div>';
                                 }
                               }
@@ -49,13 +52,21 @@ global $post, $virtue_premium;
               <a id="prevport-postimgcarousel-<?php echo $post->ID;?>" class="prev_carousel icon-arrow-left" href="#"></a>
               <a id="nextport-postimgcarousel-<?php echo $post->ID;?>" class="next_carousel icon-arrow-right" href="#"></a>
           </div> <!--fredcarousel-->
-        </section>
+        </div>
 <?php } else if ($kt_headcontent == 'shortcode') { ?>
-      <div class="sliderclass">
+      <div class="sliderclass kt-upper-head-content postfeat">
         <?php 
         $shortcodeslider = get_post_meta( $post->ID, '_kad_post_shortcode', true );
         if(!empty($shortcodeslider)) { 
             echo do_shortcode( $shortcodeslider ); 
         } ?>
+         <?php if (has_post_thumbnail( $post->ID ) ) { 
+                        $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' ); ?>
+                    <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                        <meta itemprop="url" content="<?php echo esc_url($image[0]); ?>">
+                        <meta itemprop="width" content="<?php echo esc_attr($image[1])?>">
+                        <meta itemprop="height" content="<?php echo esc_attr($image[2])?>">
+                    </div>
+                    <?php } ?>
         </div><!--sliderclass-->
 <?php } 

@@ -21,6 +21,7 @@ function kadence_setup() {
   if ( is_admin() && 'themes.php' == $pagenow && isset( $_GET['activated'] ) ) {
       wp_redirect(admin_url("themes.php?page=kt_api_manager_dashboard"));
   }
+  define( 'VIRTUE_VERSION', '3.8.9' );
 }
 add_action('after_setup_theme', 'kadence_setup');
 
@@ -70,15 +71,3 @@ function kt_fav_output_seo(){
 }
 add_action('wp_head', 'kt_fav_output_seo', 5);
 
-// Backwards compatibility for older than PHP 5.3.0
-if (!defined('__DIR__')) { define('__DIR__', dirname(__FILE__)); }
-
-/**
- * Define helper constants
- */
-$get_theme_name = explode('/themes/', get_template_directory());
-
-define('RELATIVE_PLUGIN_PATH',  str_replace(home_url() . '/', '', plugins_url()));
-define('RELATIVE_CONTENT_PATH', str_replace(home_url() . '/', '', content_url()));
-define('THEME_NAME',            next($get_theme_name));
-define('THEME_PATH',            RELATIVE_CONTENT_PATH . '/themes/' . THEME_NAME);

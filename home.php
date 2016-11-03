@@ -1,10 +1,10 @@
-<div id="pageheader" class="titleclass">
-    <div class="container">
-      <?php get_template_part('templates/page', 'header'); ?>
-    </div><!--container-->
-  </div><!--titleclass-->
+  <?php 
+    /**
+    * @hooked virtue_page_title - 20
+    */
+     do_action('kadence_page_title_container');
   
-  <?php $homeid = get_option( 'page_for_posts' );
+  $homeid = get_option( 'page_for_posts' );
   if(get_post_meta( $homeid, '_kad_blog_summery', true ) == 'full') {
     $summary    = 'full'; 
     $postclass  = "single-article fullpost";
@@ -16,6 +16,8 @@
     <div id="content" class="container">
       <div class="row">
       <div class="main <?php echo kadence_main_class(); ?>  <?php echo esc_attr($postclass); ?>" role="main">
+      <?php 
+      do_action('kadence_page_before_content'); ?>
 
 <?php if (!have_posts()) : ?>
   <div class="alert">

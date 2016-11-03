@@ -31,6 +31,7 @@ function kadence_post_featured_image_output($id, $width, $height) {
 	<?php
 }
 
+add_action( 'kadence_post_grid_small_excerpt_header', 'virtue_post_mini_excerpt_header_title', 10 );
 add_action( 'kadence_post_mini_excerpt_header', 'virtue_post_mini_excerpt_header_title', 10 );
 function virtue_post_mini_excerpt_header_title() {
 	echo '<a href="'.get_the_permalink().'">';
@@ -99,6 +100,8 @@ add_action( 'kadence_single_post_footer', 'virtue_post_footer_pagination', 10 );
 function virtue_post_footer_pagination() {
 	wp_link_pages(array('before' => '<nav class="pagination kt-pagination">', 'after' => '</nav>', 'link_before'=> '<span>','link_after'=> '</span>'));
 }
+
+add_action( 'kadence_post_grid_excerpt_footer', 'virtue_post_footer_tags', 10 );
 add_action( 'kadence_post_excerpt_footer', 'virtue_post_footer_tags', 10 );
 add_action( 'kadence_single_loop_post_footer', 'virtue_post_footer_tags', 20 );
 add_action( 'kadence_single_post_footer', 'virtue_post_footer_tags', 20 );
@@ -110,9 +113,13 @@ function virtue_post_footer_tags() {
 		echo '</span>';
 	}
 }
+add_action( 'kadence_post_excerpt_footer', 'virtue_post_footer_meta', 30 );
+add_action( 'kadence_post_mini_excerpt_footer', 'virtue_post_footer_meta', 30 );
+add_action( 'kadence_post_carousel_small_excerpt_footer', 'virtue_post_footer_meta', 30 );
+add_action( 'kadence_single_loop_post_footer', 'virtue_post_footer_meta', 30 );
 add_action( 'kadence_single_post_footer', 'virtue_post_footer_meta', 30 );
 function virtue_post_footer_meta() {
-echo '<meta itemprop="dateModified" content="'.esc_attr(get_the_modified_date()).'">';
+	get_template_part('templates/entry', 'meta-footer');
 }
 
 add_action( 'kadence_single_post_footer', 'virtue_post_nav', 40 );
@@ -156,3 +163,45 @@ add_action( 'kadence_single_post_after', 'virtue_post_comments', 40 );
 function virtue_post_comments() {
 	comments_template('/templates/comments.php');
 }
+
+
+
+// POST GRID 
+
+
+add_action( 'kadence_post_grid_excerpt_header', 'virtue_post_grid_excerpt_header_title', 10 );
+function virtue_post_grid_excerpt_header_title() {
+	echo '<a href="'.get_the_permalink().'">';
+    	echo '<h4 class="entry-title" itemprop="name headline">';
+          		the_title();
+    	echo '</h4>';
+    echo '</a>';
+}
+
+add_action( 'kadence_post_grid_small_excerpt_header', 'virtue_post_grid_header_meta', 20 );
+add_action( 'kadence_post_grid_excerpt_header', 'virtue_post_grid_header_meta', 20 );
+function virtue_post_grid_header_meta() {
+	get_template_part('templates/entry', 'meta-grid-tooltip-subhead');
+}
+
+// Carousel
+
+add_action( 'kadence_post_carousel_small_excerpt_header', 'virtue_post_carousel_title', 10 );
+function virtue_post_carousel_title() {
+	echo '<h5 class="entry-title">';
+		the_title();
+	echo '</h5>';
+}
+
+add_action( 'kadence_post_carousel_small_excerpt_header', 'virtue_post_carousel_date', 20 );
+function virtue_post_carousel_date() {
+	echo '<div class="subhead">';
+		echo '<span class="postday kad-hidedate">'.get_the_date('j M Y').'</span>';
+	echo '</div>';
+}
+
+add_action( 'kadence_post_carousel_small_excerpt_footer', 'virtue_post_footer_meta_author', 30 );
+function virtue_post_footer_meta_author() {
+    echo '<meta class="author vcard fn" itemprop="author" content="'.esc_attr(get_the_author()).'"/>';
+}
+

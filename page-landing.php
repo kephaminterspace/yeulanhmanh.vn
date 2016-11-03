@@ -10,5 +10,10 @@ Template Name: Landing - no header
 				<div class="entry-content" itemprop="mainContentOfPage">
 					<?php get_template_part('templates/content', 'page'); ?>
 					</div>
-<?php global $virtue_premium; if(isset($virtue_premium['page_comments']) && $virtue_premium['page_comments'] == '1') { comments_template('/templates/comments.php');} ?>
+				<?php 
+                /**
+                * @hooked virtue_page_comments - 20
+                */
+                do_action('kadence_page_footer');
+                ?>
 	</div><!-- /.main -->

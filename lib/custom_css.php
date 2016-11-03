@@ -195,7 +195,7 @@ if(!empty($virtue_premium['header_bg_color'])) {
     $header_bg_y = '';
   }
   if(!empty($virtue_premium['header_bg_color']) || !empty($virtue_premium['bg_header_bg_img']['url'])) {
-    $headerclass = '.headerclass, .mobile-headerclass {background:'.$header_bg_color.' '.$header_bg_img.' '.$header_bg_repeat.' '.$header_bg_x.' '.$header_bg_y.';}';
+    $headerclass = '.headerclass, .mobile-headerclass, .kt-mainnavsticky .sticky-wrapper.is-sticky #nav-main {background:'.$header_bg_color.' '.$header_bg_img.' '.$header_bg_repeat.' '.$header_bg_x.' '.$header_bg_y.';}';
   } else {
     $headerclass = '';
   }
@@ -394,7 +394,7 @@ if(isset($virtue_premium['logo_layout']) and ($virtue_premium['logo_layout'] == 
     if (isset($virtue_premium['show_mobile_btn']) && $virtue_premium['show_mobile_btn'] == 1) { 
       $menu_layout_center = '@media (max-width: 992px) {.nav-trigger .nav-trigger-case {top: 0;} #kad-mobile-nav {margin-top:50px;}}';
       } else {
-      $menu_layout_center = '@media (max-width: 992px) {.nav-trigger .nav-trigger-case {position: static; display: block; width: 100%;}}';
+      $menu_layout_center = '@media (max-width: 992px) {.nav-trigger .nav-trigger-case {position: static; display: block; width: 100%;}}@media only screen and (device-width: 768px) {.nav-trigger .nav-trigger-case {position: static; display: block; width: 100%;}}';
       }
   } else {
   $menu_layout_center = '';
@@ -513,7 +513,7 @@ if(isset($virtue_premium['virtue_animate_in']) && $virtue_premium['virtue_animat
   $animate = '';
 }
 if(isset($virtue_premium['topbar_mobile']) && $virtue_premium['topbar_mobile'] == '1') {
-    $topbar_mobile = '@media (max-width: 991px) {.topbarmenu ul.sf-menu {display: none;} } @media (max-width: 768px) {#topbar-search form {display: none;}}';
+    $topbar_mobile = '@media (max-width: 991px) {.topbarmenu ul.sf-menu {display: none;} } @media only screen and (device-width: 768px) {.topbarmenu ul.sf-menu {display: none;} } @media (max-width: 768px) {#topbar-search form {display: none;}}';
 } else {
     $topbar_mobile = '';
 }

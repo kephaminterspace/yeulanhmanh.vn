@@ -19,19 +19,24 @@ if ( ! defined( 'ABSPATH' ) ) {
         <ul class="slides">
             <?php foreach ($slides as $slide) :
                     if(!empty($slide['target']) && $slide['target'] == 1) {$target = '_blank';} else {$target = '_self';} 
-                    $image = aq_resize($slide['url'], $slidewidth, $slideheight, true);
-                    if(empty($image)) {$image = $slide['url'];} 
-                        ?>
+                    $image = aq_resize($slide['url'], $slidewidth, $slideheight, true, false, false, $slide['attachment_id']);
+                    if(empty($image[0])) {$image = array($slide['url'],$slidewidth,$slideheight);} 
+                    $img_srcset_output = kt_get_srcset_output( $image[1], $image[2], $slide['url'], $slide['attachment_id']);
+                    ?>
                       <li> 
-                        <?php if($slide['link'] != '') echo '<a href="'.esc_url($slide['link']).'" target="'.esc_attr($target).'">'; ?>
-                          <img src="<?php echo esc_url($image); ?>" width="<?php echo esc_attr($slidewidth);?>" height="<?php echo esc_attr($slideheight);?>" alt="<?php echo esc_attr($slide['title']); ?>" />
+                        <?php if(!empty($slide['link'])) {
+                                echo '<a href="'.esc_url($slide['link']).'" target="'.esc_attr($target).'">';
+                            } ?>
+                          <img src="<?php echo esc_url($image[0]); ?>" width="<?php echo esc_attr($image[1]);?>" height="<?php echo esc_attr($image[2]);?>" <?php echo $img_srcset_output;?> alt="<?php echo esc_attr($slide['title']); ?>" />
                               <?php if ($captions == '1') { ?> 
                                 <div class="flex-caption">
                                 <?php if ($slide['title'] != '') echo '<div class="captiontitle headerfont">'.$slide['title'].'</div>'; ?>
                                 <?php if ($slide['description'] != '') echo '<div><div class="captiontext headerfont"><p>'.$slide['description'].'</p></div></div>';?>
                                 </div> 
                               <?php } ?>
-                        <?php if($slide['link'] != '') echo '</a>'; ?>
+                        <?php if(!empty($slide['link'])) {
+                                echo '</a>';
+                            } ?>
                       </li>
                   <?php endforeach; ?>
         </ul>

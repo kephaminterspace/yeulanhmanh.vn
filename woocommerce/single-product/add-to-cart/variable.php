@@ -35,10 +35,10 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 				<tr>
 					<?php if(isset($virtue_premium['product_radio']) && $virtue_premium['product_radio'] == 1) { ?>
 
-						<td class="product_label"><label for="<?php echo sanitize_title( $attribute_name ); ?>"><?php echo wc_attribute_label( $attribute_name ); ?> <span class="kad_required" title="required">*</span></label></td>
-						 <td class="value">
+						<td class="product_label"><label for="<?php echo sanitize_title( $attribute_name ); ?>"><?php echo wc_attribute_label( $attribute_name ); ?> </label></td>
+						 <td class="product_value">
 						 <?php  $selected = isset( $_REQUEST[ 'attribute_' . sanitize_title( $attribute_name ) ] ) ? wc_clean( $_REQUEST[ 'attribute_' . sanitize_title( $attribute_name ) ] ) : $product->get_variation_default_attribute( $attribute_name );
-						 	kt_wc_radio_variation_attribute_options( array( 'options' => $options, 'attribute' => $attribute_name, 'product' => $product, 'selected' => $selected ) );
+						 	kad_wc_radio_variation_attribute_options( array( 'options' => $options, 'attribute' => $attribute_name, 'product' => $product, 'selected' => $selected, 'class'=>'kad-select' ) );
 						 	echo end( $attribute_keys ) === $attribute_name ? apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations" style="visibility: hidden;" href="#">' . $cleartext . '</a>' ) : '';
 						 ?>
 

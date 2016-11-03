@@ -96,7 +96,7 @@ $cc = apply_filters('kt_home_custom_carousel_columns', $cc);
             <div class="<?php echo esc_attr($itemsize); ?> kad_customcarousel_item">
               <div class="grid_item product product_item custom_carousel_item all postclass">
                 <a href="<?php if(!empty($c_item['link'])) echo esc_url($c_item['link']); ?>" class="custom_carousel_item_link" target="<?php echo esc_attr($target); ?>">
-                    <img src="<?php echo esc_url($image[0]); ?>" width="<?php echo esc_attr($image[1]); ?>" height="<?php echo esc_attr($image[2]); ?>" alt="<?php if(!empty($c_item['title'])) echo esc_attr($c_item['title']);?>" />
+                    <img src="<?php echo esc_url($image[0]); ?>" width="<?php echo esc_attr($image[1]); ?>" height="<?php echo esc_attr($image[2]); ?>" <?php echo kt_get_srcset_output($image[1], $image[2], $c_item['url'], $c_item['attachment_id']);?> alt="<?php if(!empty($c_item['title'])) echo esc_attr($c_item['title']);?>" />
                 </a>
                 
                 <div class="custom_carousel_details">

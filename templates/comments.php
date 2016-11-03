@@ -47,7 +47,7 @@
 <?php endif; ?>
 
 <?php if (comments_open()) : ?>
-  <section id="respond">
+  <section id="respond-container">
     <?php $comment_args = array( 'fields' => apply_filters( 'comment_form_default_fields', array(
            'author' => '<div class="col-md-4">' . '<label for="author">' . __('Name', 'virtue') . ( $req ? ' <span class="comment-required">*</span>' : '' ) . '</label> ' .
                         '<input id="author" name="author" type="text" value="' . esc_attr( $comment_author ) . '" ' . ( $req ? 'aria-required="true"' : '') . ' /></div>',

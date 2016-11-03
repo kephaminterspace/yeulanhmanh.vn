@@ -26,34 +26,45 @@ border-color: rgba(0,0,0,0.05);
 background: 0;
 text-align: left;
 overflow: hidden;
+    position: relative;
 display: block;
 height: 40px;
 text-transform: uppercase;
-line-height: 40px;
+line-height: 38px;
 font-weight: bold;
 transition: background .6s ease-out;
   -webkit-transition: background .6s ease-out;
   -moz-transition: background .6s ease-out;
   -o-transition: background .6s ease-out;
 }
+.customSelect .customSelectInner:after {
+    font-family: 'virtue_icons';
+    speak: none;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    content: "\e3b2";
+    font-size: 12px;
+    margin-right: 0;
+    height: 38px;
+    top: 1px;
+    width: 30px;
+    border-left: 1px solid #eee;
+    text-align: center;
+    right: 1px;
+    background: #f2f2f2;
+    position: absolute;
+    line-height: 40px;
+    z-index: 0;
+}
 .customSelect.customSelectHover {
   background: #f2f2f2;
   background: rgba(0,0,0,0.01);
 }
-.customSelect .customSelectInner:before {
-font-family: 'virtue_icons';
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  -webkit-font-smoothing: antialiased;
-  content: "\e3b2";
-  font-size: 12px;
-margin-right: 10px;
-text-align: left;
-height: 40px;
-line-height: 40px;
+select.hasCustomSelect {
+    z-index: 2;
 }
 .customSelectInner {
   margin-left: 10px;
@@ -298,6 +309,17 @@ margin-left: 10px;
 }
 .product_item .kad-product-flipper.kt-product-intrinsic, .product_item .kad-product-noflipper.kt-product-intrinsic {
     height: 0;
-    overflow: hidden;
+    //overflow: hidden;
+}
+.kt-cat-intrinsic img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.kt-cat-intrinsic {
+    position: relative;
+    height: 0;
 }
 

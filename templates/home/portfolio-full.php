@@ -115,8 +115,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                  	'lightbox' => $plb,
                  	'showexcerpt' => $portfolio_item_excerpt,
                  	'showtypes' => $portfolio_show_types,
-                 	'slidewidth' => $slidewidth,
-                 	'slideheight' => $slideheight,
+                 	'slidewidth' => apply_filters('kt_portfolio_grid_image_width', $slidewidth),
+                 	'slideheight' => apply_filters('kt_portfolio_grid_image_height', $slideheight),
                  	);
 
 

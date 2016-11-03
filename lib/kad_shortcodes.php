@@ -4,11 +4,11 @@
 // Enqueue scripts
 
 function kad_shortcode_button_scripts(){
-	 wp_enqueue_media();
-  	wp_enqueue_script('kadwidget_upload', get_template_directory_uri() . '/assets/js/min/widget_upload-ck.js');
+	wp_enqueue_media();
+  	wp_enqueue_script('kadwidget_upload', get_template_directory_uri() . '/assets/js/min/widget_upload-min.js');
 	wp_enqueue_style( 'wp-color-picker' );
 	wp_enqueue_style('kad-shortcode-css', get_template_directory_uri() . '/lib/kad_shortcodes/css/kad-short-pop.css'); 
-	wp_enqueue_script('kad_shortcode',get_template_directory_uri() . '/lib/kad_shortcodes/js/kad_shortcode_pop.js',array( 'jquery', 'wp-color-picker' ),'1.2.0 ', TRUE);
+	wp_enqueue_script('kad_shortcode',get_template_directory_uri() . '/lib/kad_shortcodes/js/kad_shortcode_pop.js',array( 'jquery', 'wp-color-picker' ),'1.3.0 ', TRUE);
 }
 
 add_action('admin_enqueue_scripts','kad_shortcode_button_scripts');
@@ -108,11 +108,32 @@ $virtue_shortcodes['columns'] = array(
 			'title'=>__('Columns','virtue'),
 			'values' => array(
 				"span6" => '<img src="'. get_template_directory_uri().'/assets/img/twocolumn.jpg" />' . __("Two Columns", "virtue"),
-				"span4right" => '<img src="'. get_template_directory_uri().'/assets/img/twocolumnright.jpg" />' . __("Two Columns offset Right", "virtue"),
-				"span4left" => '<img src="'. get_template_directory_uri().'/assets/img/twocolumnleft.jpg" />' . __("Two Columns offset Left", "virtue"),
+				"span4right" => '<img src="'. get_template_directory_uri().'/assets/img/twocolumnleft.jpg" />' . __("Two Columns offset Right", "virtue"),
+				"span4left" => '<img src="'. get_template_directory_uri().'/assets/img/twocolumnright.jpg" />' . __("Two Columns offset Left", "virtue"),
 				"span4" => '<img src="'. get_template_directory_uri().'/assets/img/threecolumn.jpg" />' . __("Three Columns", "virtue"),
 				"span3" => '<img src="'. get_template_directory_uri().'/assets/img/fourcolumn.jpg" />' . __("Four Columns", "virtue"),
 				)
+		),
+	) 
+);
+
+//table
+$virtue_shortcodes['table'] = array( 
+	'title'=>__('Table', 'virtue'), 
+	'attr'=>array(
+		'head'=>array(
+			'type'=>'checkbox', 
+			'title'=>__('Use a table head?','virtue')
+		),
+		'columns'=>array(
+			'type'=>'text', 
+			'title'=>__('Columns (just a number)', 'virtue'),
+			'default' => '2',
+		),
+		'rows'=>array(
+			'type'=>'text', 
+			'title'=>__('Extra Rows (just a number)', 'virtue'),
+			'default' => '2',
 		),
 	) 
 );
@@ -238,6 +259,10 @@ $virtue_shortcodes['kt_box'] = array(
 			'type'=>'text', 
 			'title'=>__('Min Height (just a number)', 'virtue'),
 			'default' => '0',
+		),
+		'valign'=>array(
+			'type'=>'checkbox', 
+			'title'=>__('Vertical align middle?','virtue')
 		),
 		'background'=>array(
 			'type'=>'color', 
@@ -711,6 +736,10 @@ $virtue_shortcodes['kt_typed'] = array(
 		'fourth_sentence'=>array(
 			'type'=>'text', 
 			'title'=>__('Fourth Sentence (optional)', 'virtue')
+		),
+		'startdelay'=>array(
+			'type'=>'text', 
+			'title'=>__('Start Delay (milliseconds eg: 500)', 'pinnacle')
 		),
 		'loop'=>array(
 			'type'=>'checkbox', 

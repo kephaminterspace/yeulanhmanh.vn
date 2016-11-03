@@ -133,7 +133,7 @@ function kad_remove_more_link_scroll( $link ) {
 add_filter( 'the_content_more_link', 'kad_remove_more_link_scroll' );
 function kadence_excerpt_more($more) {
   global $virtue_premium; if(!empty($virtue_premium['post_readmore_text'])) {$readmore = $virtue_premium['post_readmore_text'];} else { $readmore =  __('Read More', 'virtue') ;}
-  return ' &hellip; <a href="' . get_permalink() . '">'. $readmore . '</a>';
+  return ' &hellip; <a class="kt-excerpt-readmore" href="' . get_permalink() . '">'. $readmore . '</a>';
 }
 add_filter('excerpt_length', 'kadence_excerpt_length', 999);
 add_filter('excerpt_more', 'kadence_excerpt_more');
@@ -144,7 +144,7 @@ function kadence_custom_excerpt_more( $excerpt ) {
       global $virtue_premium; 
       if(isset($virtue_premium['custom_excerpt_readmore']) && $virtue_premium['custom_excerpt_readmore'] == 1) {
         if(!empty($virtue_premium['post_readmore_text'])) {$readmore = $virtue_premium['post_readmore_text'];} else { $readmore =  __('Read More', 'virtue') ;}
-        $excerpt_more = '&hellip; <a href="' . get_permalink() . '">'. $readmore . '</a>';
+        $excerpt_more = '&hellip; <a class="kt-excerpt-readmore" href="' . get_permalink() . '">'. $readmore . '</a>';
       }
   }
   return $excerpt . $excerpt_more;

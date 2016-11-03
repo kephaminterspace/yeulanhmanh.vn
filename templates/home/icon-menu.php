@@ -22,8 +22,8 @@ if ( ! defined( 'ABSPATH' ) ) {
         $itemsize = 'tcol-lg-3 tcol-md-3 tcol-sm-6 tcol-xs-6 tcol-ss-12';
     }             
     ?>
-                <div class="home-margin home-padding">
-                	<div class="rowtight homepromo">
+                <div class="home-margin home-padding kt-home-icon-menu">
+                	<div class="rowtight homepromo clearfix kt-home-iconmenu-container" data-equal-height="1">
                     <?php $counter = 1;?>
                         <?php foreach ($icons as $icon) : ?>
                         <?php if(!empty($icon['target']) && $icon['target'] == 1) {$target = '_blank';} else {$target = '_self';} ?>

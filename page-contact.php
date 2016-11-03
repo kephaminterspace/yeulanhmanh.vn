@@ -126,7 +126,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php global $virtue_premium, $post;
 if(isset($_POST['submitted'])) {
 	if(isset($form_math) && $form_math == 'yes') {
-		if(md5($_POST['kad_captcha']) != $_POST['hval']) {
+		$math_answer = trim($_POST['kad_captcha']);
+		if(md5($math_answer) != $_POST['hval']) {
 			$kad_captchaError = __('Check your math.', 'virtue');
 			$hasError = true;
 		}
@@ -178,12 +179,12 @@ if(isset($_POST['submitted'])) {
 		$emailSent = true;
 	}
 
-} ?>
-  	<div id="pageheader" class="titleclass">
-		<div class="container">
-			<?php get_template_part('templates/page', 'header'); ?>
-			</div><!--container-->
-	</div><!--titleclass-->
+}    
+	/**
+    * @hooked virtue_page_title - 20
+    */
+     do_action('kadence_page_title_container');
+    ?>
 <?php if ($map == 'yes') { ?>
             <div id="mapheader" class="titleclass">
             	<div class="container">
@@ -200,6 +201,8 @@ if(isset($_POST['submitted'])) {
 	  	<?php } else { ?>
       		<div id="main" class="col-md-12" role="main">
       	<?php } ?>
+      	<?php 
+                do_action('kadence_page_before_content'); ?>
       			<div class="entry-content" itemprop="mainContentOfPage">
 					<?php get_template_part('templates/content', 'page'); ?>
 				</div>

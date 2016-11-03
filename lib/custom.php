@@ -11,38 +11,73 @@ add_action( 'after_switch_theme', 'kf_reflush_rules' );
 
 add_action( 'kt_beforeheader', 'revolutionslider_top', 1 );
 function revolutionslider_top() {
-  if ( is_front_page() ){
-  global $virtue_premium;
-  if(isset($virtue_premium['above_header_slider']) && $virtue_premium['above_header_slider'] == 1) {
-    if(isset($virtue_premium['choose_slider']) && ($virtue_premium['choose_slider'] == 'ktslider' || $virtue_premium['choose_slider'] == 'cyclone' || $virtue_premium['choose_slider'] == 'rev' ||  $virtue_premium['choose_slider'] == 'ksp' ) ) {
-    if($virtue_premium['choose_slider'] == 'rev') {
-      echo '<div class="kad_fullslider">';
-      if( function_exists('putRevSlider') ) {
-      putRevSlider( $virtue_premium['rev_slider'] );
-      }
+    if ( is_front_page() ){
+    global $virtue_premium;
+    if(isset($virtue_premium['above_header_slider']) && $virtue_premium['above_header_slider'] == 1) {
+        if(isset($virtue_premium['choose_slider']) && ($virtue_premium['choose_slider'] == 'ktslider' || $virtue_premium['choose_slider'] == 'cyclone' || $virtue_premium['choose_slider'] == 'rev' ||  $virtue_premium['choose_slider'] == 'ksp' ) ) {
+            $mobile_detect = false;
+            if(isset($virtue_premium['mobile_switch']) && $virtue_premium['mobile_switch']  == '1') {
+                $mobile_slider = true;
+                $detect = new Mobile_Detect_Virtue; 
+                if(isset($virtue_premium['mobile_tablet_show']) && $virtue_premium['mobile_tablet_show']  == '1') {
+                    if($detect->isMobile()) {
+                        $mobile_detect = true;
+                    } else {
+                        $mobile_detect = false;
+                    }
+                } else {
+                    if($detect->isMobile() && !$detect->isTablet()) {
+                        $mobile_detect = true;
+                    } else {
+                        $mobile_detect = false;
+                    }
+                }
+            } else {
+                $mobile_slider = false;
+            }
+            if(($mobile_slider == true) && ($mobile_detect == true)){
+                $slider = $virtue_premium['choose_mobile_slider'];
+                echo '<div class="kad_fullslider_mobile">';
+                if ($slider == "rev") {
+                    get_template_part('templates/mobile_home/mobilerev', 'slider');
+                } else if ($slider == "ksp") {
+                    get_template_part('templates/mobile_home/mobileksp', 'slider');
+                } else if ($slider == "flex") {
+                    get_template_part('templates/mobile_home/mobileflex', 'slider');
+                } else if ($slider == "video") {
+                    get_template_part('templates/mobile_home/mobilevideo', 'block');
+                } else if ($slider == "cyclone") {
+                    get_template_part('templates/mobile_home/cyclone', 'slider');
+                }
+                echo '</div>';
+            } else {
+                if($virtue_premium['choose_slider'] == 'rev') {
+                    echo '<div class="kad_fullslider">';
+                    if( function_exists('putRevSlider') ) {
+                        putRevSlider( $virtue_premium['rev_slider'] );
+                    }
+                } else if($virtue_premium['choose_slider'] == 'ktslider') {
+                    echo '<div class="kad_fullslider">';
+                    echo do_shortcode('[kadence_slider id='.$virtue_premium['kt_slider'].']');
+                } else if($virtue_premium['choose_slider'] == 'ksp') {
+                    echo '<div class="kad_fullslider">';
+                    echo do_shortcode('[kadence_slider_pro id='.$virtue_premium['ksp_slider'].']');
+                } else if($virtue_premium['choose_slider'] == 'cyclone') {
+                    echo '<div class="kad_fullslider">';
+                    echo do_shortcode( $virtue_premium['home_cyclone_slider'] );
+                }
+
+                    if(isset($virtue_premium['above_header_slider_arrow']) && $virtue_premium['above_header_slider_arrow'] == 1) {
+                        echo '<div class="kad_fullslider_arrow"><a href="#kad-banner"><i class="icon-arrow-down"></i></a></div>';
+                    }
+                echo '</div>';
+                if(isset($virtue_premium['header_style']) && $virtue_premium['header_style'] == 'shrink') {
+                    $head_height = $virtue_premium['header_height']/2;
+                    echo '<style type="text/css" media="screen">@media (min-width: 992px) {.kad-header-style-three #kad-shrinkheader, .kad-header-style-three #logo a.brand, .kad-header-style-three #logo #thelogo, .kad-header-style-three #nav-main ul.sf-menu > li > a {height:'.$head_height.'px !important;line-height: '.$head_height.'px !important;}.kad-header-style-three #thelogo img {max-height: '.$head_height.'px !important;}}</style>';
+                }
+            }
+        }
     }
-    else if($virtue_premium['choose_slider'] == 'ktslider') {
-      echo '<div class="kad_fullslider">';
-      echo do_shortcode('[kadence_slider id='.$virtue_premium['kt_slider'].']');
-    } 
-    else if($virtue_premium['choose_slider'] == 'ksp') {
-      echo '<div class="kad_fullslider">';
-      echo do_shortcode('[kadence_slider_pro id='.$virtue_premium['ksp_slider'].']');
-    } 
-    else if($virtue_premium['choose_slider'] == 'cyclone') {
-      echo '<div class="kad_fullslider">';
-      echo do_shortcode( $virtue_premium['home_cyclone_slider'] );
-    }
-      if(isset($virtue_premium['above_header_slider_arrow']) && $virtue_premium['above_header_slider_arrow'] == 1) {
-        echo '<div class="kad_fullslider_arrow"><a href="#kad-banner"><i class="icon-arrow-down"></i></a></div>';
-      }
-      echo '</div>';
-      if(isset($virtue_premium['header_style']) && $virtue_premium['header_style'] == 'shrink') {
-        $head_height = $virtue_premium['header_height']/2;
-        echo '<style type="text/css" media="screen">@media (min-width: 992px) {.kad-header-style-three #kad-shrinkheader, .kad-header-style-three #logo a.brand, .kad-header-style-three #logo #thelogo, .kad-header-style-three #nav-main ul.sf-menu > li > a {height:'.$head_height.'px !important;line-height: '.$head_height.'px !important;}.kad-header-style-three #thelogo img {max-height: '.$head_height.'px !important;}}</style>';
-      }
-    }
-  }
 }
 }
 add_action( 'kt_beforeheader', 'featureslider_top', 1 );
@@ -101,16 +136,7 @@ function kadence_siteoriginpanels_row_attributes($attr, $row) {
   return $attr;
 }
 add_filter('siteorigin_panels_row_attributes', 'kadence_siteoriginpanels_row_attributes', 10, 2);
-function kadence_siteoriginpanels_row_attributes_content($attr, $row) {
-  if(!empty($row['style']['class']) && $row['style']['class'] =="wide-content") {
-    if(empty($attr['style'])) $attr['style'] = '';
-    $attr['style'] .= 'margin-left: 0px;';
-    $attr['style'] .= 'margin-right: 0px;';
-  }
 
-  return $attr;
-}
-//add_filter('siteorigin_panels_row_attributes', 'kadence_siteoriginpanels_row_attributes_content', 10, 2);
 function kad_panels_row_background_styles($fields) {
   $fields['padding_top'] = array(
         'name'      => __('Padding Top', 'virtue'),
@@ -136,11 +162,18 @@ function kad_panels_row_background_styles($fields) {
         'group'     => 'layout',
         'priority'  => 9,
       );
+    $fields['background_image_url'] = array(
+        'name'      => __('Background image external url', 'virtue'),
+        'group'     => 'design',
+        'description' => 'optional, overridden by button below.',
+        'type'      => 'url',
+        'priority'  => 4,
+      );
   $fields['background_image'] = array(
         'name'      => __('Background Image', 'virtue'),
         'group'     => 'design',
         'type'      => 'image',
-        'priority'  => 5,
+        'priority'  => 4,
       );
   $fields['background_image_position'] = array(
         'name'      => __('Background Image Position', 'virtue'),
@@ -209,18 +242,41 @@ function kad_panels_remove_row_background_styles($fields) {
  unset( $fields['border_color'] );
  return $fields;
 }
+
 add_filter('siteorigin_panels_row_style_fields', 'kad_panels_remove_row_background_styles');
+/*
+function kad_panels_widget_styles($fields) {
+  $fields['margin_bottom'] = array(
+        'name'      => __('Margin Bottom', 'virtue'),
+        'description' => sprintf( __('Space below the widget if two widgets in column. Default is %spx.', 'virtue'), siteorigin_panels_setting( 'margin-bottom' ) ),
+        'type'      => 'measurement',
+        'group'     => 'layout',
+        'priority'  => 8.5,
+  );
+  return $fields;
+}
+add_filter('siteorigin_panels_widget_style_fields', 'kad_panels_widget_styles' );
+function kad_panels_widget_style_attributes($attributes, $args) {
+    if( !empty( $args['margin_bottom'] ) ) {
+        $str = preg_replace('/[^0-9.]+/', '', $args['margin_bottom']);
+        $default = preg_replace('/[^0-9.]+/', '', siteorigin_panels_setting( 'margin-bottom' ));
+        $finalmargin = floor($str - $default);
+        $attributes['style'] .= 'margin-bottom: ' . esc_attr($finalmargin) . 'px;';
+    }
+    return $attributes;
+}
+add_filter('siteorigin_panels_widget_style_attributes', 'kad_panels_widget_style_attributes', 10, 2);
+*/
 
 function kad_panels_row_background_styles_attributes($attributes, $args) {
 
-  if(!empty($args['background_image'])) {
+  if(!empty($args['background_image']) || !empty($args['background_image_url'] )) {
     $url = wp_get_attachment_image_src( $args['background_image'], 'full' );
-
-    if(empty($url) || $url[0] == site_url() ) {
-        $attributes['style'] .= 'background-image: url(' . $args['background_image'] . ');';
-      } else {
+    if($url == false ) {
+        $attributes['style'] .= 'background-image: url(' . $args['background_image_url'] . ');';
+    } else {
         $attributes['style'] .= 'background-image: url(' . $url[0] . ');';
-      }
+    }
       if(!empty($args['background_image_style'])) {
             switch( $args['background_image_style'] ) {
               case 'no-repeat':
@@ -239,10 +295,17 @@ function kad_panels_row_background_styles_attributes($attributes, $args) {
                 $attributes['style'] .= 'background-size: cover;';
                 break;
               case 'parallax':
-                $attributes['class'][] .= 'kt-panel-row-parallax-stellar';
-                $attributes['data-stellar-background-ratio'] = '0.5';
+                $attributes['data-ktstellar-background-ratio'] = '0.5';
+                if( (!empty( $args['row_stretch']) && $args['row_stretch'] == 'full') || (!empty( $args['row_stretch']) && $args['row_stretch'] == 'full-stretched' )  ) {
+                  $attributes['class'][] .= 'kt-panel-row-parallax-stellar-full';
+                } else {
+                  $attributes['class'][] .= 'kt-panel-row-parallax-stellar';
+                }
                 break;
             }
+        }
+        if(!empty($args['background_image_position'])) {
+            $attributes['style'] .= 'background-position: '.$args['background_image_position'].';';
         }
 
   }
@@ -301,6 +364,49 @@ function kad_panels_row_background_styles_attributes($attributes, $args) {
 add_filter('siteorigin_panels_row_style_attributes', 'kad_panels_row_background_styles_attributes', 10, 2);
 
 remove_action( 'siteorigin_panels_before_interface', 'siteorigin_panels_update_notice'); 
+add_filter( 'siteorigin_premium_upgrade_teaser', 'kt_siteorigin_panels_remove_update_notice');
+function kt_siteorigin_panels_remove_update_notice() { 
+	return false; 
+}
+function kadence_siteorigin_panels_add_recommended_widgets($widgets){
+	$kt_widgets = array(
+		'Kadence_Contact_Widget',
+	  	'Kadence_Social_Widget',
+	  	'Kadence_Recent_Posts_Widget',
+	  	'Kadence_Testimonial_Slider_Widget',
+	  	'Kadence_Image_Grid_Widget',
+	  	'Simple_About_With_Image',
+	  	'kad_gallery_widget',
+	  	'kad_carousel_widget',
+	  	'kad_infobox_widget',
+	  	'kad_gmap_widget',
+	  	'kad_calltoaction_widget',
+	  	'kad_imgmenu_widget',
+	  	'kad_split_content_widget',
+	  	'kad_icon_flip_box_widget',
+  	);
+
+	foreach($kt_widgets as $kt_widget) {
+		if( isset( $widgets[$kt_widget] ) ) {
+			$widgets[$kt_widget]['groups'] = array('kt_themes');
+			$widgets[$kt_widget]['icon'] = 'dashicons dashicons-star-empty';
+		}
+	}
+	return $widgets;
+}
+add_filter('siteorigin_panels_widgets', 'kadence_siteorigin_panels_add_recommended_widgets');
+function kadence_siteorigin_panels_add_widgets_dialog_tabs($tabs){
+
+	$tabs['kt_themes'] = array(
+		'title' => __('Theme Widgets', 'virtue'),
+		'filter' => array(
+			'groups' => array('kt_themes')
+		)
+	);
+	
+	return $tabs;
+}
+add_filter('siteorigin_panels_widget_dialog_tabs', 'kadence_siteorigin_panels_add_widgets_dialog_tabs', 30);
 
 // Add support for qtranslate
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -315,185 +421,177 @@ if ( is_plugin_active('qtranslate/qtranslate.php') || is_plugin_active('mqtransl
 }
 
 function virtue_prebuilt_page_layouts($layouts){
-  $layouts['example-page'] = array (
-    'name' => __('Example Page', 'virtue'),
-    'widgets' =>
-    array(
-      0 =>
-      array(
-        'title' => 'Easy to Customize',
-        'description' => "Vestibulum pharetra pellentesque elit. Donec massa magna, semper nec tincidunt eu, condimentum non arcu. In hac habitasse platea dictumst. Integer ut risus imperdiet, hendrerit nunc nec, viverra velit. Duis ullamcorper sit amet diam in hendrerit. Nunc laoreet tincidunt consequat. Fusce vel odio ut magna vestibulum volutpat luctus a ante. Donec tincidunt ultrices sollicitudin. Phasellus scelerisque congue suscipit.",
-        'info_icon' => 'icon-pencil2',
-        'image_uri' => '',
-        'size' => '20',
-        'style' => 'kad-circle-iconclass',
-        'color' => '#ffffff',
-        'iconbackground' => '#444444',
-        'background' => '',
-        'info' =>
+    $layouts['parallax-page'] = array (
+        'name' => __('Parallax Example', 'virtue'),
+        'screenshot' => 'https://s3.amazonaws.com/ktdemocontent/layouts/kt_parallax_screenshot-min.jpg',
+        'description' => 'A parallax page example,  Great for the landing page template.',
+        'widgets' =>
         array(
-          'class' => 'kad_infobox_widget',
-          'id' => '1',
-          'grid' => '0',
-          'cell' => '0',
+            0 =>
+              array(
+                'text' => '<h1 style="color:#fff; font-size:70px; line-height:80px; text-align:center;">Parallax Backgrounds</h1>
+    <p style="color:#fff; text-align:center; max-width:600px; margin:0 auto;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et leo nec justo accumsan ullamcorper a ut felis. Nunc auctor tristique enim, ut mattis mi ultricies vitae. Duis hendrerit dictum urna vitae molestie. Sed elementum enim tempus, interdum urna non, placerat massa. Maecenas ullamcorper pellentesque ornare. Nunc luctus tincidunt enim, quis molestie erat varius sit amet. Praesent nec pulvinar nibh.</p>',
+                'info' =>
+                array(
+                  'class' => 'WP_Widget_Text',
+                  'id' => '1',
+                  'grid' => '0',
+                  'cell' => '0',
+                ),
+              ),
+            1 => array(
+                'text' => '<div style="text-align:center">[btn text="View more" border="4px" borderradius="6px" link="#" tcolor="#ffffff" bcolor="transparent" bordercolor="#ffffff" thovercolor="#000000" bhovercolor="#ffffff" borderhovercolor="#ffffff" size="large" font="h1-family" icon="icon-arrow-right"]</div>',
+                'info' => array(
+                        'class' => 'WP_Widget_Text',
+                        'id' => '2',
+                        'grid' => '0',
+                        'cell' => '0',
+                    ),
+            ),
+            3 => array(
+                    'title' => __('Evening Sky Photo Series', 'virtue'),
+                    'image_url' => 'https://s3.amazonaws.com/ktdemocontent/layouts/kt_split_content_01-min.jpg',
+                    'img_align' => 'left',
+                    'height' => '400',
+                    'description' => 'Nullam luctus urna ac ultrices tristique. Aliquam id dolor in turpis dictum posuere at ac mauris. Pellentesque posuere eget nisi eu vestibulum. Maecenas ex leo, viverra at iaculis quis, mollis sit amet est. Phasellus efficitur, urna non bibendum venenatis, tortor nunc sodales nulla, id scelerisque justo metus in risus. Quisque finibus elit eu posuere ornare. Pellentesque posuere eget nisi eu vestibulum. Maecenas ex leo, viverra at iaculis quis, mollis sit amet est. Aliquam id dolor in turpis dictum posuere at ac mauris.
+
+    [btn text="View Gallery" border="2px" borderradius="4px" link="#" tcolor="#333333" bcolor="transparent" bordercolor="#333333" thovercolor="#ffffff" bhovercolor="#333333" borderhovercolor="#333333"]',
+                    'filter' => '1',
+                    'info' =>  array(
+                                'class' => 'kad_split_content_widget',
+                                'id' => '3',
+                                'grid' => '1',
+                                'cell' => '0',
+                            ),
+            ),
+            4 => array(
+                    'title' => __('Night Sky Photo Series', 'virtue'),
+                    'image_url' => 'https://s3.amazonaws.com/ktdemocontent/layouts/kt_split_content_02-min.jpg',
+                    'img_align' => 'right',
+                    'height' => '400',
+                    'description' => 'Nullam luctus urna ac ultrices tristique. Aliquam id dolor in turpis dictum posuere at ac mauris. Pellentesque posuere eget nisi eu vestibulum. Maecenas ex leo, viverra at iaculis quis, mollis sit amet est. Phasellus efficitur, urna non bibendum venenatis, tortor nunc sodales nulla, id scelerisque justo metus in risus. Quisque finibus elit eu posuere ornare. Pellentesque posuere eget nisi eu vestibulum. Maecenas ex leo, viverra at iaculis quis, mollis sit amet est. Aliquam id dolor in turpis dictum posuere at ac mauris.
+
+    [btn text="View Gallery" border="2px" borderradius="4px" link="#" tcolor="#333333" bcolor="transparent" bordercolor="#333333" thovercolor="#ffffff" bhovercolor="#333333" borderhovercolor="#333333"]',
+                    'filter' => '1',
+                    'info' =>  array(
+                            'class' => 'kad_split_content_widget',
+                            'id' => '4',
+                            'grid' => '2',
+                            'cell' => '0',
+                        ),
+            ),
+            5 => array(
+                'title' => 'Easy to Customize',
+                'description' => "Vestibulum pharetra pellentesque elit. Donec massa magna, semper nec tincidunt eu, condimentum non arcu. In hac habitasse platea dictumst. Integer ut risus imperdiet, hendrerit nunc nec, viverra velit. Duis ullamcorper sit amet diam in hendrerit. Nunc laoreet tincidunt consequat. Fusce vel odio ut magna vestibulum volutpat luctus a ante. Donec tincidunt ultrices sollicitudin. Phasellus scelerisque congue suscipit.",
+                'info_icon' => 'icon-pencil2',
+                'image_uri' => '',
+                'size' => '20',
+                'style' => 'kad-circle-iconclass',
+                'color' => '#ffffff',
+                'iconbackground' => '#444444',
+                'background' => '',
+                'info' => array(
+                            'class' => 'kad_infobox_widget',
+                            'id' => '5',
+                            'grid' => '3',
+                            'cell' => '0',
+                        ),
+            ),
+            6 => array(
+                'title' => 'Beautiful Layouts',
+                'description' => "Vestibulum pharetra pellentesque elit. Donec massa magna, semper nec tincidunt eu, condimentum non arcu. In hac habitasse platea dictumst. Integer ut risus imperdiet, hendrerit nunc nec, viverra velit. Duis ullamcorper sit amet diam in hendrerit. Nunc laoreet tincidunt consequat. Fusce vel odio ut magna vestibulum volutpat luctus a ante. Donec tincidunt ultrices sollicitudin. Phasellus scelerisque congue suscipit.",
+                'info_icon' => 'icon-laptop',
+                'image_uri' => '',
+                'size' => '20',
+                'style' => 'kad-circle-iconclass',
+                'color' => '#ffffff',
+                'iconbackground' => '#444444',
+                'background' => '',
+                'info' => array(
+                      'class' => 'kad_infobox_widget',
+                      'id' => '6',
+                      'grid' => '3',
+                      'cell' => '1',
+                    ),
+            ),
+            7 => array(
+                'title' => 'Tons of Extras',
+                'description' => "Vestibulum pharetra pellentesque elit. Donec massa magna, semper nec tincidunt eu, condimentum non arcu. In hac habitasse platea dictumst. Integer ut risus imperdiet, hendrerit nunc nec, viverra velit. Duis ullamcorper sit amet diam in hendrerit. Nunc laoreet tincidunt consequat. Fusce vel odio ut magna vestibulum volutpat luctus a ante. Donec tincidunt ultrices sollicitudin. Phasellus scelerisque congue suscipit.",
+                'info_icon' => 'icon-basket',
+                'image_uri' => '',
+                'size' => '20',
+                'style' => 'kad-circle-iconclass',
+                'color' => '#ffffff',
+                'iconbackground' => '#444444',
+                'background' => '',
+                'info' => array(
+                        'class' => 'kad_infobox_widget',
+                        'id' => '7',
+                        'grid' => '3',
+                        'cell' => '2',
+                    ),
+            ),
         ),
-      ),
-      1 =>
-      array(
-        'title' => 'Beautiful Layouts',
-        'description' => "Vestibulum pharetra pellentesque elit. Donec massa magna, semper nec tincidunt eu, condimentum non arcu. In hac habitasse platea dictumst. Integer ut risus imperdiet, hendrerit nunc nec, viverra velit. Duis ullamcorper sit amet diam in hendrerit. Nunc laoreet tincidunt consequat. Fusce vel odio ut magna vestibulum volutpat luctus a ante. Donec tincidunt ultrices sollicitudin. Phasellus scelerisque congue suscipit.",
-        'info_icon' => 'icon-laptop',
-        'image_uri' => '',
-        'size' => '20',
-        'style' => 'kad-circle-iconclass',
-        'color' => '#ffffff',
-        'iconbackground' => '#444444',
-        'background' => '',
-        'info' =>
-        array(
-          'class' => 'kad_infobox_widget',
-          'id' => '2',
-          'grid' => '0',
-          'cell' => '1',
+        'grids' => array(
+            0 => array(
+                'cells' => '1',
+                'style' => array(
+                    'row_stretch'               => 'full',
+                    'background_image_url'      => 'https://s3.amazonaws.com/ktdemocontent/layouts/kt_parallax_scroll_02-min.jpg',
+                    'background_image_style'    => 'parallax',
+                    'padding_top'               => '180px',
+                    'padding_bottom'            => '180px',
+                    'bottom_margin'             => '0px',
+                ),
+            ),
+            1 => array(
+                'cells' => '1',
+                'style' => array(
+                    'padding_top'     => '80px',
+                ),
+            ),
+            2 => array(
+                'cells' => '1',
+            ),
+            3 => array(
+                'cells' => '3',
+                'style' => array(
+                    'padding_top' => '30px', 
+                    'padding_bottom' => '0px',
+                ),
+            ),
         ),
-      ),
-      2 =>
-      array(
-        'title' => 'Tons of Extras',
-        'description' => "Vestibulum pharetra pellentesque elit. Donec massa magna, semper nec tincidunt eu, condimentum non arcu. In hac habitasse platea dictumst. Integer ut risus imperdiet, hendrerit nunc nec, viverra velit. Duis ullamcorper sit amet diam in hendrerit. Nunc laoreet tincidunt consequat. Fusce vel odio ut magna vestibulum volutpat luctus a ante. Donec tincidunt ultrices sollicitudin. Phasellus scelerisque congue suscipit.",
-        'info_icon' => 'icon-basket',
-        'image_uri' => '',
-        'size' => '20',
-        'style' => 'kad-circle-iconclass',
-        'color' => '#ffffff',
-        'iconbackground' => '#444444',
-        'background' => '',
-        'info' =>
-        array(
-          'class' => 'kad_infobox_widget',
-          'id' => '3',
-          'grid' => '0',
-          'cell' => '2',
+        'grid_cells' => array(
+            0 => array(
+                'weight' => '1',
+                'grid' => '0',
+            ),
+            1 => array(
+                'weight' => '1',
+                'grid' => '1',
+            ),
+            2 => array(
+                'weight' => '1',
+                'grid' => '2',
+            ),
+            3 => array(
+                'weight' => '0.3333333333333333',
+                'grid' => '3',
+            ),
+            4 => array(
+                'weight' => '0.3333333333333333',
+                'grid' => '3',
+            ),
+            5 => array(
+                'weight' => '0.3333333333333333',
+                'grid' => '3',
+            ),
         ),
-      ),
-      3 =>
-      array(
-        'text' => '<h1 style="color:#fff; font-size:60px; text-align:center;">Like What You See?</h1>',
-        'info' =>
-        array(
-          'class' => 'WP_Widget_Text',
-          'id' => '4',
-          'grid' => '1',
-          'cell' => '0',
-        ),
-      ),
-      4 =>
-      array(
-        'text' => '<div style="text-align:center">[btn  text="View More" tcolor="#ffffff" link="#" size="large" font="h1-family" icon="icon-arrow-right"]</div>',
-        'info' =>
-        array(
-          'class' => 'WP_Widget_Text',
-          'id' => '5',
-          'grid' => '1',
-          'cell' => '0',
-        ),
-      ),
-      5 =>
-      array(
-        'title' => __('Latest Posts', 'virtue'),
-        'type' => 'post',
-        'c_items' => '6',
-        'c_columns' => '3',
-        'c_cat' => '',
-        'c_speed' => '7000',
-        'c_scroll' => '',
-        'info' =>
-        array(
-          'class' => 'kad_carousel_widget',
-          'id' => '6',
-          'grid' => '2',
-          'cell' => '0',
-        ),
-      ),
-      6 =>
-      array(
-        'locationtitle' => 'Kadence Themes',
-        'location' => 'Missoula, MT, USA',
-        'height' => '400',
-        'maptype' => 'ROADMAP',
-        'zoom' => '13',
-        'info' =>
-        array(
-          'class' => 'kad_gmap_widget',
-          'id' => '7',
-          'grid' => '2',
-          'cell' => '1',
-        ),
-      ),
-    ),
-    'grids' =>
-    array(
-      0 =>
-      array(
-        'cells' => '3',
-        'style' => '',
-      ),
-      1 =>
-      array(
-        'cells' => '1',
-        'style' => array(
-            'row_stretch'     => 'full',
-            'background'      => '#555555',
-            'padding_top'     => '80px',
-            'padding_bottom'  => '80px',
-            'bottom_margin'   => '0px',
-          ),
-      ),
-      2 =>
-      array(
-        'cells' => '2',
-        'style' => array(
-        'padding_top' => '30px', 
-        'padding_bottom' => '0px',
-        ),
-      ),
-    ),
-    'grid_cells' =>
-    array(
-      0 =>
-      array(
-        'weight' => '0.3333333333333333',
-        'grid' => '0',
-      ),
-      1 =>
-      array(
-        'weight' => '0.3333333333333333',
-        'grid' => '0',
-      ),
-      2 =>
-      array(
-        'weight' => '0.3333333333333333',
-        'grid' => '0',
-      ),
-      3 =>
-      array(
-        'weight' => '1',
-        'grid' => '1',
-      ),
-      4 =>
-      array(
-        'weight' => '0.6658461538461539',
-        'grid' => '2',
-      ),
-      5 =>
-      array(
-        'weight' => '0.33415384615384613',
-        'grid' => '2',
-      ),
-    ),
-  );
-$layouts['example-page-2'] = array (
-    'name' => __('Example Page 2', 'virtue'),
+    );
+$layouts['example-icon-boxes'] = array (
+    'name' => __('Icon Boxes Example', 'virtue'),
+    'screenshot' => 'https://s3.amazonaws.com/ktdemocontent/layouts/kt_icon_screenshot.jpg',
+        'description' => 'A quick way to get started with different icon boxes.',
     'widgets' =>
     array(
       0 =>
@@ -540,71 +638,87 @@ $layouts['example-page-2'] = array (
           'cell' => '3',
         ),
       ),
-      4 =>
-       array(
-        'title' => __('Featured Products', 'virtue'),
-        'type' => 'featured-products',
-        'c_items' => '8',
-        'c_columns' => '4',
-        'c_cat' => '',
-        'c_speed' => '7000',
-        'c_scroll' => '',
-        'info' =>
-        array(
-          'class' => 'kad_carousel_widget',
-          'id' => '5',
-          'grid' => '1',
-          'cell' => '0',
+        4 => array(
+            'title' => 'Hover Over This',
+            'description' => 'Watch as the box flips and reveals new content.',
+            'icon' => 'icon-lab',
+            'iconcolor' => '#444444',
+            'titlecolor' => '#444444',
+            'fcolor' => '#444444',
+            'titlesize' => '24',
+            'iconsize' => '48',
+            'height' => '230',
+            'flip_content' => 'This backside can have unique content or the same depending on what you are wanting.',
+            'fbtn_text' => 'Custom Button',
+            'fbtn_link' => '#',
+            'fbtn_color' => '#ffffff',
+            'fbtn_background' => 'trasparent',
+            'fbtn_border' => '2px solid #ffffff',
+            'fbtn_border_radius' => '0',
+            'background' => '#f2f2f2',
+            'bcolor' => '#ffffff',
+            'bbackground' => '#444444',
+            'info' => array(
+                'class' => 'kad_icon_flip_box_widget',
+                'id' => '5',
+                'grid' => '1',
+                'cell' => '0',
+            ),
         ),
-      ),
-      5 =>
-       array(
-        'title' => __('Featured Projects', 'virtue'),
-        'type' => 'portfolio',
-        'c_items' => '6',
-        'c_columns' => '3',
-        'c_cat' => '',
-        'c_speed' => '7000',
-        'c_scroll' => '',
-        'info' =>
-        array(
-          'class' => 'kad_carousel_widget',
-          'id' => '6',
-          'grid' => '2',
-          'cell' => '0',
+        5 => array(
+            'title' => 'Customize the colors',
+            'description' => 'Watch as the box flips and reveals new content.',
+            'icon' => 'icon-palette',
+            'iconcolor' => '#ffffff',
+            'titlecolor' => '#ffffff',
+            'fcolor' => '#ffffff',
+            'titlesize' => '24',
+            'iconsize' => '48',
+            'height' => '230',
+            'flip_content' => 'This backside can have unique content or the same depending on what you are wanting.',
+            'fbtn_text' => 'Custom Button',
+            'fbtn_link' => '#',
+            'fbtn_color' => '#ffffff',
+            'fbtn_background' => 'trasparent',
+            'fbtn_border' => '2px solid #ffffff',
+            'fbtn_border_radius' => '0',
+            'background' => '#2d5c88',
+            'bcolor' => '#ffffff',
+            'bbackground' => '#f3690e',
+            'info' => array(
+                'class' => 'kad_icon_flip_box_widget',
+                'id' => '6',
+                'grid' => '1',
+                'cell' => '1',
+            ),
         ),
-      ),
-      6 =>
-       array(
-        'text' => '[blog_posts  items="2" orderby="date"]',
-        'info' =>
-        array(
-          'class' => 'WP_Widget_Text',
-          'id' => '7',
-          'grid' => '3',
-          'cell' => '0',
+        6 => array(
+            'title' => 'Create Something Unique',
+            'description' => 'Watch as the box flips and reveals new content.',
+            'icon' => 'icon-rocket',
+            'iconcolor' => '#ffffff',
+            'titlecolor' => '#ffffff',
+            'fcolor' => '#ffffff',
+            'titlesize' => '24',
+            'iconsize' => '48',
+            'height' => '230',
+            'flip_content' => 'This backside can have unique content or the same depending on what you are wanting.',
+            'fbtn_text' => 'Custom Button',
+            'fbtn_link' => '#',
+            'fbtn_color' => '#ffffff',
+            'fbtn_background' => '#444444',
+            'fbtn_border' => '2px solid #444444',
+            'fbtn_border_radius' => '0',
+            'background' => '#444444',
+            'bcolor' => '#444444',
+            'bbackground' => '#f2f2f2',
+            'info' => array(
+                'class' => 'kad_icon_flip_box_widget',
+                'id' => '7',
+                'grid' => '1',
+                'cell' => '2',
+            ),
         ),
-      ),
-      7 =>
-       array(
-        'title' => __('Want To See More', 'virtue'),
-        'tcolor' => '#ffffff',
-        'tsize' => '48',
-        'subtitle' => __('Check out the newest demo site', 'virtue'),
-        'scolor' => '#ffffff',
-        'ssize' => '20',
-        'align' => 'center',
-        'btn_text' => 'View Now',
-        'btn_link' => 'http://themes.kadencethemes.com/virtue-premium-4/',
-        'btn_target' => 'true',
-        'info' =>
-        array(
-          'class' => 'kad_calltoaction_widget',
-          'id' => '8',
-          'grid' => '4',
-          'cell' => '0',
-        ),
-      ),
     ),
     'grids' =>
     array(
@@ -615,32 +729,8 @@ $layouts['example-page-2'] = array (
       ),
       1 =>
       array(
-        'cells' => '1',
+        'cells' => '3',
         'style' => '',
-      ),
-      2 =>
-      array(
-        'cells' => '1',
-        'style' => '',
-      ),
-      3 =>
-      array(
-        'cells' => '1',
-        'style' => array(
-        'padding_top' => '20px',
-        'padding_bottom' => '10px',
-        ),
-      ),
-      4 =>
-      array(
-        'cells' => '1',
-        'style' => array(
-        'row_stretch' => 'full',
-        'background' => '#555555',
-        'padding_top' => '45px',
-        'padding_bottom' => '45px',
-        'bottom_margin'  => '0px',
-        ),
       ),
     ),
     'grid_cells' =>
@@ -667,23 +757,18 @@ $layouts['example-page-2'] = array (
       ),
       4 =>
       array(
-        'weight' => '1',
+        'weight' => '0.3333333333333333',
         'grid' => '1',
       ),
       5 =>
       array(
-        'weight' => '1',
-        'grid' => '2',
+        'weight' => '0.3333333333333333',
+        'grid' => '1',
       ),
       6 =>
       array(
-        'weight' => '1',
-        'grid' => '3',
-      ),
-      7 =>
-      array(
-        'weight' => '1',
-        'grid' => '4',
+        'weight' => '0.3333333333333333',
+        'grid' => '1',
       ),
     ),
   );
@@ -716,6 +801,16 @@ function kt_hide_revslider_notice() {
         </style>';
       }
   }
+}
+
+
+add_filter('template_include', 'kad_ph_project_override', 20);
+function kad_ph_project_override($template) {
+      $cpt = get_post_type();
+      if ($cpt == 'ph-project') {
+        remove_filter('template_include', array('Kadence_Wrapping', 'wrap'), 101);
+      }
+      return $template;
 }
 
 function virtue_img_placeholder_filter_init() {
@@ -771,20 +866,41 @@ function kt_add_search_form_to_menu($items, $args) {
 
       ob_start();
       ?>
-    <?php if (class_exists('woocommerce'))  {?>
-    <?php  if(isset($virtue_premium['menu_cart']) && $virtue_premium['menu_cart'] == '1') { ?>
-    <li class="menu-cart-icon-kt sf-dropdown">
-    <a class="menu-cart-btn" title="<?php echo __('Your Cart', 'virtue');?>" href="<?php echo esc_url($woocommerce->cart->get_cart_url() ); ?>">
-      <div class="kt-cart-container"><i class="icon-cart"></i><span class="kt-cart-total"><?php echo $woocommerce->cart->get_cart_contents_count(); ?></span></div>
-    </a>
-    <ul id="kad-head-cart-popup" class="sf-dropdown-menu kad-head-cart-popup">
-        <div class="kt-header-mini-cart-refreash">
-        <?php woocommerce_mini_cart(); 
-        do_action( 'kadence_cart_menu_popup_after' ); ?>
-        </div>
-      </ul>
-    </li>
-    <?php }
+    <?php if (class_exists('woocommerce'))  {
+
+        if(isset($virtue_premium['menu_account']) && $virtue_premium['menu_account'] == '1') { ?>
+        <li class="menu-account-icon-kt sf-dropdown">
+            <?php if ( is_user_logged_in() ) { ?>
+            <a class="menu-account-btn" title="<?php echo __('My Account', 'virtue');?>" href="<?php echo get_permalink( get_option('woocommerce_myaccount_page_id') ); ?>">
+                <div class="kt-my-account-container"><i class="icon-user2"></i></div>
+            </a>
+            <?php } else { 
+                if(get_option( 'woocommerce_enable_myaccount_registration' ) === 'yes') {
+                   $title =  __('Login/Signup', 'virtue');
+                } else {
+                    $title =  __('Login', 'virtue');
+                } ?>
+             <a class="menu-account-btn" title="<?php echo $title;?>" href="<?php echo get_permalink( get_option('woocommerce_myaccount_page_id') ); ?>">
+                <div class="kt-my-account-container"><i class="icon-user2"></i></div>
+            </a>
+
+              <?php  } ?>
+        </li>
+        <?php }
+
+        if(isset($virtue_premium['menu_cart']) && $virtue_premium['menu_cart'] == '1') { ?>
+        <li class="menu-cart-icon-kt sf-dropdown">
+        <a class="menu-cart-btn" title="<?php echo __('Your Cart', 'virtue');?>" href="<?php echo esc_url($woocommerce->cart->get_cart_url() ); ?>">
+          <div class="kt-cart-container"><i class="icon-cart"></i><span class="kt-cart-total"><?php echo $woocommerce->cart->get_cart_contents_count(); ?></span></div>
+        </a>
+        <ul id="kad-head-cart-popup" class="sf-dropdown-menu kad-head-cart-popup">
+            <div class="kt-header-mini-cart-refreash">
+            <?php woocommerce_mini_cart(); 
+            do_action( 'kadence_cart_menu_popup_after' ); ?>
+            </div>
+          </ul>
+        </li>
+        <?php }
      }?>
     <?php if(isset($virtue_premium['menu_search']) && $virtue_premium['menu_search'] == '1') { ?>
     <li class="menu-search-icon-kt">

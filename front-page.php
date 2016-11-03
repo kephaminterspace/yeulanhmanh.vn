@@ -20,17 +20,21 @@
 				$mobile_slider = false;
 			}
 			if(($mobile_slider == true) && ($mobile_detect == true)){
-		 		$slider = $virtue_premium['choose_mobile_slider'];
-					if ($slider == "rev") {
-					get_template_part('templates/mobile_home/mobilerev', 'slider');
-				} else if ($slider == "ksp") {
-					get_template_part('templates/mobile_home/mobileksp', 'slider');
-				} else if ($slider == "flex") {
-					get_template_part('templates/mobile_home/mobileflex', 'slider');
-				} else if ($slider == "video") {
-					get_template_part('templates/mobile_home/mobilevideo', 'block');
-				} else if ($slider == "cyclone") {
-					get_template_part('templates/mobile_home/cyclone', 'slider');
+				if((isset($virtue_premium['above_header_slider']) && $virtue_premium['above_header_slider'] == 1) && isset($virtue_premium['choose_slider']) && ($virtue_premium['choose_slider'] == 'ktslider' || $virtue_premium['choose_slider'] == 'cyclone' || $virtue_premium['choose_slider'] == 'rev' ||  $virtue_premium['choose_slider'] == 'ksp' ))  {
+					// do nothing
+				} else {
+			 		$slider = $virtue_premium['choose_mobile_slider'];
+						if ($slider == "rev") {
+						get_template_part('templates/mobile_home/mobilerev', 'slider');
+					} else if ($slider == "ksp") {
+						get_template_part('templates/mobile_home/mobileksp', 'slider');
+					} else if ($slider == "flex") {
+						get_template_part('templates/mobile_home/mobileflex', 'slider');
+					} else if ($slider == "video") {
+						get_template_part('templates/mobile_home/mobilevideo', 'block');
+					} else if ($slider == "cyclone") {
+						get_template_part('templates/mobile_home/cyclone', 'slider');
+					}
 				}
 			} else { 
 			  	if(isset($virtue_premium['choose_slider'])) { 
@@ -83,11 +87,10 @@
 			if($i==2) break;
 		}
 	} 
-	if($show_pagetitle == true) { ?>
+	if($show_pagetitle == true) { 
+		?>
 		<div id="homeheader" class="welcomeclass">
-			<div class="container">
 				<?php get_template_part('templates/page', 'header'); ?>
-			</div>
 		</div><!--titleclass-->
 	<?php } ?>
     <div id="content" class="container homepagecontent">
@@ -141,11 +144,9 @@
 								} 
 								if(isset($virtue_premium['home_post_grid']) && $virtue_premium['home_post_grid'] == '1') {
 									$grid = true;
-									$contentid = 'kad-blog-grid';
-									$postclass = "postlist rowtight";
+									$postclass = "postlist";
 								} else {
 									$grid = false;
-									$contentid = 'homelatestposts';
 								}
 								if(isset($virtue_premium['virtue_animate_in']) && $virtue_premium['virtue_animate_in'] == 1) {
 									$animate = 1;
@@ -161,104 +162,66 @@
 									} else {
 										$itemsize = 'tcol-md-3 tcol-sm-4 tcol-xs-6 tcol-ss-12';
 									}
+									if(isset($virtue_premium['blog_grid_display_height']) && $virtue_premium['blog_grid_display_height'] == 1) {
+						            	$matchheight = 1;
+							        } else {
+							            $matchheight = 0;
+							        }
 								}
 								if(isset($virtue_premium['blog_infinitescroll']) && $virtue_premium['blog_infinitescroll'] == 1) {
-									$infinitescroll = true;
-								} else {
-									$infinitescroll = false;
-								}?>
-								<div id="<?php echo esc_attr($contentid);?>" class="homecontent <?php echo esc_attr($fullclass); ?>  <?php echo esc_attr($postclass); ?> clearfix home-margin"  data-fade-in="<?php echo esc_attr($animate);?>"> 
-								<?php while (have_posts()) : the_post();
-							    	if($summery == 'full') {
-												get_template_part('templates/content', 'fullpost'); 
+							       if($grid == true) {
+							         $infinit = 'data-nextselector=".wp-pagenavi a.next" data-navselector=".wp-pagenavi" data-itemselector=".kad_blog_item" data-itemloadselector=".kad_blog_fade_in" data-infiniteloader="'.get_template_directory_uri() . '/assets/img/loader.gif"';
+							         $scrollclass = 'init-infinit';
+							      } else {
+							         $infinit = 'data-nextselector=".wp-pagenavi a.next" data-navselector=".wp-pagenavi" data-itemselector=".post" data-itemloadselector=".kad-animation" data-infiniteloader="'.get_template_directory_uri() . '/assets/img/loader.gif"';
+							         $scrollclass = 'init-infinit-norm';
+							      }
+							    } else {
+							        $infinit = '';
+							        $scrollclass = '';
+							    }?>
+								<div id="homelatestposts" class="homecontent <?php echo esc_attr($fullclass); ?>  <?php echo esc_attr($postclass); ?> clearfix home-margin"  data-fade-in="<?php echo esc_attr($animate);?>"> 
+							    	<?php if($summery == 'full') { ?>
+							    		<div class="kt_home_archivecontent <?php echo esc_attr($scrollclass); ?>" <?php echo $infinit; ?>> 
+							    		<?php while (have_posts()) : the_post(); ?>
+										<?php get_template_part('templates/content', 'fullpost'); ?>
+										<?php endwhile; ?>
+										</div> 
+									<?php 
 									} else {
-										if($grid == true) {
-												if($blog_grid_column == 'twocolumn') { ?>
-													<div class="<?php echo esc_attr($itemsize);?> b_item kad_blog_item">
-													<?php get_template_part('templates/content', 'twogrid'); ?>
-													</div>
-													<?php } else {?>
-													<div class="<?php echo esc_attr($itemsize);?> b_item kad_blog_item">
-													<?php get_template_part('templates/content', 'fourgrid');?>
-													</div>
-												<?php }
-										} else {
-											 	get_template_part('templates/content', get_post_format()); 
+										if($grid == true) { ?>
+											<div id="kad-blog-grid" class="rowtight kt_home_archivecontent <?php echo esc_attr($scrollclass); ?> init-isotope" data-match-height="<?php echo esc_attr($matchheight);?>" <?php echo $infinit; ?> data-fade-in="<?php echo esc_attr($animate);?>"  data-iso-selector=".b_item" data-iso-style="masonry">
+													<?php while (have_posts()) : the_post(); ?>
+														<?php if($blog_grid_column == 'twocolumn') { ?>
+															<div class="<?php echo esc_attr($itemsize);?> b_item kad_blog_item">
+															<?php get_template_part('templates/content', 'twogrid'); ?>
+															</div>
+														<?php } else {?>
+															<div class="<?php echo esc_attr($itemsize);?> b_item kad_blog_item">
+															<?php get_template_part('templates/content', 'fourgrid');?>
+															</div>
+														<?php } ?>
+													<?php endwhile; ?>
+											</div>
+
+										<?php } else {?>
+											<div class="kt_home_archivecontent <?php echo esc_attr($scrollclass); ?>" <?php echo $infinit; ?>> 
+												<?php while (have_posts()) : the_post(); ?>
+													<?php get_template_part('templates/content', get_post_format()); ?>
+												<?php endwhile; ?>
+											</div>
+										<?php
 										}
 									}?>
-							<?php endwhile; ?>
 							</div> 
 							<?php 	if ($wp_query->max_num_pages > 1) :
 							    		kad_wp_pagenavi();    
 							    	endif;
-
-							        if($grid == true) { ?>
-							    	<script type="text/javascript">jQuery(document).ready(function ($) {var $container = $('#kad-blog-grid');$container.imagesLoadedn( function(){$container.isotopeb({masonry: {columnWidth: ".b_item"}, transitionDuration: "0.8s"});if($('#kad-blog-grid').attr('data-fade-in') == 1) {$('#kad-blog-grid .kad_blog_fade_in').css('opacity',0); $('#kad-blog-grid .kad_blog_fade_in').each(function(i){$(this).delay(i*150).animate({'opacity':1},350);});}}); });</script>				
-									<?php } ?>
-									<?php if ($infinitescroll) { ?>
-							        	 <?php if($grid == true) {?>
-												<script type="text/javascript">jQuery(document).ready(function ($) {
-													var $container = $('#kad-blog-grid');
-													$('.homecontent').infinitescroll({
-													    nextSelector: ".wp-pagenavi a.next",
-													    navSelector: ".wp-pagenavi",
-													    itemSelector: ".kad_blog_item",
-													    loading: {
-													    		msgText: "",
-													            finishedMsg: '',
-													            img: "<?php echo get_template_directory_uri() . '/assets/img/loader.gif'; ?>"
-													        }
-													    },
-													    function( newElements ) {
-												         var $newElems = jQuery( newElements ).hide(); // hide to begin with
-												  			// ensure that images load before adding to masonry layout
-														  $newElems.imagesLoadedn(function(){
-														    $newElems.fadeIn(); // fade in when ready
-														    $container.isotopeb( 'appended', $newElems );
-														    if($container.attr('data-fade-in') == 1) {
-																	//fadeIn items one by one
-																		$newElems.each(function() {
-																	    $(this).find('.kad_blog_fade_in').delay($(this).attr('data-delay')).animate({'opacity' : 1, 'top' : 0},800,'swing');},{accX: 0, accY: -85},'easeInCubic');
-																	 
-																	} 
-														  });
-														 });
-												});
-												</script>
-														  <?php } else { ?>
-												<script type="text/javascript">jQuery(document).ready(function ($) {
-												$('.homecontent').infinitescroll({
-												    nextSelector: ".wp-pagenavi a.next",
-												    navSelector: ".wp-pagenavi",
-												    itemSelector: ".kad_blog_item",
-												    loading: {
-												    		msgText: "",
-												            finishedMsg: '',
-												            img: "<?php echo get_template_directory_uri() . '/assets/img/loader.gif'; ?>"
-												        }
-												    },
-												        function( newElements ) {
-															$(window).trigger( "infintescrollnewelements" );
-												         var $newElems = jQuery( newElements ); // hide to begin with
-														    if($newElems.attr('data-animation') == 'fade-in') {
-																		//fadeIn items one by one
-																		$newElems.each(function() {
-																	    $(this).appear(function() {
-																	    $(this).delay($(this).attr('data-delay')).animate({'opacity' : 1, 'top' : 0},800,'swing');},{accX: 0, accY: -85},'easeInCubic');
-																	    });
-																	} 
-												    
-														  }); 
-														
-
-												});	
-												</script>
-										<?php }} ?>
 							
-						<?php } else { ?>
-						<div class="homecontent clearfix home-margin"> 
-							<?php get_template_part('templates/content', 'page'); ?>
-						</div>
+							} else { ?>
+								<div class="homecontent clearfix home-margin"> 
+									<?php get_template_part('templates/content', 'page'); ?>
+								</div>
 						<?php 	}
 						break;
 						case 'block_five':

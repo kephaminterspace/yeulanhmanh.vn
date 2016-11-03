@@ -13,7 +13,7 @@ function kad_sitename_shortcode_function() {
 }
 function kad_themecredit_shortcode_function() {
 	$my_theme = wp_get_theme();
-	$output = '- Wordpress Theme by <a href="'.$my_theme->{'Author URI'}.'">Kadence Themes</a>';
+	$output = '- WordPress Theme by <a href="'.$my_theme->{'Author URI'}.'">Kadence Themes</a>';
 	return $output;
 }
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -466,6 +466,7 @@ function kadence_youtube_shortcode_function( $atts, $content) {
 				'fs' => 'true',
 				'loop' => 'false',
 				'rel' => 'false',
+				'vq' => '',
 				'https' => 'true',
 				'modestbranding' => 'false',
 				'theme' => 'dark'
@@ -479,6 +480,7 @@ function kadence_youtube_shortcode_function( $atts, $content) {
 		if($atts['hidecontrols'] == 'true') {$atts['controls'] = 'false';}
 		foreach ( array('autoplay', 'controls', 'fs', 'modestbranding', 'theme', 'rel', 'loop' ) as $param ) $params[$param] = str_replace( array( 'false', 'true', 'alt' ), array( '0', '1', '2' ), $atts[$param] );
 		// Prepare player parameters
+		if(!empty($atts['vq']) ) {$params['vq'] = $atts['vq']; }
 		$params = http_build_query( $params );
 		if($atts['maxwidth']) {$maxwidth = 'style="max-width:'.$atts['maxwidth'].'px;"';} else{ $maxwidth = '';}
 		$protocol = ( $atts['https'] === 'true' ) ? 'https' : 'http';
@@ -496,7 +498,7 @@ function kadence_vimeo_shortcode_function( $atts, $content) {
 				'width'      => 600,
 				'height'     => 400,
 				'maxwidth' => '',
-				'autoplay'   => 'no'
+				'autoplay'   => 'false'
 			), $atts, 'vimeo' );
 		if ( !$atts['url'] ) return '<p class="error">Vimeo: ' . __( 'please specify correct url', 'virtue' ) . '</p>';
 		$id = ( preg_match( '~(?:<iframe [^>]*src=")?(?:https?:\/\/(?:[\w]+\.)*vimeo\.com(?:[\/\w]*\/videos?)?\/([0-9]+)[^\s]*)"?(?:[^>]*></iframe>)?(?:<p>.*</p>)?~ix', $atts['url'], $match ) ) ? $match[1] : false;
@@ -504,7 +506,7 @@ function kadence_vimeo_shortcode_function( $atts, $content) {
 		if ( !$id ) return '<p class="error">Vimeo: ' . __( 'please specify correct url', 'virtue' ) . '</p>';
 
 		if($atts['maxwidth']) {$maxwidth = 'style="max-width:'.$atts['maxwidth'].'px;"';} else{ $maxwidth = '';}
-		$autoplay = ( $atts['autoplay'] === 'yes' ) ? '&amp;autoplay=1' : '';
+		$autoplay = ( $atts['autoplay'] === 'yes' || $atts['autoplay'] === 'true' ) ? '&amp;autoplay=1' : '';
 		// Create player
 		$return[] = '<div class="kad-vimeo-shortcode  videofit" '.$maxwidth.'>';
 		$return[] = '<iframe width="' . $atts['width'] . '" height="' . $atts['height'] .
@@ -532,7 +534,7 @@ function kadence_image_split_shortcode_function( $atts, $content) {
 	<!-- Image Split -->
 	<div class="kt-image-slit" id="kt-image-split-<?php echo $id;?>">
 	  <div class="row">
-	    <div class="col-sm-6 kt-si-imagecol img-ktsi-<?php echo esc_attr($imageside);?>" style="<?php if(!empty($img_background)) {echo 'background-color:'.esc_attr($img_background).';';} if($image_cover == 'true' && !empty($image)) {echo 'background-image:url('.esc_url($image).'); background-size:cover; background-position: center center; min-height:'.esc_attr($height / 2).'px;';}?>">
+	    <div class="col-sm-6 kt-si-imagecol img-ktsi-<?php echo esc_attr($imageside);?> kt-animate-fade-in-<?php if($imageside == 'right') {echo 'left';} else {echo 'right';}?>" style="<?php if(!empty($img_background)) {echo 'background-color:'.esc_attr($img_background).';';} if($image_cover == 'true' && !empty($image)) {echo 'background-image:url('.esc_url($image).'); background-size:cover; background-position: center center; min-height:'.esc_attr($height / 2).'px;';}?>">
 	      <div class="kt-si-table-box" style="height:<?php echo esc_attr($height);?>px">
 	      	<div class="kt-si-cell-box">
 	      		<?php if(!empty($image_link)) { echo '<a href="'.$image_link.'" target="'.$link_target.'" class="kt-si-image-link">';} 
@@ -547,8 +549,8 @@ function kadence_image_split_shortcode_function( $atts, $content) {
 	        </div>
 	      </div>
 	     </div>
-	     <div class="col-sm-6 kt-si-imagecol content-ktsi-<?php echo $imageside;?>" <?php if(!empty($content_background)) {echo 'style="background-color:'.$content_background.'"';}?>>
-	      <div class="kt-si-table-box" style="height:<?php echo $height;?>px">
+	     <div class="col-sm-6 kt-si-imagecol content-ktsi-<?php echo $imageside;?> kt-animate-fade-in-<?php echo esc_attr($imageside);?>" <?php if(!empty($content_background)) {echo 'style="background-color:'.$content_background.'"';}?>>
+	      <div class="kt-si-table-box" style="height:<?php echo esc_attr($height);?>px">
 	      	<div class="kt-si-cell-box">
  				<?php echo do_shortcode($content); ?>
 	        </div>
@@ -937,7 +939,7 @@ function kad_widget_clean_shortcodes($text){
     $text = strtr($text, $array);
     return $text;
 }
-add_filter('widget_text', 'kad_widget_clean_shortcodes');
+add_filter('widget_text', 'kad_widget_clean_shortcodes', 10);
 remove_filter('widget_text', 'do_shortcode');
 add_filter('widget_text', 'do_shortcode', 50);
 add_action( 'init', 'kt_remove_bstw_do_shortcode' );
@@ -946,4 +948,27 @@ function kt_remove_bstw_do_shortcode() {
         remove_filter( 'widget_text', array( bstw()->text_filters(), 'do_shortcode' ), 10 );
     }
 }
+add_filter('siteorigin_widgets_template_variables_sow-editor', 'kt_edit_sow_editor', 10, 4);
+function kt_edit_sow_editor($template_vars, $instance, $args, $object) {
+		$instance = wp_parse_args(
+			$instance,
+			array(  'text' => '' )
+		);
+		
+		// Run some known stuff
+		if( !empty($GLOBALS['wp_embed']) ) {
+			$instance['text'] = $GLOBALS['wp_embed']->autoembed( $instance['text'] );
+		}
+		if (function_exists('wp_make_content_images_responsive')) {
+			$instance['text'] = wp_make_content_images_responsive( $instance['text'] );
+		}
+		if( $instance['autop'] ) {
+			$instance['text'] = wpautop( $instance['text'] );
+		}
+		$instance['text'] = do_shortcode( shortcode_unautop( $instance['text'] ) );
+		$instance['text'] = apply_filters( 'widget_text', $instance['text'] );
 
+
+		$text =  array('text' => $instance['text']);
+		return $text;
+}
